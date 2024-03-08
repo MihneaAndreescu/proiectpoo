@@ -28,16 +28,102 @@ SomeClass *getC() {
 //////////////////////////////////////////////////////////////////////
 
 
-int main() {
+class Planet
+{
+private:
+    std::string m_name;
+    sf::CircleShape m_shape;
+public:
+    Planet(std::string name, sf::Vector2f position, float radius) :
+        m_name(name),
+        m_shape(radius)
+    {
+        m_shape.setOrigin(sf::Vector2f(1, 1) * radius);
+        m_shape.setPosition(position);
+    }
+
+    Planet(const Planet& other) :
+        m_name(other.m_name),
+        m_shape(other.m_shape)
+    {
+
+    }
+
+    Planet operator = (const Planet& other)
+    {
+        if (this != &other)
+        {
+            this->m_name = other.m_name;
+            this->m_shape = other.m_shape;
+        }
+        return *this;
+    }
+
+    ~Planet()
+    {
+
+    }
+
+    void display(sf::RenderWindow& renderWindow)
+    {
+        renderWindow.draw(m_shape);
+    }
+
+    friend std::ostream& operator << (std::ostream& os, const Planet& planet)
+    {
+        os << "(name = " << planet.m_name << ")";
+        return os;
+    }
+};
+
+void GO()
+{
+    Planet dune{ "Dune", sf::Vector2f(0.4, 0.6), 0.2 };
+    sf::RenderWindow window(sf::VideoMode(900, 900), "Muad'dib");
+    sf::View view;
+    view.setSize(sf::Vector2f(1, 1));
+    view.setCenter(sf::Vector2f(0.5, 0.5));
+    window.setView(view);
+    sf::Clock frameClock;
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+        }
+
+        float dt = frameClock.restart().asSeconds();
+
+        std::cout << "fps = " << 1 / dt << std::endl;
+
+        window.clear();
+        dune.display(window);
+        window.display();
+
+    }
+    exit(0);
+}
+
+int main()
+{
+    GO();
+
+    exit(0);
+    //exit(0);
     ////////////////////////////////////////////////////////////////////////
     /// NOTE: this function call is needed for environment-specific fixes //
     init_threads();                                                       //
     ////////////////////////////////////////////////////////////////////////
     ///
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
+    //std::cout << "Hello, world!\n";
+    //std::array<int, 100> v{};
+    //int nr;
+    //std::cout << "Introduceți nr: ";
     /////////////////////////////////////////////////////////////////////////
     /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
     /// dați exemple de date de intrare folosind fișierul tastatura.txt
@@ -58,17 +144,17 @@ int main() {
     /// program care merg (și să le evitați pe cele care nu merg).
     ///
     /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
+    //std::cin >> nr;
     /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
+    //for(int i = 0; i < nr; ++i) {
+    //    std::cout << "v[" << i << "] = ";
+    //    std::cin >> v[i];
+    //}
+    //std::cout << "\n\n";
+    //std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
+    //for(int i = 0; i < nr; ++i) {
+    //    std::cout << "- " << v[i] << "\n";
+    //}
     ///////////////////////////////////////////////////////////////////////////
     /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
     /// alt fișier propriu cu ce alt nume doriți.
@@ -101,6 +187,7 @@ int main() {
     /// window.setFramerateLimit(60);                                       ///
     ///////////////////////////////////////////////////////////////////////////
 
+    //exit(0);
     while(window.isOpen()) {
         bool shouldExit = false;
         sf::Event e{};
