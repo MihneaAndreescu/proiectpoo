@@ -78,7 +78,7 @@ public:
 
 void GO()
 {
-    Planet dune{ "Dune", sf::Vector2f(0.4, 0.6), 0.2 };
+    Planet dune{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f };
     sf::RenderWindow window(sf::VideoMode(900, 900), "Muad'dib");
     sf::View view;
     view.setSize(sf::Vector2f(1, 1));
