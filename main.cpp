@@ -22,8 +22,8 @@ public:
     explicit SomeClass(int) {}
 };
 
-SomeClass *getC() {
-    return new SomeClass{2};
+SomeClass* getC() {
+    return new SomeClass{ 2 };
 }
 //////////////////////////////////////////////////////////////////////
 
@@ -34,7 +34,7 @@ private:
     std::string m_name;
     sf::CircleShape m_shape;
 public:
-    Planet(std::string name, sf::Vector2f position, float radius) :
+    Planet(const std::string& name, const sf::Vector2f& position, const float& radius) :
         m_name(name),
         m_shape(radius)
     {
@@ -170,14 +170,14 @@ int main()
     helper.help();
     ///////////////////////////////////////////////////////////////////////////
 
-    SomeClass *c = getC();
+    SomeClass* c = getC();
     std::cout << c << "\n";
     delete c;
 
     sf::RenderWindow window;
     ///////////////////////////////////////////////////////////////////////////
     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
-    window.create(sf::VideoMode({800, 700}), "My Window", sf::Style::Default);
+    window.create(sf::VideoMode({ 800, 700 }), "My Window", sf::Style::Default);
     ///////////////////////////////////////////////////////////////////////////
     //
     ///////////////////////////////////////////////////////////////////////////
@@ -188,28 +188,28 @@ int main()
     ///////////////////////////////////////////////////////////////////////////
 
     //exit(0);
-    while(window.isOpen()) {
+    while (window.isOpen()) {
         bool shouldExit = false;
         sf::Event e{};
-        while(window.pollEvent(e)) {
-            switch(e.type) {
+        while (window.pollEvent(e)) {
+            switch (e.type) {
             case sf::Event::Closed:
                 window.close();
                 break;
             case sf::Event::Resized:
                 std::cout << "New width: " << window.getSize().x << '\n'
-                          << "New height: " << window.getSize().y << '\n';
+                    << "New height: " << window.getSize().y << '\n';
                 break;
             case sf::Event::KeyPressed:
                 std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
-                if(e.key.code == sf::Keyboard::Escape)
+                if (e.key.code == sf::Keyboard::Escape)
                     shouldExit = true;
                 break;
             default:
                 break;
             }
         }
-        if(shouldExit) {
+        if (shouldExit) {
             window.close();
             break;
         }
