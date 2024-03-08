@@ -71,50 +71,17 @@ public:
 
     friend std::ostream& operator << (std::ostream& os, const Planet& planet)
     {
-        os << "(name = " << planet.m_name << ")";
+        os << "(name = " << planet.m_name << " | radius = " << planet.m_shape.getRadius() << " | location = (" << planet.m_shape.getPosition().x << ", " << planet.m_shape.getPosition().y << "))";
         return os;
     }
 };
 
-void GO()
-{
-    Planet dune{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f };
-    sf::RenderWindow window(sf::VideoMode(900, 900), "Muad'dib");
-    sf::View view;
-    view.setSize(sf::Vector2f(1, 1));
-    view.setCenter(sf::Vector2f(0.5, 0.5));
-    window.setView(view);
-    sf::Clock frameClock;
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
-
-        float dt = frameClock.restart().asSeconds();
-
-        std::cout << "fps = " << 1 / dt << std::endl;
-
-        window.clear();
-        dune.display(window);
-        window.display();
-
-    }
-    exit(0);
-}
-
 int main()
 {
     Planet dune{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f };
-    
-    
-    init_threads();                                                      
+
+
+    init_threads();
     Helper helper;
     helper.help();
 
@@ -124,8 +91,8 @@ int main()
 
     sf::RenderWindow window;
     window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
-    window.setVerticalSyncEnabled(true);                      
-    
+    window.setVerticalSyncEnabled(true);
+
     sf::View view;
     view.setSize(sf::Vector2f(1, 1));
     view.setCenter(sf::Vector2f(0.5, 0.5));
@@ -134,7 +101,7 @@ int main()
     sf::Clock secondClock;
     int fps = 0;
 
-    while (window.isOpen()) 
+    while (window.isOpen())
     {
         bool shouldExit = false;
         sf::Event e{};
@@ -162,10 +129,10 @@ int main()
         }
 
 
-       
+
         if (secondClock.getElapsedTime().asSeconds() >= 1)
         {
-            std::cout << "fps = " << fps << std::endl;
+            std::cout << "fps = " << fps << " " << dune << std::endl;
             secondClock.restart();
             fps = 0;
         }
