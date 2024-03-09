@@ -28,11 +28,13 @@ SomeClass* getC() {
 //////////////////////////////////////////////////////////////////////
 
 
-class Planet
+class Planet : public sf::Drawable
 {
 private:
     std::string m_name;
     sf::CircleShape m_shape;
+    sf::Texture m_texture;
+
 public:
     Planet(const std::string& name, const sf::Vector2f& position, const float& radius) :
         m_name(name),
@@ -59,14 +61,20 @@ public:
         return *this;
     }
 
+    void loadFromFile(const std::string& filename)
+    {
+        m_texture.loadFromFile(filename);
+        m_shape.setTexture(&m_texture);
+    }
+
     ~Planet()
     {
 
     }
 
-    void display(sf::RenderWindow& renderWindow)
+    virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const
     {
-        renderWindow.draw(m_shape);
+        renderTarget.draw(m_shape, renderStates);
     }
 
     friend std::ostream& operator << (std::ostream& os, const Planet& planet)
@@ -76,19 +84,13 @@ public:
     }
 };
 
+class PlanetSystem
+{
+
+};
+
 int main()
 {
-    Planet dune{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f };
-
-
-    init_threads();
-    Helper helper;
-    helper.help();
-
-    SomeClass* c = getC();
-    std::cout << c << "\n";
-    delete c;
-
     sf::RenderWindow window;
     window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
@@ -98,6 +100,22 @@ int main()
     view.setCenter(sf::Vector2f(0.5, 0.5));
     window.setView(view);
 
+
+    Planet dune{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f };
+    dune.loadFromFile("..\\..\\..\\dune_texture.png");
+
+    //exit(0);
+
+    init_threads();
+    Helper helper;
+    helper.help();
+
+    SomeClass* c = getC();
+    std::cout << c << "\n";
+    delete c;
+
+
+
     sf::Clock secondClock;
     int fps = 0;
 
@@ -105,7 +123,8 @@ int main()
     {
         bool shouldExit = false;
         sf::Event e{};
-        while (window.pollEvent(e)) {
+        while (window.pollEvent(e)) 
+        {
             switch (e.type) {
             case sf::Event::Closed:
                 window.close();
@@ -123,7 +142,8 @@ int main()
                 break;
             }
         }
-        if (shouldExit) {
+        if (shouldExit) 
+        {
             window.close();
             break;
         }
@@ -141,7 +161,7 @@ int main()
 
 
         window.clear();
-        dune.display(window);
+        window.draw(dune);
         window.display();
     }
     return 0;
