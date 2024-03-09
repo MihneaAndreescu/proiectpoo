@@ -216,7 +216,7 @@ public:
                     auto& b = m_planets[j];
                     sf::Vector2f dir = normalize(b.getPosition() - a.getPosition());
                     float mag = a.getMass() * b.getMass() / dot(a.getPosition() - b.getPosition(), a.getPosition() - b.getPosition());
-                    mag *= 0.01;
+                    mag *= 0.01f;
                     a.applyForce(dir * mag);
                 }
             }
