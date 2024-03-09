@@ -97,7 +97,7 @@ private:
     std::string m_name;
     std::vector<Planet> m_planets;
 public:
-    PlanetSystem(const std::string& name) :
+    explicit PlanetSystem(const std::string& name) :
         m_name(name)
     {
     }
