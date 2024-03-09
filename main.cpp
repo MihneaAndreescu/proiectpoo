@@ -2,6 +2,7 @@
 #include <array>
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 #include <SFML/Graphics.hpp>
 
