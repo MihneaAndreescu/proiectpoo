@@ -32,29 +32,27 @@ class Planet : public sf::Drawable
 {
 private:
     std::string m_name;
-    sf::CircleShape m_shape;
+    sf::CircleShape m_circleShape;
+    sf::Vector2f m_velocity;
+    float m_mass;
 
 public:
-    Planet(const std::string& name, const sf::Vector2f& position, const float& radius) :
+    Planet(const std::string& name, const sf::Vector2f& position, const float& radius, sf::Vector2f velocity = sf::Vector2f(0, 0), float mass = 1, sf::Texture* texture = nullptr) :
         m_name(name),
-        m_shape(radius)
+        m_circleShape(radius),
+        m_velocity(velocity),
+        m_mass(mass)
     {
-        m_shape.setOrigin(sf::Vector2f(1, 1) * radius);
-        m_shape.setPosition(position);
-    }
-
-    Planet(const std::string& name, const sf::Vector2f& position, const float& radius, sf::Texture* texture) :
-        m_name(name),
-        m_shape(radius)
-    {
-        m_shape.setTexture(texture);
-        m_shape.setOrigin(sf::Vector2f(1, 1) * radius);
-        m_shape.setPosition(position);
+        m_circleShape.setTexture(texture);
+        m_circleShape.setOrigin(sf::Vector2f(1, 1) * radius);
+        m_circleShape.setPosition(position);
     }
 
     Planet(const Planet& other) :
         m_name(other.m_name),
-        m_shape(other.m_shape)
+        m_circleShape(other.m_circleShape),
+        m_velocity(other.m_velocity),
+        m_mass(other.m_mass)
     {
 
     }
@@ -64,14 +62,16 @@ public:
         if (this != &other)
         {
             this->m_name = other.m_name;
-            this->m_shape = other.m_shape;
+            this->m_circleShape = other.m_circleShape;
+            this->m_velocity = other.m_velocity;
+            this->m_mass = other.m_mass;
         }
         return *this;
     }
 
     void setTexture(sf::Texture* texture)
     {
-        m_shape.setTexture(texture);
+        m_circleShape.setTexture(texture);
     }
 
     ~Planet()
@@ -81,13 +81,18 @@ public:
 
     virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const
     {
-        renderTarget.draw(m_shape, renderStates);
+        renderTarget.draw(m_circleShape, renderStates);
     }
 
     friend std::ostream& operator << (std::ostream& os, const Planet& planet)
     {
-        os << "(name = " << planet.m_name << " | radius = " << planet.m_shape.getRadius() << " | location = (" << planet.m_shape.getPosition().x << ", " << planet.m_shape.getPosition().y << "))";
+        os << "(name = " << planet.m_name << " | radius = " << planet.m_circleShape.getRadius() << " | location = (" << planet.m_circleShape.getPosition().x << ", " << planet.m_circleShape.getPosition().y << "))";
         return os;
+    }
+
+    void update(float dt)
+    {
+        m_circleShape.move(dt * m_velocity);
     }
 };
 
@@ -158,6 +163,14 @@ public:
     {
         m_planets.push_back(planet);
     }
+
+    void update(float dt)
+    {
+        for (auto& planet : m_planets)
+        {
+            planet.update(dt);
+        }
+    }
 };
 
 int main()
@@ -178,11 +191,11 @@ int main()
     window.setView(view);
 
 
-    
+
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
 
-    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f, &duneTexture });
-    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.1f, &caladanTexture });
+    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f, sf::Vector2f(1, 1), 1.0f, &duneTexture });
+    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.1f, sf::Vector2f(-1, 1), 1.0f, &caladanTexture });
 
     init_threads();
     Helper helper;
@@ -194,6 +207,7 @@ int main()
 
 
 
+    sf::Clock fpsClock;
     sf::Clock secondClock;
     int fps = 0;
 
@@ -233,6 +247,9 @@ int main()
         shape.setOrigin(sf::Vector2f(1, 1) * shape.getRadius());
 
 
+
+        float dt = fpsClock.restart().asSeconds();
+        planetarySystem.update(dt);
         if (secondClock.getElapsedTime().asSeconds() >= 1)
         {
             std::cout << "fps = " << fps << " " << planetarySystem << std::endl;
