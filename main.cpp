@@ -33,13 +33,21 @@ class Planet : public sf::Drawable
 private:
     std::string m_name;
     sf::CircleShape m_shape;
-    sf::Texture m_texture;
 
 public:
     Planet(const std::string& name, const sf::Vector2f& position, const float& radius) :
         m_name(name),
         m_shape(radius)
     {
+        m_shape.setOrigin(sf::Vector2f(1, 1) * radius);
+        m_shape.setPosition(position);
+    }
+
+    Planet(const std::string& name, const sf::Vector2f& position, const float& radius, sf::Texture* texture) :
+        m_name(name),
+        m_shape(radius)
+    {
+        m_shape.setTexture(texture);
         m_shape.setOrigin(sf::Vector2f(1, 1) * radius);
         m_shape.setPosition(position);
     }
@@ -61,10 +69,9 @@ public:
         return *this;
     }
 
-    void loadFromFile(const std::string& filename)
+    void setTexture(sf::Texture* texture)
     {
-        m_texture.loadFromFile(filename);
-        m_shape.setTexture(&m_texture);
+        m_shape.setTexture(texture);
     }
 
     ~Planet()
@@ -84,9 +91,73 @@ public:
     }
 };
 
-class PlanetSystem
+class PlanetSystem : public sf::Drawable
 {
+private:
+    std::string m_name;
+    std::vector<Planet> m_planets;
+public:
+    PlanetSystem(const std::string& name) :
+        m_name(name)
+    {
+    }
 
+    PlanetSystem(const std::string& name, const std::vector<Planet>& planets) :
+        m_name(name),
+        m_planets(planets)
+    {
+    }
+
+    PlanetSystem(const PlanetSystem& other) :
+        m_name(other.m_name),
+        m_planets(other.m_planets)
+    {
+
+    }
+
+    PlanetSystem operator = (const PlanetSystem& other)
+    {
+        if (this != &other)
+        {
+            this->m_name = other.m_name;
+            this->m_planets = other.m_planets;
+        }
+        return *this;
+    }
+
+    ~PlanetSystem()
+    {
+    }
+
+    virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const
+    {
+        for (const auto& planet : m_planets)
+        {
+            renderTarget.draw(planet, renderStates);
+        }
+    }
+
+    friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system)
+    {
+        os << "(name = " << system.m_name << " | planets = (";
+        bool isFirst = true;
+        for (const auto& planet : system.m_planets)
+        {
+            if (!isFirst)
+            {
+                os << ", ";
+                isFirst = false;
+            }
+            os << planet << " ";
+        }
+        os << "))";
+        return os;
+    }
+
+    void addPlanet(const Planet& planet)
+    {
+        m_planets.push_back(planet);
+    }
 };
 
 int main()
@@ -95,16 +166,23 @@ int main()
     window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
 
+    sf::Texture duneTexture;
+    duneTexture.loadFromFile("..\\..\\..\\dune_texture.png");
+
+    sf::Texture caladanTexture;
+    caladanTexture.loadFromFile("..\\..\\..\\caladan_texture.png");
+
     sf::View view;
     view.setSize(sf::Vector2f(1, 1));
     view.setCenter(sf::Vector2f(0.5, 0.5));
     window.setView(view);
 
 
-    Planet dune{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f };
-    dune.loadFromFile("..\\..\\..\\dune_texture.png");
+    
+    PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
 
-    //exit(0);
+    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f, &duneTexture });
+    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.1f, &caladanTexture });
 
     init_threads();
     Helper helper;
@@ -123,7 +201,7 @@ int main()
     {
         bool shouldExit = false;
         sf::Event e{};
-        while (window.pollEvent(e)) 
+        while (window.pollEvent(e))
         {
             switch (e.type) {
             case sf::Event::Closed:
@@ -142,26 +220,30 @@ int main()
                 break;
             }
         }
-        if (shouldExit) 
+        if (shouldExit)
         {
             window.close();
             break;
         }
 
+        sf::CircleShape shape;
+        shape.setFillColor(sf::Color::Red);
+        shape.setPosition(sf::Vector2f(0, 0));
+        shape.setRadius(100);
+        shape.setOrigin(sf::Vector2f(1, 1) * shape.getRadius());
 
 
         if (secondClock.getElapsedTime().asSeconds() >= 1)
         {
-            std::cout << "fps = " << fps << " " << dune << std::endl;
+            std::cout << "fps = " << fps << " " << planetarySystem << std::endl;
             secondClock.restart();
             fps = 0;
         }
         fps++;
 
-
-
         window.clear();
-        window.draw(dune);
+        window.draw(shape);
+        window.draw(planetarySystem);
         window.display();
     }
     return 0;
