@@ -27,6 +27,20 @@ SomeClass* getC() {
 }
 //////////////////////////////////////////////////////////////////////
 
+float dot(sf::Vector2f a, sf::Vector2f b)
+{
+    return a.x * b.x + a.y * b.y;
+}
+
+float norm(sf::Vector2f a)
+{
+    return sqrt(dot(a, a));
+}
+
+sf::Vector2f normalize(sf::Vector2f a)
+{
+    return a / norm(a);
+}
 
 class Planet : public sf::Drawable
 {
@@ -35,13 +49,15 @@ private:
     sf::CircleShape m_circleShape;
     sf::Vector2f m_velocity;
     float m_mass;
+    sf::Vector2f m_forces;
 
 public:
     Planet(const std::string& name, const sf::Vector2f& position, const float& radius, sf::Vector2f velocity = sf::Vector2f(0, 0), float mass = 1, sf::Texture* texture = nullptr) :
         m_name(name),
         m_circleShape(radius),
         m_velocity(velocity),
-        m_mass(mass)
+        m_mass(mass),
+        m_forces(sf::Vector2f(0, 0))
     {
         m_circleShape.setTexture(texture);
         m_circleShape.setOrigin(sf::Vector2f(1, 1) * radius);
@@ -52,9 +68,25 @@ public:
         m_name(other.m_name),
         m_circleShape(other.m_circleShape),
         m_velocity(other.m_velocity),
-        m_mass(other.m_mass)
+        m_mass(other.m_mass),
+        m_forces(other.m_forces)
     {
 
+    }
+
+    sf::Vector2f getPosition() const
+    {
+        return m_circleShape.getPosition();
+    }
+
+    sf::Vector2f getVelocity() const
+    {
+        return m_velocity;
+    }
+
+    float getMass() const
+    {
+        return m_mass;
     }
 
     Planet operator = (const Planet& other)
@@ -65,8 +97,19 @@ public:
             this->m_circleShape = other.m_circleShape;
             this->m_velocity = other.m_velocity;
             this->m_mass = other.m_mass;
+            this->m_forces = other.m_forces;
         }
         return *this;
+    }
+
+    void applyForce(sf::Vector2f force)
+    {
+        m_forces += force;
+    }
+
+    void clearForces()
+    {
+        m_forces = sf::Vector2f(0, 0);
     }
 
     void setTexture(sf::Texture* texture)
@@ -92,6 +135,7 @@ public:
 
     void update(float dt)
     {
+        m_velocity += dt * m_forces / m_mass;
         m_circleShape.move(dt * m_velocity);
     }
 };
@@ -166,9 +210,25 @@ public:
 
     void update(float dt)
     {
+        for (size_t i = 0; i < m_planets.size(); i++)
+        {
+            for (size_t j = 0; j < m_planets.size(); j++)
+            {
+                if (i != j)
+                {
+                    auto& a = m_planets[i];
+                    auto& b = m_planets[j];
+                    sf::Vector2f dir = normalize(b.getPosition() - a.getPosition());
+                    float mag = a.getMass() * b.getMass() / dot(a.getPosition() - b.getPosition(), a.getPosition() - b.getPosition());
+                    mag *= 0.01;
+                    a.applyForce(dir * mag);
+                }
+            }
+        }
         for (auto& planet : m_planets)
         {
             planet.update(dt);
+            planet.clearForces();
         }
     }
 };
@@ -186,16 +246,16 @@ int main()
     caladanTexture.loadFromFile("..\\..\\..\\caladan_texture.png");
 
     sf::View view;
-    view.setSize(sf::Vector2f(1, 1));
-    view.setCenter(sf::Vector2f(0.5, 0.5));
+    view.setSize(sf::Vector2f(2, 2));
+    view.setCenter(sf::Vector2f(1, 1));
     window.setView(view);
 
 
 
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
 
-    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.2f, sf::Vector2f(1, 1), 1.0f, &duneTexture });
-    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.1f, sf::Vector2f(-1, 1), 1.0f, &caladanTexture });
+    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.1f, sf::Vector2f(1, 1) * 0.1f, 3.0f, &duneTexture });
+    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(-1, 1) * 0.1f, 1.0f, &caladanTexture });
 
     init_threads();
     Helper helper;
