@@ -80,11 +80,6 @@ public:
         return m_circleShape.getPosition();
     }
 
-    sf::Vector2f getVelocity() const
-    {
-        return m_velocity;
-    }
-
     float getMass() const
     {
         return m_mass;
