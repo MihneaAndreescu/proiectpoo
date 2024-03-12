@@ -55,33 +55,50 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
     renderTarget.draw(m_shape, renderStates);
 }
 
-std::ostream& operator<<(std::ostream& os, const SpaceShip& spaceShip) {
-    //os << "(name = " << SpaceShip.m_name << " | radius = " << SpaceShip.m_circleShape.getRadius() << " | location = (" << SpaceShip.m_circleShape.getPosition().x << ", " << SpaceShip.m_circleShape.getPosition().y << "))";
+std::ostream& operator<<(std::ostream& os, const SpaceShip& spaceShip) 
+{
     os << "(name = " << spaceShip.m_name << ")";
     return os;
 }
 
-#include <iostream>
-
-
 void SpaceShip::update(float dt)
 {
     sf::Vector2f delta = sf::Vector2f(0, 0);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+    if (sf::Keyboard::isKeyPressed(m_keyUp))
     {
         delta += sf::Vector2f(0, 1);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+    if (sf::Keyboard::isKeyPressed(m_keyDown))
     {
         delta += sf::Vector2f(0, -1);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+    if (sf::Keyboard::isKeyPressed(m_keyLeft))
     {
         delta += sf::Vector2f(-1, 0);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+    if (sf::Keyboard::isKeyPressed(m_keyRight))
     {
         delta += sf::Vector2f(1, 0);
     }
     m_shape.move(delta * dt);
+}
+
+void SpaceShip::setKeyboardKeyForUp(sf::Keyboard::Key key)
+{
+    m_keyUp = key;
+}
+
+void SpaceShip::setKeyboardKeyForDown(sf::Keyboard::Key key)
+{
+    m_keyDown = key;
+}
+
+void SpaceShip::setKeyboardKeyForLeft(sf::Keyboard::Key key)
+{
+    m_keyLeft = key;
+}
+
+void SpaceShip::setKeyboardKeyForRight(sf::Keyboard::Key key)
+{
+    m_keyRight = key;
 }

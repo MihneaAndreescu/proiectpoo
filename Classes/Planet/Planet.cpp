@@ -70,7 +70,8 @@ void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     renderTarget.draw(m_circleShape, renderStates);
 }
 
-std::ostream& operator<<(std::ostream& os, const Planet& planet) {
+std::ostream& operator<<(std::ostream& os, const Planet& planet) 
+{
     os << "(name = " << planet.m_name << " | radius = " << planet.m_circleShape.getRadius() << " | location = (" << planet.m_circleShape.getPosition().x << ", " << planet.m_circleShape.getPosition().y << "))";
     return os;
 }
