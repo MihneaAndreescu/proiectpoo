@@ -45,13 +45,16 @@ int main()
     sf::Texture caladanTexture;
     caladanTexture.loadFromFile("..\\..\\..\\caladan_texture.png");
 
+    sf::Texture ship1Texture;
+    ship1Texture.loadFromFile("..\\..\\..\\ship1_texture.png");
+
     sf::View view;
     view.setSize(sf::Vector2f(2, -2));
     view.setCenter(sf::Vector2f(1, 1));
     window.setView(view);
 
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
-    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 20.0f, &caladanTexture };
+    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 20.0f, &ship1Texture };
     spaceShip.setKeyboardKeyForDown(sf::Keyboard::Key::Down);
     spaceShip.setKeyboardKeyForUp(sf::Keyboard::Key::Up);
     spaceShip.setKeyboardKeyForRight(sf::Keyboard::Key::Right);
@@ -151,17 +154,3 @@ int main()
     }
     return 0;
 }
-/*
---SELECT RTRIM ('XinfoXxXaabc', 'bacX') from dual;
---select TRANSLATE('$aa$aa', '$ad', 'bc') from dual;
-
---select to_char(to_date('07-03-2024', 'dd-mm-yyyy') + 169, 'dd-mm-yyyy') from dual;
-
---select concat(str1, str2) || 'castiga' || salary
-
-select concat(concat(first_name, ' '), last_name) || ' castiga ' || salary || ' dar doreste ' || salary * 3 "Salariul ideal"
-
-from employees;
-
-
-*/
