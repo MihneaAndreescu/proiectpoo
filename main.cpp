@@ -1,4 +1,4 @@
-//#include "Classes/Test/Test.h"
+#include "Classes/SpaceShip/SpaceShip.h"
 #include "Classes/PlanetSystem/PlanetSystem.h"
 #include "Classes/Planet/Planet.h"
 
@@ -43,19 +43,20 @@ int main()
     duneTexture.loadFromFile("..\\..\\..\\dune_texture.png");
 
     sf::Texture caladanTexture;
-    caladanTexture.loadFromFile("..\\..\\..\\dune_texture.png");
+    caladanTexture.loadFromFile("..\\..\\..\\caladan_texture.png");
 
     sf::View view;
-    view.setSize(sf::Vector2f(2, 2));
+    view.setSize(sf::Vector2f(2, -2));
     view.setCenter(sf::Vector2f(1, 1));
     window.setView(view);
 
-
-
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
+    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), sf::Vector2f(0, 0.5f), 20.0f, &caladanTexture };
 
-    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.4f, 0.6f), 0.1f, sf::Vector2f(1, 1) * 0.1f, 3.0f, &duneTexture });
-    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(-1, 1) * 0.1f, 1.0f, &caladanTexture });
+    //planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0, 0.5f), 20.0f, &duneTexture });
+    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0, 0.3), 2.0f, &duneTexture });
+    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0, 0.2) * 0.5f, 4.0f, &caladanTexture });
+    //planetarySystem.addPlanet(Planet{ "Caladan2", sf::Vector2f(1.2f, 1.1f), 0.05f, sf::Vector2f(1, -1) * 0.02f, 1.0f, &caladanTexture });
 
     init_threads();
     Helper helper;
@@ -99,7 +100,27 @@ int main()
             window.close();
             break;
         }
-
+        float dt = fpsClock.restart().asSeconds();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+        {
+            view.move(sf::Vector2f(1, 0) * dt);
+            window.setView(view);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+        {
+            view.move(sf::Vector2f(-1, 0) * dt);
+            window.setView(view);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+        {
+            view.move(sf::Vector2f(0,1) * dt);
+            window.setView(view);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+        {
+            view.move(sf::Vector2f(0,-1) * dt);
+            window.setView(view);
+        }
         sf::CircleShape shape;
         shape.setFillColor(sf::Color::Red);
         shape.setPosition(sf::Vector2f(0, 0));
@@ -108,8 +129,8 @@ int main()
 
 
 
-        float dt = fpsClock.restart().asSeconds();
         planetarySystem.update(dt);
+        spaceShip.update(dt);
         if (secondClock.getElapsedTime().asSeconds() >= 1)
         {
             std::cout << "fps = " << fps << " " << planetarySystem << std::endl;
@@ -120,8 +141,23 @@ int main()
 
         window.clear();
         window.draw(shape);
+        window.draw(spaceShip);
         window.draw(planetarySystem);
         window.display();
     }
     return 0;
 }
+/*
+--SELECT RTRIM ('XinfoXxXaabc', 'bacX') from dual;
+--select TRANSLATE('$aa$aa', '$ad', 'bc') from dual;
+
+--select to_char(to_date('07-03-2024', 'dd-mm-yyyy') + 169, 'dd-mm-yyyy') from dual;
+
+--select concat(str1, str2) || 'castiga' || salary
+
+select concat(concat(first_name, ' '), last_name) || ' castiga ' || salary || ' dar doreste ' || salary * 3 "Salariul ideal"
+
+from employees;
+
+
+*/

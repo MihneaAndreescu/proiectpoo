@@ -1,6 +1,6 @@
 #include "Planet.h"
 
-Planet::Planet(const std::string& name, const sf::Vector2f& position, const float& radius, sf::Vector2f velocity, float mass, sf::Texture* texture) :
+Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Texture* texture) :
     m_name(name),
     m_circleShape(radius),
     m_velocity(velocity),
@@ -9,7 +9,7 @@ Planet::Planet(const std::string& name, const sf::Vector2f& position, const floa
 {
     m_circleShape.setTexture(texture);
     m_circleShape.setOrigin(sf::Vector2f(1, 1) * radius);
-    m_circleShape.setPosition(position);
+    m_circleShape.setPosition(center);
 }
 
 Planet::Planet(const Planet& other) :
@@ -22,7 +22,7 @@ Planet::Planet(const Planet& other) :
 
 }
 
-sf::Vector2f Planet::getPosition() const
+sf::Vector2f Planet::getCenter() const
 {
     return m_circleShape.getPosition();
 }
@@ -77,6 +77,7 @@ std::ostream& operator<<(std::ostream& os, const Planet& planet) {
 
 void Planet::update(float dt)
 {
-    m_velocity += dt * m_forces / m_mass;
+    sf::Vector2f acceleration = dt * m_forces;
+    m_velocity += acceleration / m_mass;
     m_circleShape.move(dt * m_velocity);
 }

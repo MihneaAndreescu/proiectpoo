@@ -23,6 +23,8 @@ public:
     virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const;
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
 
+    //void setKeyboardKeyForUp(sf::Keyboard::Key key);
+
     void addPlanet(const Planet& planet);
     void update(float dt);
 };

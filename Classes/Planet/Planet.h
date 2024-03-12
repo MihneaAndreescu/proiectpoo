@@ -13,12 +13,12 @@ private:
     sf::Vector2f m_forces;
 
 public:
-    Planet(const std::string& name, const sf::Vector2f& position, const float& radius, sf::Vector2f velocity = sf::Vector2f(0, 0), float mass = 1, sf::Texture* texture = nullptr);
+    Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity = sf::Vector2f(0, 0), float mass = 1, sf::Texture* texture = nullptr);
     Planet(const Planet& other);
     Planet operator = (const Planet& other);
     ~Planet();
     
-    sf::Vector2f getPosition() const;
+    sf::Vector2f getCenter() const;
     float getMass() const;
 
     void update(float dt);

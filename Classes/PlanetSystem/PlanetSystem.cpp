@@ -81,8 +81,8 @@ void PlanetSystem::update(float dt)
             {
                 auto& a = m_planets[i];
                 auto& b = m_planets[j];
-                sf::Vector2f dir = normalize(b.getPosition() - a.getPosition());
-                float mag = a.getMass() * b.getMass() / dot(a.getPosition() - b.getPosition(), a.getPosition() - b.getPosition());
+                sf::Vector2f dir = normalize(b.getCenter() - a.getCenter());
+                float mag = a.getMass() * b.getMass() / dot(a.getCenter() - b.getCenter(), a.getCenter() - b.getCenter());
                 mag *= 0.01f;
                 a.applyForce(dir * mag);
             }
