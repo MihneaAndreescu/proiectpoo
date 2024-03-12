@@ -1,5 +1,7 @@
 # Dune: Stellar Odyssey
 
+A Dune inspired game about sending spice and killing your enemies.
+
 ### Important!
 Aveți voie cu cod generat de modele de limbaj la care nu ați contribuit semnificativ doar în folder-ul `generated`.
 Codul generat pus "ca să fie"/pe care nu îl înțelegeți se punctează doar pentru puncte bonus, doar în contextul
