@@ -1,6 +1,6 @@
 #include "SpaceShip.h"
 
-SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, sf::Vector2f velocity, float speed, const sf::Texture* texture) :
+SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed, const sf::Texture* texture) :
     m_name(name),
     m_speed(speed)
 {

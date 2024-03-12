@@ -51,7 +51,7 @@ int main()
     window.setView(view);
 
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
-    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), sf::Vector2f(0, 0.5f), 20.0f, &caladanTexture };
+    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 20.0f, &caladanTexture };
 
     //planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0, 0.5f), 20.0f, &duneTexture });
     planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0, 0.3), 2.0f, &duneTexture });

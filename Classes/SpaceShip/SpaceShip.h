@@ -11,7 +11,7 @@ private:
     float m_speed;
 
 public:
-    SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, sf::Vector2f velocity = sf::Vector2f(0, 0), float speed = 1, const sf::Texture* texture = nullptr);
+    SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed = 1, const sf::Texture* texture = nullptr);
     SpaceShip(const SpaceShip& other);
     SpaceShip operator = (const SpaceShip& other);
     ~SpaceShip();
