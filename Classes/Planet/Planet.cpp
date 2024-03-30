@@ -1,13 +1,13 @@
 #include "Planet.h"
 
-Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Texture* texture) :
+Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Color color) :
     m_name(name),
     m_circleShape(radius),
     m_velocity(velocity),
     m_mass(mass),
     m_forces(sf::Vector2f(0, 0))
 {
-    m_circleShape.setTexture(texture);
+    m_circleShape.setFillColor(color);
     m_circleShape.setOrigin(sf::Vector2f(1, 1) * radius);
     m_circleShape.setPosition(center);
 }

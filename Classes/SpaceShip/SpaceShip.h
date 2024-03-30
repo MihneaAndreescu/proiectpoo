@@ -7,8 +7,12 @@ class SpaceShip : public sf::Drawable
 {
 private:
     std::string m_name;
-    sf::RectangleShape m_shape;
+    sf::Vector2f m_center;
+    sf::Vector2f m_size;
+    float m_angle;
     float m_speed;
+    float m_trash;
+    bool m_useNow;
 
     sf::Keyboard::Key m_keyUp;
     sf::Keyboard::Key m_keyDown;
@@ -16,7 +20,7 @@ private:
     sf::Keyboard::Key m_keyRight;
 
 public:
-    SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed = 1, const sf::Texture* texture = nullptr);
+    SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed = 1);
     SpaceShip(const SpaceShip& other);
     SpaceShip operator = (const SpaceShip& other);
     ~SpaceShip();
@@ -25,10 +29,9 @@ public:
     sf::Vector2f getSize() const;
     float getMass() const;
 
-    void update(float dt);
-    void setTexture(sf::Texture* texture);
+    void update(float dt, sf::Vector2f mousePosition);
 
-    virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const;
+    void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const SpaceShip& SpaceShip);
 
     void setKeyboardKeyForUp(sf::Keyboard::Key key);

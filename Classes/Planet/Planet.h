@@ -13,7 +13,7 @@ private:
     sf::Vector2f m_forces;
 
 public:
-    Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity = sf::Vector2f(0, 0), float mass = 1, sf::Texture* texture = nullptr);
+    Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Color color);
     Planet(const Planet& other);
     Planet operator = (const Planet& other);
     ~Planet();
@@ -26,6 +26,6 @@ public:
     void clearForces();
     void setTexture(sf::Texture* texture);
 
-    virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const;
+    void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const Planet& planet);
 };

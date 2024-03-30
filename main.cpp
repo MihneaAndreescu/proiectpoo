@@ -39,31 +39,20 @@ int main()
     window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
 
-    sf::Texture duneTexture;
-    duneTexture.loadFromFile("..\\..\\..\\dune_texture.png");
-
-    sf::Texture caladanTexture;
-    caladanTexture.loadFromFile("..\\..\\..\\caladan_texture.png");
-
-    sf::Texture ship1Texture;
-    ship1Texture.loadFromFile("..\\..\\..\\ship1_texture.png");
-
     sf::View view;
     view.setSize(sf::Vector2f(2, -2));
     view.setCenter(sf::Vector2f(1, 1));
     window.setView(view);
 
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
-    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 20.0f, &ship1Texture };
+    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 1.0f};
     spaceShip.setKeyboardKeyForDown(sf::Keyboard::Key::Down);
     spaceShip.setKeyboardKeyForUp(sf::Keyboard::Key::Up);
     spaceShip.setKeyboardKeyForRight(sf::Keyboard::Key::Right);
     spaceShip.setKeyboardKeyForLeft(sf::Keyboard::Key::Left);
 
-    //planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0, 0.5f), 20.0f, &duneTexture });
-    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, &duneTexture });
-    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, &caladanTexture });
-    //planetarySystem.addPlanet(Planet{ "Caladan2", sf::Vector2f(1.2f, 1.1f), 0.05f, sf::Vector2f(1, -1) * 0.02f, 1.0f, &caladanTexture });
+    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red });
+    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue });
 
     init_threads();
     Helper helper;
@@ -133,11 +122,12 @@ int main()
         shape.setPosition(sf::Vector2f(0, 0));
         shape.setRadius(100);
         shape.setOrigin(sf::Vector2f(1, 1) * shape.getRadius());
-
-
-
+        
         planetarySystem.update(dt);
-        spaceShip.update(dt);
+
+        sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        spaceShip.update(dt, mousePosition);
+
         if (secondClock.getElapsedTime().asSeconds() >= 1)
         {
             std::cout << "fps = " << fps << " " << planetarySystem << std::endl;
@@ -147,7 +137,7 @@ int main()
         fps++;
 
         window.clear();
-        window.draw(shape);
+        //window.draw(shape);
         window.draw(spaceShip);
         window.draw(planetarySystem);
         window.display();

@@ -1,20 +1,5 @@
 #include "PlanetSystem.h"
-
-float dot(sf::Vector2f a, sf::Vector2f b)
-{
-    return a.x * b.x + a.y * b.y;
-}
-
-float norm(sf::Vector2f a)
-{
-    return sqrt(dot(a, a));
-}
-
-sf::Vector2f normalize(sf::Vector2f a)
-{
-    return a / norm(a);
-}
-
+#include "../../Math/Math.h"
 
 PlanetSystem::~PlanetSystem()
 {
@@ -81,8 +66,8 @@ void PlanetSystem::update(float dt)
             {
                 auto& a = m_planets[i];
                 auto& b = m_planets[j];
-                sf::Vector2f dir = normalize(b.getCenter() - a.getCenter());
-                float mag = a.getMass() * b.getMass() / dot(a.getCenter() - b.getCenter(), a.getCenter() - b.getCenter());
+                sf::Vector2f dir = Math::normalize(b.getCenter() - a.getCenter());
+                float mag = a.getMass() * b.getMass() / Math::dot(a.getCenter() - b.getCenter(), a.getCenter() - b.getCenter());
                 mag *= 0.01f;
                 a.applyForce(dir * mag);
             }

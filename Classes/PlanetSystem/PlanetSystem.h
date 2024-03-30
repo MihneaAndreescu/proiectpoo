@@ -14,7 +14,6 @@ private:
     std::string m_name;
     std::vector<Planet> m_planets;
 
-
 public:
     explicit PlanetSystem(const std::string& name);
     PlanetSystem(const std::string& name, const std::vector<Planet>& planets);
@@ -22,7 +21,7 @@ public:
     PlanetSystem operator = (const PlanetSystem& other);
     ~PlanetSystem();
 
-    virtual void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const;
+    void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
 
 

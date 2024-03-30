@@ -109,7 +109,7 @@ add_executable(${PROJECT_NAME}
     main.cpp
     generated/src/Helper.cpp
     env_fixes.h
- "Classes/Planet/Planet.h" "Classes/Planet/Planet.cpp" "Classes/PlanetSystem/PlanetSystem.h" "Classes/PlanetSystem/PlanetSystem.cpp" "Classes/SpaceShip/SpaceShip.cpp" "Classes/SpaceShip/SpaceShip.h")
+ "Classes/Planet/Planet.h" "Classes/Planet/Planet.cpp" "Classes/PlanetSystem/PlanetSystem.h" "Classes/PlanetSystem/PlanetSystem.cpp" "Classes/SpaceShip/SpaceShip.cpp" "Classes/SpaceShip/SpaceShip.h" "Math/Math.h" "Math/Math.cpp")
 
 ###############################################################################
 
@@ -158,8 +158,15 @@ endif()
 # copy binaries to "bin" folder; these are uploaded as artifacts on each release
 # update name in .github/workflows/cmake.yml:29 when changing "bin" name here
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
-# install(DIRECTORY some_dir1 some_dir2 DESTINATION bin)
+
+install(DIRECTORY Textures DESTINATION bin)
+
 # install(FILES some_file1.txt some_file2.md DESTINATION bin)
 if(APPLE)
     install(FILES launcher.command DESTINATION bin)
+endif()
+
+if(NOT GITHUB_ACTIONS)
+    message("${CMAKE_SOURCE_DIR}")
+    set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif()
