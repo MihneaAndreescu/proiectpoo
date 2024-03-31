@@ -1,5 +1,10 @@
 # Dune: Stellar Odyssey
 
+A Dune inspired game about sending spice and killing your enemies.
+
+Pentru tema 0 am implementat clasele Planet, PlanetSystem si SpaceShip si am lasat un exemplu foarte intuitiv. Cu WASD se controleaza camera, iar cu UP, DOWN, LEFT, RIGHT se controleaza nava. De asemenea se poate sa am orice numar de planete in PlanetSystem deoarece utilizez
+integrare Euler pentru a simula fizica la fiecare time step.
+
 ### Important!
 Aveți voie cu cod generat de modele de limbaj la care nu ați contribuit semnificativ doar în folder-ul `generated`.
 Codul generat pus "ca să fie"/pe care nu îl înțelegeți se punctează doar pentru puncte bonus, doar în contextul
