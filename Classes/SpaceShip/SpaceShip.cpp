@@ -37,6 +37,7 @@ SpaceShip SpaceShip::operator = (const SpaceShip& other)
     return *this;
 }
 
+
 sf::Vector2f SpaceShip::getCenter() const
 {
     return m_center;
