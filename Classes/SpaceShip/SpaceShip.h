@@ -9,8 +9,8 @@ private:
     std::string m_name;
     sf::Vector2f m_center;
     sf::Vector2f m_size;
-    float m_angle;
     float m_speed;
+    float m_angle;
     bool m_useNow;
 
     sf::Keyboard::Key m_keyUp;

@@ -3,13 +3,15 @@
 #include <cmath>
 
 
+
+
 SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed) :
     m_name(name),
     m_center(center),
     m_size(size),
     m_speed(speed),
-    m_useNow(false),
-    m_angle(0)
+    m_angle(0),
+    m_useNow(false)
 {
 }
 
