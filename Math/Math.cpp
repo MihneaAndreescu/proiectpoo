@@ -1,4 +1,5 @@
 #include "Math.h"
+#include <cmath>
 
 namespace Math
 {
