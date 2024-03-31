@@ -5,6 +5,7 @@
 
 
 
+
 SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed) :
     m_name(name),
     m_center(center),
@@ -17,13 +18,12 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
 
 SpaceShip::SpaceShip(const SpaceShip& other) :
     m_name(other.m_name),
+    m_center(other.m_center), 
     m_size(other.m_size),
-    m_center(other.m_center),
     m_speed(other.m_speed),
     m_angle(other.m_angle),
     m_useNow(other.m_useNow)
 {
-
 }
 
 SpaceShip SpaceShip::operator = (const SpaceShip& other)
