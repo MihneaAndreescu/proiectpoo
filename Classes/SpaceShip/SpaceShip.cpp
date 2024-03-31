@@ -8,7 +8,8 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
     m_center(center),
     m_size(size),
     m_speed(speed),
-    m_useNow(false)
+    m_useNow(false),
+    m_angle(0)
 {
 }
 

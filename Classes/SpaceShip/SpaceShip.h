@@ -19,7 +19,7 @@ private:
     sf::Keyboard::Key m_keyRight;
 
 public:
-    SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed = 1);
+    SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed);
     SpaceShip(const SpaceShip& other);
     SpaceShip operator = (const SpaceShip& other);
     ~SpaceShip();

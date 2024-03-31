@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 
-namespace Math 
+namespace Math
 {
 	const float PI = 3.141592653589793;
 	sf::Vector2f rotateAroundOrigin(sf::Vector2f point, float angle);
