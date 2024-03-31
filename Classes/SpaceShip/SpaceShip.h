@@ -11,7 +11,6 @@ private:
     sf::Vector2f m_size;
     float m_angle;
     float m_speed;
-    float m_trash;
     bool m_useNow;
 
     sf::Keyboard::Key m_keyUp;
