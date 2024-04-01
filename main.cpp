@@ -53,6 +53,7 @@ int main()
 
     planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red });
     planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue });
+    planetarySystem.addSpaceShip(spaceShip);
 
     init_threads();
     Helper helper;
@@ -123,10 +124,10 @@ int main()
         shape.setRadius(100);
         shape.setOrigin(sf::Vector2f(1, 1) * shape.getRadius());
         
-        planetarySystem.update(dt);
-
         sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-        spaceShip.update(dt, mousePosition);
+        planetarySystem.update(dt, mousePosition);
+
+        //spaceShip.update(dt, mousePosition);
 
         if (secondClock.getElapsedTime().asSeconds() >= 1)
         {
@@ -138,7 +139,7 @@ int main()
 
         window.clear();
         //window.draw(shape);
-        window.draw(spaceShip);
+        //window.draw(spaceShip);
         window.draw(planetarySystem);
         window.display();
     }

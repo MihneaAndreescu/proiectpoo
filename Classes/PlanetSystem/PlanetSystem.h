@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "../Planet/Planet.h"
+#include "../SpaceShip/SpaceShip.h"
 #include <SFML/Graphics.hpp>
 
 class PlanetSystem : public sf::Drawable
@@ -13,10 +14,11 @@ class PlanetSystem : public sf::Drawable
 private:
     std::string m_name;
     std::vector<Planet> m_planets;
+    std::vector<SpaceShip> m_spaceShips;
 
 public:
     explicit PlanetSystem(const std::string& name);
-    PlanetSystem(const std::string& name, const std::vector<Planet>& planets);
+    PlanetSystem(const std::string& name, const std::vector<Planet>& planets, const std::vector<SpaceShip>& spaceShips);
     PlanetSystem(const PlanetSystem& other);
     PlanetSystem operator = (const PlanetSystem& other);
     ~PlanetSystem();
@@ -25,8 +27,8 @@ public:
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
 
 
-
     void addPlanet(const Planet& planet);
-    void update(float dt);
+    void addSpaceShip(const SpaceShip& spaceShip);
+    void update(float dt, sf::Vector2f mousePosition);
 };
 

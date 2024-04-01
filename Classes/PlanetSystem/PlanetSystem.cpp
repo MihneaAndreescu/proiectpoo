@@ -30,6 +30,10 @@ void PlanetSystem::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderS
     {
         renderTarget.draw(planet, renderStates);
     }
+    for (const auto& spaceShip : m_spaceShips)
+    {
+        renderTarget.draw(spaceShip, renderStates);
+    }
 }
 
 
@@ -38,15 +42,17 @@ PlanetSystem::PlanetSystem(const std::string& name) :
 {
 }
 
-PlanetSystem::PlanetSystem(const std::string& name, const std::vector<Planet>& planets) :
+PlanetSystem::PlanetSystem(const std::string& name, const std::vector<Planet>& planets, const std::vector<SpaceShip>& spaceShips) :
     m_name(name),
-    m_planets(planets)
+    m_planets(planets),
+    m_spaceShips(spaceShips)
 {
 }
 
 PlanetSystem::PlanetSystem(const PlanetSystem& other) :
     m_name(other.m_name),
-    m_planets(other.m_planets)
+    m_planets(other.m_planets),
+    m_spaceShips(other.m_spaceShips)
 {
 
 }
@@ -56,7 +62,12 @@ void PlanetSystem::addPlanet(const Planet& planet)
     m_planets.push_back(planet);
 }
 
-void PlanetSystem::update(float dt)
+void PlanetSystem::addSpaceShip(const SpaceShip& spaceShip)
+{
+    m_spaceShips.push_back(spaceShip);
+}
+
+void PlanetSystem::update(float dt, sf::Vector2f mousePosition)
 {
     for (size_t i = 0; i < m_planets.size(); i++)
     {
@@ -73,6 +84,10 @@ void PlanetSystem::update(float dt)
             }
         }
     }
+    for (auto& spaceShip : m_spaceShips) 
+    {
+        spaceShip.update(dt, mousePosition);
+    }
     for (auto& planet : m_planets)
     {
         planet.update(dt);
@@ -86,6 +101,7 @@ PlanetSystem PlanetSystem::operator = (const PlanetSystem& other)
     {
         this->m_name = other.m_name;
         this->m_planets = other.m_planets;
+        this->m_spaceShips = other.m_spaceShips;
     }
     return *this;
 }
