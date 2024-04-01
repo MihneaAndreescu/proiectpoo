@@ -4,7 +4,7 @@
 
 namespace Math
 {
-	const float PI = 3.141592653589793;
+	const float PI = 3.141592653589793f;
 	sf::Vector2f rotateAroundOrigin(sf::Vector2f point, float angle);
 	sf::Vector2f rotateArountPoint(sf::Vector2f origin, sf::Vector2f point, float angle);
 	float dot(sf::Vector2f a, sf::Vector2f b);

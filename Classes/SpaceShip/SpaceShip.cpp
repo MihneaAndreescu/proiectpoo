@@ -11,8 +11,6 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
     m_center(center),
     m_size(size),
     m_speed(speed),
-    m_angle(0),
-    m_useNow(false)
 {
 }
 
@@ -21,8 +19,7 @@ SpaceShip::SpaceShip(const SpaceShip& other) :
     m_center(other.m_center), 
     m_size(other.m_size),
     m_speed(other.m_speed),
-    m_angle(other.m_angle),
-    m_useNow(other.m_useNow)
+    m_angle(other.m_angle)
 {
 }
 
@@ -35,7 +32,6 @@ SpaceShip SpaceShip::operator = (const SpaceShip& other)
         this->m_center = other.m_center;
         this->m_speed = other.m_speed;
         this->m_angle = other.m_angle;
-        this->m_useNow = other.m_useNow;
     }
     return *this;
 }
@@ -70,33 +66,47 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
     sf::Vector2f backMidPoint = (spaceShipMainBodyVertexArray[1].position + spaceShipMainBodyVertexArray[2].position) * 0.5f;
     float length = Math::norm(spaceShipMainBodyVertexArray[3].position - spaceShipMainBodyVertexArray[0].position);
 
-    sf::VertexArray l(sf::Triangles);
+    sf::VertexArray leftRocket(sf::Triangles);
 
-    l.append(sf::Vertex{ spaceShipMainBodyVertexArray[1].position });
-    l.append(sf::Vertex{ {spaceShipMainBodyVertexArray[1].position.x + length * 0.25f, spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
-    l.append(sf::Vertex{ backMidPoint });
-    l[0].color = l[1].color = l[2].color = sf::Color::Green;
+    leftRocket.append(sf::Vertex{ spaceShipMainBodyVertexArray[1].position });
+    leftRocket.append(sf::Vertex{ {spaceShipMainBodyVertexArray[1].position.x + length * 0.25f, spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
+    leftRocket.append(sf::Vertex{ backMidPoint });
+    leftRocket[0].color = leftRocket[1].color = leftRocket[2].color = sf::Color::Green;
 
-    sf::VertexArray r(sf::Triangles);
+    sf::VertexArray rightRocket(sf::Triangles);
 
-    r.append(sf::Vertex{ spaceShipMainBodyVertexArray[2].position });
-    r.append(sf::Vertex{ {spaceShipMainBodyVertexArray[2].position.x - length * 0.25f, spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
-    r.append(sf::Vertex{ backMidPoint });
-    r[0].color = r[1].color = r[2].color = sf::Color::Green;
+    rightRocket.append(sf::Vertex{ spaceShipMainBodyVertexArray[2].position });
+    rightRocket.append(sf::Vertex{ {spaceShipMainBodyVertexArray[2].position.x - length * 0.25f, spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
+    rightRocket.append(sf::Vertex{ backMidPoint });
+    rightRocket[0].color = rightRocket[1].color = rightRocket[2].color = sf::Color::Green;
 
-    sf::CircleShape yl, yr;
+    std::vector<sf::CircleShape> traceCircleShapes;
 
-    if (m_useNow)
+    if (sf::Keyboard::isKeyPressed(m_keyUp))
     {
-        yl.setPosition(l[1].position);
-        yl.setRadius(length * 0.1f);
-        yl.setOrigin(yl.getRadius() * sf::Vector2f(1, 1));
-        yl.setFillColor(sf::Color::Yellow);
+        sf::CircleShape y;
+        y.setPosition(leftRocket[1].position);
+        y.setRadius(length * 0.1f);
+        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
+        y.setFillColor(sf::Color::Yellow);
+        traceCircleShapes.push_back(y);
 
-        yr.setPosition(r[1].position);
-        yr.setRadius(length * 0.1f);
-        yr.setOrigin(yr.getRadius() * sf::Vector2f(1, 1));
-        yr.setFillColor(sf::Color::Yellow);
+        y.setPosition(rightRocket[1].position);
+        y.setRadius(length * 0.1f);
+        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
+        y.setFillColor(sf::Color::Yellow);
+        traceCircleShapes.push_back(y);
+    }
+
+    if (sf::Keyboard::isKeyPressed(m_keyDown))
+    {
+        sf::CircleShape y;
+        y.setPosition(leftRocket[1].position);
+        y.setRadius(length * 0.1f);
+        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
+        y.setFillColor(sf::Color::Yellow);
+
+        traceCircleShapes.push_back(y);
     }
 
     sf::CircleShape cockPitCircleShape;
@@ -111,18 +121,21 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
     }
     for (int i = 0; i < 3; i++)
     {
-        l[i].position = Math::rotateArountPoint(m_center, l[i].position, m_angle);
-        r[i].position = Math::rotateArountPoint(m_center, r[i].position, m_angle);
+        leftRocket[i].position = Math::rotateArountPoint(m_center, leftRocket[i].position, m_angle);
+        rightRocket[i].position = Math::rotateArountPoint(m_center, rightRocket[i].position, m_angle);
     }
     cockPitCircleShape.setPosition(Math::rotateArountPoint(m_center, cockPitCircleShape.getPosition(), m_angle));
-    yl.setPosition(Math::rotateArountPoint(m_center, yl.getPosition(), m_angle));
-    yr.setPosition(Math::rotateArountPoint(m_center, yr.getPosition(), m_angle));
-
+    for (auto& circleShape : traceCircleShapes) 
+    {
+        circleShape.setPosition(Math::rotateArountPoint(m_center, circleShape.getPosition(), m_angle));
+    }
     renderTarget.draw(cockPitCircleShape, renderStates);
-    renderTarget.draw(l, renderStates);
-    renderTarget.draw(r, renderStates);
-    renderTarget.draw(yl, renderStates);
-    renderTarget.draw(yr, renderStates);
+    renderTarget.draw(leftRocket, renderStates);
+    renderTarget.draw(rightRocket, renderStates);
+    for (auto& circleShape : traceCircleShapes)
+    {
+        renderTarget.draw(circleShape, renderStates);
+    }
     renderTarget.draw(spaceShipMainBodyVertexArray, renderStates);
 }
 
@@ -155,12 +168,10 @@ void SpaceShip::update(float dt, sf::Vector2f mousePosition)
     {
         delta += perpDirection;
     }
-    m_useNow = false;
     if (Math::norm(delta) > 1e-10)
     {
         delta = Math::normalize(delta) * m_speed;
         m_center += delta * dt;
-        m_useNow = true;
     }
 }
 
