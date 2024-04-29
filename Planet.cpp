@@ -57,10 +57,10 @@ void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     renderTarget.draw(m_circleShape, renderStates);
 }
 
-void Planet::update(ObjectUpdateInfo info) {
-    sf::Vector2f acceleration = info.dt * m_forces;
+void Planet::update(ObjectUpdateInfo m_drawInfo) {
+    sf::Vector2f acceleration = m_drawInfo.dt * m_forces;
     m_velocity += acceleration / m_mass;
-    m_circleShape.move(info.dt * m_velocity);
+    m_circleShape.move(m_drawInfo.dt * m_velocity);
 }
 
 std::ostream& operator<<(std::ostream& os, const Planet& planet) {

@@ -26,6 +26,11 @@ public:
         }
         return objectsOfType;
     }
+    void prepDraw() {
+        for (auto& object : m_gameObjects) {
+            object->prepDraw();
+        }
+    }
     PlanetSystem();
     void setName(const std::string& name);
     explicit PlanetSystem(const std::string& name);
@@ -35,6 +40,6 @@ public:
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
     void addObject(GameObject* object);
-    void update(ObjectUpdateInfo info);
+    void update(ObjectUpdateInfo m_drawInfo);
 };
 

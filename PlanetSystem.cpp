@@ -31,7 +31,7 @@ void PlanetSystem::addObject(GameObject* object) {
     m_gameObjects.push_back(object);
 }
 
-void PlanetSystem::update(ObjectUpdateInfo info) {
+void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     std::vector<GravityObject*> gravityObjects = getObjectsOfType<GravityObject>();
     for (size_t i = 0; i < gravityObjects.size(); i++) {
         for (size_t j = 0; j < gravityObjects.size(); j++) {
@@ -46,7 +46,7 @@ void PlanetSystem::update(ObjectUpdateInfo info) {
         }
     }
     for (auto& object : m_gameObjects) {
-        object->update(info);
+        object->update(m_drawInfo);
     }
     for (auto& object : gravityObjects) {
         object->clearForces();

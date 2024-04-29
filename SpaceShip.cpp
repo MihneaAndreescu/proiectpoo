@@ -48,84 +48,11 @@ SpaceShip::~SpaceShip() {
 }
 
 void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
-    sf::VertexArray spaceShipMainBodyVertexArray(sf::Quads);
-    spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x - m_size.x * 0.5f, m_center.y - m_size.y * 0.5f } });
-    spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x - m_size.x * 0.5f, m_center.y + m_size.y * 0.5f } });
-    spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x + m_size.x * 0.5f, m_center.y + m_size.y * 0.5f } });
-    spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x + m_size.x * 0.5f, m_center.y - m_size.y * 0.5f } });
-    spaceShipMainBodyVertexArray[0].color = spaceShipMainBodyVertexArray[3].color = sf::Color::Red;
-    spaceShipMainBodyVertexArray[1].color = spaceShipMainBodyVertexArray[2].color = sf::Color::Green;
-
-    sf::Vector2f frontMidPoint = (spaceShipMainBodyVertexArray[0].position + spaceShipMainBodyVertexArray[3].position) * 0.5f;
-    sf::Vector2f backMidPoint = (spaceShipMainBodyVertexArray[1].position + spaceShipMainBodyVertexArray[2].position) * 0.5f;
-    float length = Math::norm(spaceShipMainBodyVertexArray[3].position - spaceShipMainBodyVertexArray[0].position);
-
-    sf::VertexArray leftRocket(sf::Triangles);
-
-    leftRocket.append(sf::Vertex{ spaceShipMainBodyVertexArray[1].position });
-    leftRocket.append(sf::Vertex{ {spaceShipMainBodyVertexArray[1].position.x + length * 0.25f, spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
-    leftRocket.append(sf::Vertex{ backMidPoint });
-    leftRocket[0].color = leftRocket[1].color = leftRocket[2].color = sf::Color::Green;
-
-    sf::VertexArray rightRocket(sf::Triangles);
-
-    rightRocket.append(sf::Vertex{ spaceShipMainBodyVertexArray[2].position });
-    rightRocket.append(sf::Vertex{ {spaceShipMainBodyVertexArray[2].position.x - length * 0.25f, spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
-    rightRocket.append(sf::Vertex{ backMidPoint });
-    rightRocket[0].color = rightRocket[1].color = rightRocket[2].color = sf::Color::Green;
-
-    sf::CircleShape cockPitCircleShape;
-    cockPitCircleShape.setPosition(frontMidPoint);
-    cockPitCircleShape.setRadius(length * 0.5f);
-    cockPitCircleShape.setOrigin(cockPitCircleShape.getRadius() * sf::Vector2f(1, 1));
-    cockPitCircleShape.setFillColor(sf::Color::Red);
-    std::vector<sf::CircleShape> traceCircleShapes;
-    if (m_movingForward) {
-        sf::CircleShape y;
-        y.setPosition(leftRocket[1].position);
-        y.setRadius(length * 0.1f);
-        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
-        y.setFillColor(sf::Color::Yellow);
-        traceCircleShapes.push_back(y);
-
-        y.setPosition(rightRocket[1].position);
-        y.setRadius(length * 0.1f);
-        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
-        y.setFillColor(sf::Color::Yellow);
-        traceCircleShapes.push_back(y);
-    }
-    if (m_movingClockwise) {
-        sf::CircleShape y;
-        y.setPosition(leftRocket[0].position);
-        y.setRadius(length * 0.1f);
-        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
-        y.setFillColor(sf::Color::Yellow);
-        traceCircleShapes.push_back(y);
-    }
-    if (m_movingCounterClockwise) {
-        sf::CircleShape y;
-        y.setPosition(rightRocket[0].position);
-        y.setRadius(length * 0.1f);
-        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
-        y.setFillColor(sf::Color::Yellow);
-        traceCircleShapes.push_back(y);
-    }
-    for (int i = 0; i < 4; i++) {
-        spaceShipMainBodyVertexArray[i].position = Math::rotateArountPoint(m_center, spaceShipMainBodyVertexArray[i].position, m_angle);
-    }
-    for (int i = 0; i < 3; i++) {
-        leftRocket[i].position = Math::rotateArountPoint(m_center, leftRocket[i].position, m_angle);
-        rightRocket[i].position = Math::rotateArountPoint(m_center, rightRocket[i].position, m_angle);
-    }
-    cockPitCircleShape.setPosition(Math::rotateArountPoint(m_center, cockPitCircleShape.getPosition(), m_angle));
-    for (auto& circleShape : traceCircleShapes) {
-        circleShape.setPosition(Math::rotateArountPoint(m_center, circleShape.getPosition(), m_angle));
-    }
-    renderTarget.draw(cockPitCircleShape, renderStates);
-    renderTarget.draw(leftRocket, renderStates);
-    renderTarget.draw(rightRocket, renderStates);
-    renderTarget.draw(spaceShipMainBodyVertexArray, renderStates);
-    for (auto& circleShape : traceCircleShapes) {
+    renderTarget.draw(m_drawInfo.cockPitCircleShape, renderStates);
+    renderTarget.draw(m_drawInfo.leftRocketVertexArray, renderStates);
+    renderTarget.draw(m_drawInfo.rightRocketVertexArray, renderStates);
+    renderTarget.draw(m_drawInfo.spaceShipMainBodyVertexArray, renderStates);
+    for (auto& circleShape : m_drawInfo.gasCircleShapes) {
         renderTarget.draw(circleShape, renderStates);
     }
 }
@@ -134,11 +61,11 @@ float cross(sf::Vector2f a, sf::Vector2f b) {
     return a.x * b.y - a.y * b.x;
 }
 
-void SpaceShip::update(ObjectUpdateInfo info) {
+void SpaceShip::update(ObjectUpdateInfo m_drawInfo) {
     m_movingForward = false;
     m_movingClockwise = false;
     m_movingCounterClockwise = false;
-    sf::Vector2f direction = Math::normalize(info.mousePosition - m_center);
+    sf::Vector2f direction = Math::normalize(m_drawInfo.mousePosition - m_center);
     m_angle = atan2(direction.y, direction.x) + Math::PI / 2;
     sf::Vector2f perpDirection = Math::perp(direction);
     sf::Vector2f delta = sf::Vector2f(0, 0);
@@ -150,20 +77,20 @@ void SpaceShip::update(ObjectUpdateInfo info) {
     delta += perpDirection * (float)(m_movingCounterClockwise);
     if (Math::norm(delta) > 1e-10) {
         delta = Math::normalize(delta) * m_speed;
-        m_center += delta * info.dt;
+        m_center += delta * m_drawInfo.dt;
     }
     float directionCross = cross(direction, m_lastDirection);
     if (directionCross > 0) {
         m_elapsedClockwise = 0;
     }
     else {
-        m_elapsedClockwise += info.dt;
+        m_elapsedClockwise += m_drawInfo.dt;
     }
     if (directionCross < 0) {
         m_elapsedCounterClockwise = 0;
     }
     else {
-        m_elapsedCounterClockwise += info.dt;
+        m_elapsedCounterClockwise += m_drawInfo.dt;
     }
     const float Time = 0.2f;
     m_movingClockwise = (m_elapsedClockwise <= Time);
@@ -174,7 +101,7 @@ void SpaceShip::update(ObjectUpdateInfo info) {
     m_lastDirection = direction;
 }
 
-std::ostream& operator<<(std::ostream& os, const SpaceShip& spaceShip) {
+std::ostream& operator << (std::ostream& os, const SpaceShip& spaceShip) {
     os << "(name = " << spaceShip.m_name << ")";
     return os;
 }
