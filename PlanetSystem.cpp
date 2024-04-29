@@ -2,14 +2,20 @@
 #include "Math.h"
 #include "GravityObject.h"
 
-PlanetSystem::~PlanetSystem() {
+PlanetSystem::PlanetSystem() {
+}
 
+PlanetSystem::~PlanetSystem() {
 }
 
 void PlanetSystem::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     for (const auto& object : m_gameObjects) {
         renderTarget.draw(*object, renderStates);
     }
+}
+
+void PlanetSystem::setName(const std::string& name) {
+    m_name = name;
 }
 
 PlanetSystem::PlanetSystem(const std::string& name) :

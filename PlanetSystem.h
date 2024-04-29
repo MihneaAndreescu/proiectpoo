@@ -26,6 +26,8 @@ public:
         }
         return objectsOfType;
     }
+    PlanetSystem();
+    void setName(const std::string& name);
     explicit PlanetSystem(const std::string& name);
     PlanetSystem(const PlanetSystem& other);
     PlanetSystem operator = (const PlanetSystem& other);
