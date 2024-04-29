@@ -1,5 +1,5 @@
 #include "PlanetSystem.h"
-#include "../../Math/Math.h"
+#include "Math.h"
 
 PlanetSystem::~PlanetSystem()
 {

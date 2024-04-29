@@ -109,7 +109,7 @@ add_executable(${PROJECT_NAME}
     main.cpp
     generated/src/Helper.cpp
     env_fixes.h
- "Classes/Planet/Planet.h" "Classes/Planet/Planet.cpp" "Classes/PlanetSystem/PlanetSystem.h" "Classes/PlanetSystem/PlanetSystem.cpp" "Classes/SpaceShip/SpaceShip.cpp" "Classes/SpaceShip/SpaceShip.h" "Math/Math.h" "Math/Math.cpp")
+ "Planet.h" "Planet.cpp" "PlanetSystem.h" "PlanetSystem.cpp" "SpaceShip.cpp" "SpaceShip.h" "Math.h" "Math.cpp")
 
 ###############################################################################
 

@@ -1,5 +1,5 @@
 #include "SpaceShip.h"
-#include "../../Math/Math.h"
+#include "Math.h"
 #include <cmath>
 
 
@@ -41,10 +41,6 @@ SpaceShip SpaceShip::operator = (const SpaceShip& other) {
 
 sf::Vector2f SpaceShip::getCenter() const {
     return m_center;
-}
-
-sf::Vector2f SpaceShip::getSize() const {
-    return m_size;
 }
 
 SpaceShip::~SpaceShip() {
@@ -157,20 +153,24 @@ void SpaceShip::update(float dt, sf::Vector2f mousePosition) {
         m_center += delta * dt;
     }
     float directionCross = cross(direction, m_lastDirection);
-    if (directionCross < 0) {
+    if (directionCross > 0) {
         m_elapsedClockwise = 0;
     }
     else {
         m_elapsedClockwise += dt;
     }
-    if (directionCross > 0) {
+    if (directionCross < 0) {
         m_elapsedCounterClockwise = 0;
     }
     else {
         m_elapsedCounterClockwise += dt;
     }
-    m_movingClockwise = (m_elapsedClockwise <= 0.1f);
-    m_movingCounterClockwise = (m_elapsedCounterClockwise <= 0.1f);
+    const float Time = 0.2f;
+    m_movingClockwise = (m_elapsedClockwise <= Time);
+    m_movingCounterClockwise = (m_elapsedCounterClockwise <= Time);
+    if (m_movingClockwise && m_movingCounterClockwise) {
+        m_movingClockwise = m_movingCounterClockwise = false;
+    }
     m_lastDirection = direction;
 }
 

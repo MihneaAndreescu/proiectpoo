@@ -2,7 +2,6 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-
 class SpaceShip : public sf::Drawable {
 private:
     std::string m_name;
@@ -22,7 +21,6 @@ public:
     SpaceShip operator = (const SpaceShip& other);
     ~SpaceShip();
     sf::Vector2f getCenter() const;
-    sf::Vector2f getSize() const;
     float getMass() const;
     void update(float dt, sf::Vector2f mousePosition);
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;

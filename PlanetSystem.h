@@ -5,8 +5,8 @@
 #include <thread>
 #include <cmath>
 
-#include "../Planet/Planet.h"
-#include "../SpaceShip/SpaceShip.h"
+#include "Planet.h"
+#include "SpaceShip.h"
 #include <SFML/Graphics.hpp>
 
 class PlanetSystem : public sf::Drawable

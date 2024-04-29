@@ -1,6 +1,6 @@
-#include "Classes/SpaceShip/SpaceShip.h"
-#include "Classes/PlanetSystem/PlanetSystem.h"
-#include "Classes/Planet/Planet.h"
+#include "SpaceShip.h"
+#include "PlanetSystem.h"
+#include "Planet.h"
 
 #include <iostream>
 #include <array>
