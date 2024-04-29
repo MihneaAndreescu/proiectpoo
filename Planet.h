@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
+
 #include <SFML/Graphics.hpp>
-#include "GameObject.h"
+#include <string>
 #include "GravityObject.h"
 
 class Planet : public GravityObject {
