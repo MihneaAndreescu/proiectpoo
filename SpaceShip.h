@@ -43,7 +43,7 @@ private:
     void adjustSimultaneousRotation();
 public:
     void prepDraw();
-    void update(struct ObjectUpdateInfo m_drawInfo);
+    void update(struct ObjectUpdateInfo m_drawInfo) override;
     SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed);
     SpaceShip(const SpaceShip& other);
     SpaceShip operator = (const SpaceShip& other);
