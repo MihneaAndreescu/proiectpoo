@@ -46,11 +46,7 @@ int main()
 
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
     SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 1.0f};
-    spaceShip.setKeyboardKeyForDown(sf::Keyboard::Key::Down);
-    spaceShip.setKeyboardKeyForUp(sf::Keyboard::Key::Up);
-    spaceShip.setKeyboardKeyForRight(sf::Keyboard::Key::Right);
-    spaceShip.setKeyboardKeyForLeft(sf::Keyboard::Key::Left);
-
+  
     planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red });
     planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue });
     planetarySystem.addSpaceShip(spaceShip);
@@ -58,11 +54,6 @@ int main()
     init_threads();
     Helper helper;
     helper.help();
-
-    SomeClass* c = getC();
-    std::cout << c << "\n";
-    delete c;
-
 
 
     sf::Clock fpsClock;
@@ -80,11 +71,8 @@ int main()
                 window.close();
                 break;
             case sf::Event::Resized:
-                std::cout << "New width: " << window.getSize().x << '\n'
-                    << "New height: " << window.getSize().y << '\n';
                 break;
             case sf::Event::KeyPressed:
-                std::cout << "Received key " << (e.key.code == sf::Keyboard::X ? "X" : "(other)") << "\n";
                 if (e.key.code == sf::Keyboard::Escape)
                     shouldExit = true;
                 break;

@@ -3,20 +3,17 @@
 #include <cmath>
 
 
-
-sf::Keyboard::Key m_keyUp;
-sf::Keyboard::Key m_keyDown;
-sf::Keyboard::Key m_keyLeft;
-sf::Keyboard::Key m_keyRight;
-
-
 SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed) :
     m_name(name),
     m_center(center),
     m_size(size),
     m_speed(speed),
-    m_angle(0)
-{
+    m_angle(0),
+    m_movingForward(false),
+    m_movingClockwise(false),
+    m_movingCounterClockwise(false),
+    m_elapsedClockwise(0),
+    m_elapsedCounterClockwise(0) {
 }
 
 SpaceShip::SpaceShip(const SpaceShip& other) :
@@ -25,48 +22,36 @@ SpaceShip::SpaceShip(const SpaceShip& other) :
     m_size(other.m_size),
     m_speed(other.m_speed),
     m_angle(other.m_angle),
-    m_keyUp(other.m_keyUp),
-    m_keyDown(other.m_keyDown),
-    m_keyLeft(other.m_keyLeft),
-    m_keyRight(other.m_keyRight)
-{
+    m_elapsedClockwise(other.m_elapsedClockwise),
+    m_elapsedCounterClockwise(other.m_elapsedCounterClockwise) {
 }
 
-SpaceShip SpaceShip::operator = (const SpaceShip& other)
-{
-    if (this != &other)
-    {
+SpaceShip SpaceShip::operator = (const SpaceShip& other) {
+    if (this != &other) {
         this->m_name = other.m_name;
         this->m_size = other.m_size;
         this->m_center = other.m_center;
         this->m_speed = other.m_speed;
         this->m_angle = other.m_angle;
-        this->m_keyUp = other.m_keyUp;
-        this->m_keyDown = other.m_keyDown;
-        this->m_keyLeft = other.m_keyLeft;
-        this->m_keyRight = other.m_keyRight;
+        this->m_elapsedClockwise = other.m_elapsedClockwise;
+        this->m_elapsedCounterClockwise = other.m_elapsedCounterClockwise;
     }
     return *this;
 }
 
-
-sf::Vector2f SpaceShip::getCenter() const
-{
+sf::Vector2f SpaceShip::getCenter() const {
     return m_center;
 }
 
-sf::Vector2f SpaceShip::getSize() const
-{
+sf::Vector2f SpaceShip::getSize() const {
     return m_size;
 }
 
-SpaceShip::~SpaceShip()
-{
+SpaceShip::~SpaceShip() {
 
 }
 
-void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const
-{
+void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     sf::VertexArray spaceShipMainBodyVertexArray(sf::Quads);
     spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x - m_size.x * 0.5f, m_center.y - m_size.y * 0.5f } });
     spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x - m_size.x * 0.5f, m_center.y + m_size.y * 0.5f } });
@@ -98,11 +83,8 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
     cockPitCircleShape.setRadius(length * 0.5f);
     cockPitCircleShape.setOrigin(cockPitCircleShape.getRadius() * sf::Vector2f(1, 1));
     cockPitCircleShape.setFillColor(sf::Color::Red);
-
     std::vector<sf::CircleShape> traceCircleShapes;
-
-    if (sf::Keyboard::isKeyPressed(m_keyUp))
-    {
+    if (m_movingForward) {
         sf::CircleShape y;
         y.setPosition(leftRocket[1].position);
         y.setRadius(length * 0.1f);
@@ -116,20 +98,7 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
         y.setFillColor(sf::Color::Yellow);
         traceCircleShapes.push_back(y);
     }
-
-    if (sf::Keyboard::isKeyPressed(m_keyDown))
-    {
-        sf::CircleShape y;
-        y.setPosition(sf::Vector2{ cockPitCircleShape.getPosition().x,  cockPitCircleShape.getPosition().y - cockPitCircleShape.getRadius() });
-        y.setRadius(length * 0.1f);
-        y.setOrigin(y.getRadius() * sf::Vector2f(1, 1));
-        y.setFillColor(sf::Color::Yellow);
-
-        traceCircleShapes.push_back(y);
-    }
-
-    if (sf::Keyboard::isKeyPressed(m_keyLeft))
-    {
+    if (m_movingClockwise) {
         sf::CircleShape y;
         y.setPosition(leftRocket[0].position);
         y.setRadius(length * 0.1f);
@@ -137,9 +106,7 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
         y.setFillColor(sf::Color::Yellow);
         traceCircleShapes.push_back(y);
     }
-
-    if (sf::Keyboard::isKeyPressed(m_keyRight))
-    {
+    if (m_movingCounterClockwise) {
         sf::CircleShape y;
         y.setPosition(rightRocket[0].position);
         y.setRadius(length * 0.1f);
@@ -147,83 +114,67 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
         y.setFillColor(sf::Color::Yellow);
         traceCircleShapes.push_back(y);
     }
-
-    for (int i = 0; i < 4; i++)
-    {
+    for (int i = 0; i < 4; i++) {
         spaceShipMainBodyVertexArray[i].position = Math::rotateArountPoint(m_center, spaceShipMainBodyVertexArray[i].position, m_angle);
     }
-    for (int i = 0; i < 3; i++)
-    {
+    for (int i = 0; i < 3; i++) {
         leftRocket[i].position = Math::rotateArountPoint(m_center, leftRocket[i].position, m_angle);
         rightRocket[i].position = Math::rotateArountPoint(m_center, rightRocket[i].position, m_angle);
     }
     cockPitCircleShape.setPosition(Math::rotateArountPoint(m_center, cockPitCircleShape.getPosition(), m_angle));
-    for (auto& circleShape : traceCircleShapes)
-    {
+    for (auto& circleShape : traceCircleShapes) {
         circleShape.setPosition(Math::rotateArountPoint(m_center, circleShape.getPosition(), m_angle));
     }
     renderTarget.draw(cockPitCircleShape, renderStates);
     renderTarget.draw(leftRocket, renderStates);
     renderTarget.draw(rightRocket, renderStates);
     renderTarget.draw(spaceShipMainBodyVertexArray, renderStates);
-    for (auto& circleShape : traceCircleShapes)
-    {
+    for (auto& circleShape : traceCircleShapes) {
         renderTarget.draw(circleShape, renderStates);
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const SpaceShip& spaceShip)
-{
-    os << "(name = " << spaceShip.m_name << ")";
-    return os;
+float cross(sf::Vector2f a, sf::Vector2f b) {
+    return a.x * b.y - a.y * b.x;
 }
 
-void SpaceShip::update(float dt, sf::Vector2f mousePosition)
-{
+void SpaceShip::update(float dt, sf::Vector2f mousePosition) {
+    m_movingForward = false;
+    m_movingClockwise = false;
+    m_movingCounterClockwise = false;
     sf::Vector2f direction = Math::normalize(mousePosition - m_center);
     m_angle = atan2(direction.y, direction.x) + Math::PI / 2;
     sf::Vector2f perpDirection = Math::perp(direction);
-
     sf::Vector2f delta = sf::Vector2f(0, 0);
-    if (sf::Keyboard::isKeyPressed(m_keyUp))
-    {
-        delta += direction;
-    }
-    if (sf::Keyboard::isKeyPressed(m_keyDown))
-    {
-        delta -= direction;
-    }
-    if (sf::Keyboard::isKeyPressed(m_keyLeft))
-    {
-        delta -= perpDirection;
-    }
-    if (sf::Keyboard::isKeyPressed(m_keyRight))
-    {
-        delta += perpDirection;
-    }
-    if (Math::norm(delta) > 1e-10)
-    {
+    m_movingForward = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+    m_movingClockwise = false;
+    m_movingCounterClockwise = false;
+    delta += direction * (float)(m_movingForward);
+    delta += -perpDirection * (float)(m_movingClockwise);
+    delta += perpDirection * (float)(m_movingCounterClockwise);
+    if (Math::norm(delta) > 1e-10) {
         delta = Math::normalize(delta) * m_speed;
         m_center += delta * dt;
     }
+    float directionCross = cross(direction, m_lastDirection);
+    if (directionCross < 0) {
+        m_elapsedClockwise = 0;
+    }
+    else {
+        m_elapsedClockwise += dt;
+    }
+    if (directionCross > 0) {
+        m_elapsedCounterClockwise = 0;
+    }
+    else {
+        m_elapsedCounterClockwise += dt;
+    }
+    m_movingClockwise = (m_elapsedClockwise <= 0.1f);
+    m_movingCounterClockwise = (m_elapsedCounterClockwise <= 0.1f);
+    m_lastDirection = direction;
 }
 
-void SpaceShip::setKeyboardKeyForUp(sf::Keyboard::Key key)
-{
-    m_keyUp = key;
-}
-
-void SpaceShip::setKeyboardKeyForDown(sf::Keyboard::Key key)
-{
-    m_keyDown = key;
-}
-
-void SpaceShip::setKeyboardKeyForLeft(sf::Keyboard::Key key)
-{
-    m_keyLeft = key;
-}
-
-void SpaceShip::setKeyboardKeyForRight(sf::Keyboard::Key key)
-{
-    m_keyRight = key;
+std::ostream& operator<<(std::ostream& os, const SpaceShip& spaceShip) {
+    os << "(name = " << spaceShip.m_name << ")";
+    return os;
 }
