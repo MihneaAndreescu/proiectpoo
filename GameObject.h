@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "ObjectUpdateInfo.h"
 
 class GameObject : public sf::Drawable {
 public:
-	virtual void update(float dt, sf::Vector2f mousePosition) = 0;
+	virtual void update(ObjectUpdateInfo info) = 0;
 };

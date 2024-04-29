@@ -25,7 +25,7 @@ void PlanetSystem::addObject(GameObject* object) {
     m_gameObjects.push_back(object);
 }
 
-void PlanetSystem::update(float dt, sf::Vector2f mousePosition) {
+void PlanetSystem::update(ObjectUpdateInfo info) {
     std::vector<GravityObject*> gravityObjects = getObjectsOfType<GravityObject>();
     for (size_t i = 0; i < gravityObjects.size(); i++) {
         for (size_t j = 0; j < gravityObjects.size(); j++) {
@@ -40,7 +40,7 @@ void PlanetSystem::update(float dt, sf::Vector2f mousePosition) {
         }
     }
     for (auto& object : m_gameObjects) {
-        object->update(dt, mousePosition);
+        object->update(info);
     }
     for (auto& object : gravityObjects) {
         object->clearForces();

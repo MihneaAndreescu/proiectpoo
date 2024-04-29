@@ -23,7 +23,7 @@ public:
     ~SpaceShip();
     sf::Vector2f getCenter() const;
     float getMass() const;
-    void update(float dt, sf::Vector2f mousePosition) override;
+    void update(ObjectUpdateInfo info) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const SpaceShip& SpaceShip);
 };

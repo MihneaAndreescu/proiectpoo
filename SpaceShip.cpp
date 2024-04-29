@@ -134,11 +134,11 @@ float cross(sf::Vector2f a, sf::Vector2f b) {
     return a.x * b.y - a.y * b.x;
 }
 
-void SpaceShip::update(float dt, sf::Vector2f mousePosition) {
+void SpaceShip::update(ObjectUpdateInfo info) {
     m_movingForward = false;
     m_movingClockwise = false;
     m_movingCounterClockwise = false;
-    sf::Vector2f direction = Math::normalize(mousePosition - m_center);
+    sf::Vector2f direction = Math::normalize(info.mousePosition - m_center);
     m_angle = atan2(direction.y, direction.x) + Math::PI / 2;
     sf::Vector2f perpDirection = Math::perp(direction);
     sf::Vector2f delta = sf::Vector2f(0, 0);
@@ -150,20 +150,20 @@ void SpaceShip::update(float dt, sf::Vector2f mousePosition) {
     delta += perpDirection * (float)(m_movingCounterClockwise);
     if (Math::norm(delta) > 1e-10) {
         delta = Math::normalize(delta) * m_speed;
-        m_center += delta * dt;
+        m_center += delta * info.dt;
     }
     float directionCross = cross(direction, m_lastDirection);
     if (directionCross > 0) {
         m_elapsedClockwise = 0;
     }
     else {
-        m_elapsedClockwise += dt;
+        m_elapsedClockwise += info.dt;
     }
     if (directionCross < 0) {
         m_elapsedCounterClockwise = 0;
     }
     else {
-        m_elapsedCounterClockwise += dt;
+        m_elapsedCounterClockwise += info.dt;
     }
     const float Time = 0.2f;
     m_movingClockwise = (m_elapsedClockwise <= Time);

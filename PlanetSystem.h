@@ -10,6 +10,7 @@
 #include "SpaceShip.h"
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
+#include "ObjectUpdateInfo.h"
 
 class PlanetSystem : public sf::Drawable {
 private:
@@ -32,6 +33,6 @@ public:
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
     void addObject(GameObject* object);
-    void update(float dt, sf::Vector2f mousePosition);
+    void update(ObjectUpdateInfo info);
 };
 

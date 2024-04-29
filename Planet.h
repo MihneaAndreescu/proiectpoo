@@ -18,7 +18,7 @@ public:
     ~Planet();
     sf::Vector2f getCenter() const override;
     float getMass() const override;
-    void update(float dt, sf::Vector2f mousePosition) override;
+    void update(ObjectUpdateInfo info) override;
     void applyForce(sf::Vector2f force) override;
     void clearForces() override;
     void setTexture(sf::Texture* texture);
