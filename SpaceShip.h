@@ -42,7 +42,7 @@ private:
     void updateRotationTimers(float directionCross, float dt);
     void adjustSimultaneousRotation();
 public:
-    void prepDraw();
+    void prepDraw() override;
     void update(struct ObjectUpdateInfo m_drawInfo) override;
     SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed);
     SpaceShip(const SpaceShip& other);
