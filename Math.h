@@ -3,7 +3,7 @@
 #include <numbers>
 
 namespace Math{
-	const float PI = std::numbers::pi;
+	const float PI = (float)std::numbers::pi;
 	sf::Vector2f rotateAroundOrigin(sf::Vector2f point, float angle);
 	sf::Vector2f rotateArountPoint(sf::Vector2f origin, sf::Vector2f point, float angle);
 	float dot(sf::Vector2f a, sf::Vector2f b);
