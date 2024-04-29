@@ -8,7 +8,7 @@ namespace Math {
 		return sf::Vector2f(point.x * Cos - point.y * Sin, point.x * Sin + point.y * Cos);
 	}
 
-	sf::Vector2f rotateArountPoint(sf::Vector2f origin, sf::Vector2f point, float angle) {
+	sf::Vector2f rotateAroundPoint(sf::Vector2f origin, sf::Vector2f point, float angle) {
 		return origin + rotateAroundOrigin(point - origin, angle);
 	}
 
