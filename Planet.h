@@ -12,9 +12,7 @@ private:
     float m_mass;
     sf::Vector2f m_forces;
 public:
-    void prepDraw() override {
-
-    }
+    void prepDraw() override;
     Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Color color);
     Planet(const Planet& other);
     Planet operator = (const Planet& other);

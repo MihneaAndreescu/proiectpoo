@@ -14,6 +14,12 @@ void PlanetSystem::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderS
     }
 }
 
+void PlanetSystem::prepDraw() {
+    for (auto& object : m_gameObjects) {
+        object->prepDraw();
+    }
+}
+
 void PlanetSystem::setName(const std::string& name) {
     m_name = name;
 }

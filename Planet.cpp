@@ -63,6 +63,9 @@ void Planet::update(ObjectUpdateInfo m_drawInfo) {
     m_circleShape.move(m_drawInfo.dt * m_velocity);
 }
 
+void Planet::prepDraw() {
+}
+
 std::ostream& operator<<(std::ostream& os, const Planet& planet) {
     os << "(name = " << planet.m_name << " | radius = " << planet.m_circleShape.getRadius() << " | location = (" << planet.m_circleShape.getPosition().x << ", " << planet.m_circleShape.getPosition().y << "))";
     return os;

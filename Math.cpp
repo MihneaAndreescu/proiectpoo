@@ -27,4 +27,8 @@ namespace Math {
 	sf::Vector2f perp(sf::Vector2f a) {
 		return sf::Vector2f(a.y, -a.x);
 	}
+
+	float cross(sf::Vector2f a, sf::Vector2f b) {
+		return a.x * b.y - b.x * a.y;
+	}
 }

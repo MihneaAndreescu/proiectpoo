@@ -26,11 +26,7 @@ public:
         }
         return objectsOfType;
     }
-    void prepDraw() {
-        for (auto& object : m_gameObjects) {
-            object->prepDraw();
-        }
-    }
+    void prepDraw();
     PlanetSystem();
     void setName(const std::string& name);
     explicit PlanetSystem(const std::string& name);
