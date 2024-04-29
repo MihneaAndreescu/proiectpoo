@@ -159,7 +159,7 @@ endif()
 # update name in .github/workflows/cmake.yml:29 when changing "bin" name here
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
-install(DIRECTORY Textures DESTINATION bin)
+#install(DIRECTORY Textures DESTINATION bin)
 
 # install(FILES some_file1.txt some_file2.md DESTINATION bin)
 if(APPLE)
