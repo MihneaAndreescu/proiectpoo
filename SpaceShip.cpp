@@ -2,7 +2,6 @@
 #include "Math.h"
 #include <cmath>
 
-
 SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed) :
     m_name(name),
     m_center(center),
@@ -23,7 +22,8 @@ SpaceShip::SpaceShip(const SpaceShip& other) :
     m_speed(other.m_speed),
     m_angle(other.m_angle),
     m_elapsedClockwise(other.m_elapsedClockwise),
-    m_elapsedCounterClockwise(other.m_elapsedCounterClockwise) {
+    m_elapsedCounterClockwise(other.m_elapsedCounterClockwise),
+    m_drawInfo(other.m_drawInfo) {
 }
 
 SpaceShip SpaceShip::operator = (const SpaceShip& other) {
@@ -35,6 +35,7 @@ SpaceShip SpaceShip::operator = (const SpaceShip& other) {
         this->m_angle = other.m_angle;
         this->m_elapsedClockwise = other.m_elapsedClockwise;
         this->m_elapsedCounterClockwise = other.m_elapsedCounterClockwise;
+        this->m_drawInfo = other.m_drawInfo;
     }
     return *this;
 }

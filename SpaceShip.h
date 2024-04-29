@@ -24,10 +24,10 @@ private:
     sf::Vector2f m_lastDirection;
     double m_elapsedClockwise;
     double m_elapsedCounterClockwise;
-
     DrawInfo m_drawInfo;
+
 public:
-    void prepDraw() override {
+    void prepDrawSpaceShipMainBodyVertexArray() {
         m_drawInfo.spaceShipMainBodyVertexArray.clear();
         m_drawInfo.spaceShipMainBodyVertexArray.setPrimitiveType(sf::Quads);
         m_drawInfo.spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x - m_size.x * 0.5f, m_center.y - m_size.y * 0.5f } });
@@ -36,6 +36,9 @@ public:
         m_drawInfo.spaceShipMainBodyVertexArray.append(sf::Vertex{ { m_center.x + m_size.x * 0.5f, m_center.y - m_size.y * 0.5f } });
         m_drawInfo.spaceShipMainBodyVertexArray[0].color = m_drawInfo.spaceShipMainBodyVertexArray[3].color = sf::Color::Red;
         m_drawInfo.spaceShipMainBodyVertexArray[1].color = m_drawInfo.spaceShipMainBodyVertexArray[2].color = sf::Color::Green;
+    }
+    void prepDraw() override {
+        prepDrawSpaceShipMainBodyVertexArray();
         sf::Vector2f backMidPoint = (m_drawInfo.spaceShipMainBodyVertexArray[1].position + m_drawInfo.spaceShipMainBodyVertexArray[2].position) * 0.5f;
         float length = Math::norm(m_drawInfo.spaceShipMainBodyVertexArray[3].position - m_drawInfo.spaceShipMainBodyVertexArray[0].position);
         m_drawInfo.leftRocketVertexArray.clear();
