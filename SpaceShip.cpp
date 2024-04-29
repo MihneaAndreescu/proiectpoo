@@ -207,16 +207,16 @@ void SpaceShip::adjustSimultaneousRotation() {
     }
 }
 
-void SpaceShip::update(ObjectUpdateInfo m_drawInfo) {
+void SpaceShip::update(ObjectUpdateInfo drawInfo) {
     resetMovementFlags();
-    sf::Vector2f direction = calculateDirection(m_drawInfo.mousePosition, m_center);
+    sf::Vector2f direction = calculateDirection(drawInfo.mousePosition, m_center);
     updateAngle(direction);
     updateMovementFlags();
     sf::Vector2f perpDirection = Math::perp(direction);
     sf::Vector2f delta = calculateDelta(direction, perpDirection);
-    applyMovement(delta, m_drawInfo.dt);
+    applyMovement(delta, drawInfo.dt);
     float directionCross = Math::cross(direction, m_lastDirection);
-    updateRotationTimers(directionCross, m_drawInfo.dt);
+    updateRotationTimers(directionCross, drawInfo.dt);
     adjustSimultaneousRotation();
     m_lastDirection = direction;
 }
