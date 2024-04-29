@@ -1,86 +1,61 @@
 #include "PlanetSystem.h"
 #include "Math.h"
+#include "GravityObject.h"
 
 PlanetSystem::~PlanetSystem() {
 
 }
 
 void PlanetSystem::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
-    for (const auto& planet : m_planets) {
-        renderTarget.draw(planet, renderStates);
-    }
-    for (const auto& spaceShip : m_spaceShips) {
-        renderTarget.draw(spaceShip, renderStates);
+    for (const auto& object : m_gameObjects) {
+        renderTarget.draw(*object, renderStates);
     }
 }
-
 
 PlanetSystem::PlanetSystem(const std::string& name) :
     m_name(name) {
 }
 
-PlanetSystem::PlanetSystem(const std::string& name, const std::vector<Planet>& planets, const std::vector<SpaceShip>& spaceShips) :
-    m_name(name),
-    m_planets(planets),
-    m_spaceShips(spaceShips) {
-}
-
 PlanetSystem::PlanetSystem(const PlanetSystem& other) :
     m_name(other.m_name),
-    m_planets(other.m_planets),
-    m_spaceShips(other.m_spaceShips) {
-
+    m_gameObjects(other.m_gameObjects) {
 }
 
-void PlanetSystem::addPlanet(const Planet& planet) {
-    m_planets.push_back(planet);
-}
-
-void PlanetSystem::addSpaceShip(const SpaceShip& spaceShip) {
-    m_spaceShips.push_back(spaceShip);
+void PlanetSystem::addObject(GameObject* object) {
+    m_gameObjects.push_back(object);
 }
 
 void PlanetSystem::update(float dt, sf::Vector2f mousePosition) {
-    for (size_t i = 0; i < m_planets.size(); i++) {
-        for (size_t j = 0; j < m_planets.size(); j++) {
+    std::vector<GravityObject*> gravityObjects = getObjectsOfType<GravityObject>();
+    for (size_t i = 0; i < gravityObjects.size(); i++) {
+        for (size_t j = 0; j < gravityObjects.size(); j++) {
             if (i != j) {
-                auto& a = m_planets[i];
-                auto& b = m_planets[j];
-                sf::Vector2f dir = Math::normalize(b.getCenter() - a.getCenter());
-                float mag = a.getMass() * b.getMass() / Math::dot(a.getCenter() - b.getCenter(), a.getCenter() - b.getCenter());
+                GravityObject* a = gravityObjects[i];
+                GravityObject* b = gravityObjects[j];
+                sf::Vector2f dir = Math::normalize(b->getCenter() - a->getCenter());
+                float mag = a->getMass() * b->getMass() / Math::dot(a->getCenter() - b->getCenter(), a->getCenter() - b->getCenter());
                 mag *= 0.01f;
-                a.applyForce(dir * mag);
+                a->applyForce(dir * mag);
             }
         }
     }
-    for (auto& spaceShip : m_spaceShips) {
-        spaceShip.update(dt, mousePosition);
+    for (auto& object : m_gameObjects) {
+        object->update(dt, mousePosition);
     }
-    for (auto& planet : m_planets) {
-        planet.update(dt);
-        planet.clearForces();
+    for (auto& object : gravityObjects) {
+        object->clearForces();
     }
 }
 
 PlanetSystem PlanetSystem::operator = (const PlanetSystem& other) {
     if (this != &other) {
         this->m_name = other.m_name;
-        this->m_planets = other.m_planets;
-        this->m_spaceShips = other.m_spaceShips;
+        this->m_gameObjects = other.m_gameObjects;
     }
     return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const PlanetSystem& system) {
-    os << "(name = " << system.m_name << " | planets = (";
-    bool isFirst = true;
-    for (const auto& planet : system.m_planets) {
-        if (!isFirst) {
-            os << ", ";
-        }
-        isFirst = false;
-        os << planet << " ";
-    }
-    os << "))";
+    os << "(name = " << system.m_name << "))";
     return os;
 }

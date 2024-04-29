@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
-class SpaceShip : public sf::Drawable {
+class SpaceShip : public GameObject {
 private:
     std::string m_name;
     sf::Vector2f m_center;
@@ -22,7 +23,7 @@ public:
     ~SpaceShip();
     sf::Vector2f getCenter() const;
     float getMass() const;
-    void update(float dt, sf::Vector2f mousePosition);
+    void update(float dt, sf::Vector2f mousePosition) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const SpaceShip& SpaceShip);
 };

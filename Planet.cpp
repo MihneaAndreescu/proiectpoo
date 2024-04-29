@@ -5,8 +5,7 @@ Planet::Planet(const std::string& name, const sf::Vector2f& center, const float&
     m_circleShape(radius),
     m_velocity(velocity),
     m_mass(mass),
-    m_forces(sf::Vector2f(0, 0))
-{
+    m_forces(sf::Vector2f(0, 0)) {
     m_circleShape.setFillColor(color);
     m_circleShape.setOrigin(sf::Vector2f(1, 1) * radius);
     m_circleShape.setPosition(center);
@@ -17,25 +16,19 @@ Planet::Planet(const Planet& other) :
     m_circleShape(other.m_circleShape),
     m_velocity(other.m_velocity),
     m_mass(other.m_mass),
-    m_forces(other.m_forces)
-{
-
+    m_forces(other.m_forces) {
 }
 
-sf::Vector2f Planet::getCenter() const
-{
+sf::Vector2f Planet::getCenter() const {
     return m_circleShape.getPosition();
 }
 
-float Planet::getMass() const
-{
+float Planet::getMass() const {
     return m_mass;
 }
 
-Planet Planet::operator = (const Planet& other)
-{
-    if (this != &other)
-    {
+Planet Planet::operator = (const Planet& other) {
+    if (this != &other) {
         this->m_name = other.m_name;
         this->m_circleShape = other.m_circleShape;
         this->m_velocity = other.m_velocity;
@@ -45,40 +38,32 @@ Planet Planet::operator = (const Planet& other)
     return *this;
 }
 
-void Planet::applyForce(sf::Vector2f force)
-{
+void Planet::applyForce(sf::Vector2f force) {
     m_forces += force;
 }
 
-void Planet::clearForces()
-{
+void Planet::clearForces() {
     m_forces = sf::Vector2f(0, 0);
 }
 
-void Planet::setTexture(sf::Texture* texture)
-{
+void Planet::setTexture(sf::Texture* texture) {
     m_circleShape.setTexture(texture);
 }
 
-Planet::~Planet()
-{
-
+Planet::~Planet() {
 }
 
-void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const
-{
+void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     renderTarget.draw(m_circleShape, renderStates);
 }
 
-std::ostream& operator<<(std::ostream& os, const Planet& planet) 
-{
-    os << "(name = " << planet.m_name << " | radius = " << planet.m_circleShape.getRadius() << " | location = (" << planet.m_circleShape.getPosition().x << ", " << planet.m_circleShape.getPosition().y << "))";
-    return os;
-}
-
-void Planet::update(float dt)
-{
+void Planet::update(float dt, sf::Vector2f mousePosition) {
     sf::Vector2f acceleration = dt * m_forces;
     m_velocity += acceleration / m_mass;
     m_circleShape.move(dt * m_velocity);
+}
+
+std::ostream& operator<<(std::ostream& os, const Planet& planet) {
+    os << "(name = " << planet.m_name << " | radius = " << planet.m_circleShape.getRadius() << " | location = (" << planet.m_circleShape.getPosition().x << ", " << planet.m_circleShape.getPosition().y << "))";
+    return os;
 }

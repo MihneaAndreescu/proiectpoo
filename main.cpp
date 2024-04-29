@@ -9,6 +9,8 @@
 #include <cmath>
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
+#include "GravityObject.h"
 
 #include <Helper.h>
 
@@ -35,12 +37,12 @@ int main()
     window.setView(view);
 
     PlanetSystem planetarySystem{ "Sistemul lu' Mihnea" };
-    SpaceShip spaceShip = SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 1.0f};
   
-    planetarySystem.addPlanet(Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red });
-    planetarySystem.addPlanet(Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue });
-    planetarySystem.addSpaceShip(spaceShip);
+    planetarySystem.addObject(new SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 1.0f });
+    planetarySystem.addObject(new Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red });
+    planetarySystem.addObject(new Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue });
 
+   
     init_threads();
     Helper helper;
     helper.help();
@@ -116,8 +118,6 @@ int main()
         fps++;
 
         window.clear();
-        //window.draw(shape);
-        //window.draw(spaceShip);
         window.draw(planetarySystem);
         window.display();
     }

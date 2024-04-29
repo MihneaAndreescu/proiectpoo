@@ -4,31 +4,34 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include <concepts>
 
 #include "Planet.h"
 #include "SpaceShip.h"
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
-class PlanetSystem : public sf::Drawable
-{
+class PlanetSystem : public sf::Drawable {
 private:
     std::string m_name;
-    std::vector<Planet> m_planets;
-    std::vector<SpaceShip> m_spaceShips;
-
+    std::vector<GameObject*> m_gameObjects;
 public:
+    template<typename DerivedType> requires std::derived_from<DerivedType, GameObject> std::vector<DerivedType*> getObjectsOfType() const {
+        std::vector<DerivedType*> objectsOfType;
+        for (auto& object : m_gameObjects) {
+            if (auto casted = dynamic_cast<DerivedType*>(object)) {
+                objectsOfType.push_back(casted);
+            }
+        }
+        return objectsOfType;
+    }
     explicit PlanetSystem(const std::string& name);
-    PlanetSystem(const std::string& name, const std::vector<Planet>& planets, const std::vector<SpaceShip>& spaceShips);
     PlanetSystem(const PlanetSystem& other);
     PlanetSystem operator = (const PlanetSystem& other);
     ~PlanetSystem();
-
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
-
-
-    void addPlanet(const Planet& planet);
-    void addSpaceShip(const SpaceShip& spaceShip);
+    void addObject(GameObject* object);
     void update(float dt, sf::Vector2f mousePosition);
 };
 
