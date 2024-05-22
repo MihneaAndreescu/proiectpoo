@@ -145,8 +145,15 @@ SpaceShip::SpaceShip(const SpaceShip& other) :
     m_angle(other.m_angle),
     m_elapsedClockwise(other.m_elapsedClockwise),
     m_elapsedCounterClockwise(other.m_elapsedCounterClockwise),
-    m_drawInfo(other.m_drawInfo) {
+    m_drawInfo(other.m_drawInfo),
+    m_invinc(other.m_invinc),
+    m_hearts(other.m_hearts) {
 }
+
+/*
+    float m_invinc;
+    int m_hearts;
+*/
 
 SpaceShip SpaceShip::operator = (const SpaceShip& other) {
     if (this != &other) {
@@ -158,6 +165,8 @@ SpaceShip SpaceShip::operator = (const SpaceShip& other) {
         this->m_elapsedClockwise = other.m_elapsedClockwise;
         this->m_elapsedCounterClockwise = other.m_elapsedCounterClockwise;
         this->m_drawInfo = other.m_drawInfo;
+        this->m_invinc = other.m_invinc;
+        this->m_hearts = other.m_hearts;
     }
     return *this;
 }

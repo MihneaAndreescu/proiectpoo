@@ -27,6 +27,7 @@ private:
     double m_elapsedCounterClockwise;
     DrawInfo m_drawInfo;
     float m_invinc;
+    int m_hearts;
     void prepDrawSpaceShipMainBodyVertexArray();
     void prepDrawLeftRocket();
     void prepDrawRightRocket();
@@ -43,7 +44,6 @@ private:
     void applyMovement(sf::Vector2f& delta, float deltaTime);
     void updateRotationTimers(float directionCross, float deltaTime);
     void adjustSimultaneousRotation();
-    int m_hearts;
 public:
     int countHearts();
     void invincible(double tInvinc);
