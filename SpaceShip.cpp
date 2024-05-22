@@ -105,6 +105,22 @@ void SpaceShip::prepDraw() {
     prepDrawCockpit();
     prepDrawGasCircles();
     prepDrawApplyRotation();
+    if (m_invinc >= 0) {
+        sf::Color color = sf::Color(0, 0, 255, (cos(m_invinc * 10) + 1) / 2 * 255);
+        m_drawInfo.cockPitCircleShape.setFillColor(color);
+        for (auto& circleShape : m_drawInfo.gasCircleShapes) {
+            circleShape.setFillColor(color);
+        }
+        for (size_t i = 0; i < m_drawInfo.leftRocketVertexArray.getVertexCount(); i++) {
+            m_drawInfo.leftRocketVertexArray[i].color = color;
+        }
+        for (size_t i = 0; i < m_drawInfo.rightRocketVertexArray.getVertexCount(); i++) {
+            m_drawInfo.rightRocketVertexArray[i].color = color;
+        }
+        for (size_t i = 0; i < m_drawInfo.spaceShipMainBodyVertexArray.getVertexCount(); i++) {
+            m_drawInfo.spaceShipMainBodyVertexArray[i].color = color;
+        }
+    }
 }
 
 SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed) :
@@ -117,7 +133,8 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
     m_movingClockwise(false),
     m_movingCounterClockwise(false),
     m_elapsedClockwise(0),
-    m_elapsedCounterClockwise(0) {
+    m_elapsedCounterClockwise(0),
+    m_hearts(5) {
 }
 
 SpaceShip::SpaceShip(const SpaceShip& other) :
@@ -160,12 +177,11 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
     for (auto& circleShape : m_drawInfo.gasCircleShapes) {
         renderTarget.draw(circleShape, renderStates);
     }
-    auto increasedRectangle = m_innerRectangleShape;
-    increasedRectangle.setSize(sf::Vector2f(increasedRectangle.getSize().x, increasedRectangle.getSize().y * 1.5f));
-    increasedRectangle.setPosition(increasedRectangle.getPosition() + sf::Vector2f(0, -increasedRectangle.getSize().y * 0.17f));
-    auto rotatedIncreasedRectangle = rotateAroundPoint(increasedRectangle, m_center, m_angle);
-    rotatedIncreasedRectangle.setFillColor(sf::Color(0, 100, 250, 100));
-    renderTarget.draw(rotatedIncreasedRectangle);
+}
+
+void SpaceShip::invincible(double tInvinc) {
+    m_hearts--;
+    m_invinc = tInvinc;
 }
 
 void SpaceShip::resetMovementFlags() {
@@ -226,6 +242,7 @@ void SpaceShip::adjustSimultaneousRotation() {
 }
 
 void SpaceShip::update(ObjectUpdateInfo drawInfo) {
+    m_invinc -= drawInfo.deltaTime;
     resetMovementFlags();
     sf::Vector2f direction = computeDirection(drawInfo.mousePosition, m_center);
     updateAngle(direction);
@@ -240,6 +257,12 @@ void SpaceShip::update(ObjectUpdateInfo drawInfo) {
 }
 
 sf::RectangleShape SpaceShip::getRigidBodyBoundingBox() {
+    if (m_invinc >= 0) {
+        sf::RectangleShape shape;
+        shape.setPosition(sf::Vector2f(1, 1) * (float)(1e9));
+        shape.setSize(sf::Vector2f(0, 0));
+        return shape;
+    }
     auto increasedRectangle = m_innerRectangleShape;
     increasedRectangle.setSize(sf::Vector2f(increasedRectangle.getSize().x, increasedRectangle.getSize().y * 1.5f));
     increasedRectangle.setPosition(increasedRectangle.getPosition() + sf::Vector2f(0, -increasedRectangle.getSize().y * 0.17f));
@@ -250,4 +273,8 @@ sf::RectangleShape SpaceShip::getRigidBodyBoundingBox() {
 std::ostream& operator << (std::ostream& os, const SpaceShip& spaceShip) {
     os << "(name = " << spaceShip.m_name << ")";
     return os;
+}
+
+int SpaceShip::countHearts() {
+    return m_hearts;
 }

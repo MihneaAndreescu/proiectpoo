@@ -1,4 +1,5 @@
 #include "Planet.h"
+#include "Math.h"
 
 Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Color color) :
     m_name(name),
@@ -58,6 +59,9 @@ void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
 }
 
 void Planet::update(ObjectUpdateInfo m_drawInfo) {
+    if (Math::norm(m_velocity) > 3) {
+        m_velocity = Math::normalize(m_velocity) * 3.0f;
+    }
     sf::Vector2f acceleration = m_drawInfo.deltaTime * m_forces;
     m_velocity += acceleration / m_mass;
     m_circleShape.move(m_drawInfo.deltaTime * m_velocity);

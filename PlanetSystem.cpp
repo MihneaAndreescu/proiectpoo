@@ -106,7 +106,8 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
         for (auto& planet : planets) {
             sf::CircleShape circle = planet->getCircleShape();
             if (intersects(rectangle, circle)) {
-                std::cout << "hit!\n";
+                std::cout << "space ship hit!\n";
+                spaceShip->invincible(5);
             }
         }
     }
@@ -133,4 +134,13 @@ PlanetSystem PlanetSystem::operator = (const PlanetSystem& other) {
 std::ostream& operator<<(std::ostream& os, const PlanetSystem& system) {
     os << "(name = " << system.m_name << "))";
     return os;
+}
+
+int PlanetSystem::countHearts() {
+    std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
+    int sum = 0;
+    for (auto& spaceShip : spaceShips) {
+        sum += spaceShip->countHearts();
+    }
+    return sum;
 }

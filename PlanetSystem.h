@@ -18,6 +18,7 @@ private:
     std::string m_name;
     std::vector<std::shared_ptr<GameObject>> m_gameObjects;
 public:
+    int countHearts();
     template<typename DerivedType>
     requires std::derived_from<DerivedType, GameObject>
         std::vector<std::shared_ptr<DerivedType>> getObjectsOfType() const {

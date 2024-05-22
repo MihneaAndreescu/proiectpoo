@@ -29,10 +29,19 @@ bool GameEngine2D::handleEventLoop() {
 	return shouldExit;
 }
 
+#include "Heart.h"
+
 void GameEngine2D::draw() {
 	m_window.clear();
 	m_planetarySystem.prepDraw();
 	m_window.draw(m_planetarySystem);
+	int hearts = m_planetarySystem.countHearts();
+	float x = -2.9, y = 2.9;
+	for (int i = 0; i < hearts; i++) {
+		Heart heart(x, y, 0.2);
+		x += 0.25;
+		m_window.draw(heart);
+	}
 	m_window.display();
 }
 
@@ -45,6 +54,7 @@ void GameEngine2D::handleTemporaryViewMovement(const float dt) {
 	m_view.move(movement);
 	m_window.setView(m_view);
 }
+
 
 void GameEngine2D::updateFrame() {
 	if (handleEventLoop()) {
