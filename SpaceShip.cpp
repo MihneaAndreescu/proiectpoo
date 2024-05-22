@@ -134,6 +134,7 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
     m_movingCounterClockwise(false),
     m_elapsedClockwise(0),
     m_elapsedCounterClockwise(0),
+    m_invinc(0),
     m_hearts(5) {
 }
 
