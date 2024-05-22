@@ -11,6 +11,10 @@ void SpaceShip::prepDrawSpaceShipMainBodyVertexArray() {
     m_drawInfo.spaceShipMainBodyVertexArray.append(sf::Vertex{ {m_center.x + m_size.x * 0.5f, m_center.y - m_size.y * 0.5f} });
     m_drawInfo.spaceShipMainBodyVertexArray[0].color = m_drawInfo.spaceShipMainBodyVertexArray[3].color = sf::Color::Red;
     m_drawInfo.spaceShipMainBodyVertexArray[1].color = m_drawInfo.spaceShipMainBodyVertexArray[2].color = sf::Color::Green;
+
+    m_innerRectangleShape.setSize(m_size);
+
+    m_innerRectangleShape.setPosition(m_center.x - m_size.x * 0.5f, m_center.y - m_size.y * 0.5f);
 }
 
 void SpaceShip::prepDrawLeftRocket() {
@@ -71,6 +75,14 @@ void SpaceShip::prepDrawAddGasCircle(const sf::Vector2f& position, float length)
     circle.setOrigin(circle.getRadius() * sf::Vector2f(1, 1));
     circle.setFillColor(sf::Color::Yellow);
     m_drawInfo.gasCircleShapes.push_back(circle);
+}
+
+sf::RectangleShape rotateAroundPoint(sf::RectangleShape shape, const sf::Vector2f& origin, float angle) {
+    sf::Vector2f pos = shape.getPosition();
+    sf::Vector2f newPos = Math::rotateAroundPoint(origin, pos, angle);
+    shape.setPosition(newPos);
+    shape.rotate(angle / Math::PI * 180);
+    return shape;
 }
 
 void SpaceShip::prepDrawApplyRotation() {
@@ -148,6 +160,12 @@ void SpaceShip::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStat
     for (auto& circleShape : m_drawInfo.gasCircleShapes) {
         renderTarget.draw(circleShape, renderStates);
     }
+    auto increasedRectangle = m_innerRectangleShape;
+    increasedRectangle.setSize(sf::Vector2f(increasedRectangle.getSize().x, increasedRectangle.getSize().y * 1.5f));
+    increasedRectangle.setPosition(increasedRectangle.getPosition() + sf::Vector2f(0, -increasedRectangle.getSize().y * 0.17f));
+    auto rotatedIncreasedRectangle = rotateAroundPoint(increasedRectangle, m_center, m_angle);
+    rotatedIncreasedRectangle.setFillColor(sf::Color(0, 100, 250, 100));
+    renderTarget.draw(rotatedIncreasedRectangle);
 }
 
 void SpaceShip::resetMovementFlags() {
@@ -156,7 +174,7 @@ void SpaceShip::resetMovementFlags() {
     m_movingCounterClockwise = false;
 }
 
-sf::Vector2f SpaceShip::calculateDirection(const sf::Vector2f& mousePosition, const sf::Vector2f& center) {
+sf::Vector2f SpaceShip::computeDirection(const sf::Vector2f& mousePosition, const sf::Vector2f& center) {
     return Math::normalize(mousePosition - center);
 }
 
@@ -176,25 +194,25 @@ sf::Vector2f SpaceShip::calculateDelta(const sf::Vector2f& direction, const sf::
     return delta;
 }
 
-void SpaceShip::applyMovement(sf::Vector2f& delta, float dt) {
+void SpaceShip::applyMovement(sf::Vector2f& delta, float deltaTime) {
     if (Math::norm(delta) > 1e-10) {
         delta = Math::normalize(delta) * m_speed;
-        m_center += delta * dt;
+        m_center += delta * deltaTime;
     }
 }
 
-void SpaceShip::updateRotationTimers(float directionCross, float dt) {
+void SpaceShip::updateRotationTimers(float directionCross, float deltaTime) {
     if (directionCross > 0) {
         m_elapsedClockwise = 0;
     }
     else {
-        m_elapsedClockwise += dt;
+        m_elapsedClockwise += deltaTime;
     }
     if (-directionCross > 0) {
         m_elapsedCounterClockwise = 0;
     }
     else {
-        m_elapsedCounterClockwise += dt;
+        m_elapsedCounterClockwise += deltaTime;
     }
 }
 
@@ -209,16 +227,24 @@ void SpaceShip::adjustSimultaneousRotation() {
 
 void SpaceShip::update(ObjectUpdateInfo drawInfo) {
     resetMovementFlags();
-    sf::Vector2f direction = calculateDirection(drawInfo.mousePosition, m_center);
+    sf::Vector2f direction = computeDirection(drawInfo.mousePosition, m_center);
     updateAngle(direction);
     updateMovementFlags();
     sf::Vector2f perpDirection = Math::perp(direction);
     sf::Vector2f delta = calculateDelta(direction, perpDirection);
-    applyMovement(delta, drawInfo.dt);
+    applyMovement(delta, drawInfo.deltaTime);
     float directionCross = Math::cross(direction, m_lastDirection);
-    updateRotationTimers(directionCross, drawInfo.dt);
+    updateRotationTimers(directionCross, drawInfo.deltaTime);
     adjustSimultaneousRotation();
     m_lastDirection = direction;
+}
+
+sf::RectangleShape SpaceShip::getRigidBodyBoundingBox() {
+    auto increasedRectangle = m_innerRectangleShape;
+    increasedRectangle.setSize(sf::Vector2f(increasedRectangle.getSize().x, increasedRectangle.getSize().y * 1.5f));
+    increasedRectangle.setPosition(increasedRectangle.getPosition() + sf::Vector2f(0, -increasedRectangle.getSize().y * 0.17f));
+    auto rotatedIncreasedRectangle = rotateAroundPoint(increasedRectangle, m_center, m_angle);
+    return rotatedIncreasedRectangle;
 }
 
 std::ostream& operator << (std::ostream& os, const SpaceShip& spaceShip) {

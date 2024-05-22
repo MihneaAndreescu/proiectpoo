@@ -1,11 +1,11 @@
-#include "GameEngine.h"
+#include "GameEngine2D.h"
 
-GameEngine& GameEngine::getInstance() {
-	static GameEngine instance;
+GameEngine2D& GameEngine2D::getInstance() {
+	static GameEngine2D instance;
 	return instance;
 }
 
-void GameEngine::updateAndAnalyzeFrameData() {
+void GameEngine2D::updateAndAnalyzeFrameData() {
 	if (m_frameData.secondClock.getElapsedTime().asSeconds() >= 1) {
 		std::cout << "fps = " << m_frameData.fps << " " << m_planetarySystem << std::endl;
 		m_frameData.secondClock.restart();
@@ -15,7 +15,7 @@ void GameEngine::updateAndAnalyzeFrameData() {
 	m_frameData.fps++;
 }
 
-bool GameEngine::handleEventLoop() {
+bool GameEngine2D::handleEventLoop() {
 	bool shouldExit = false;
 	sf::Event e{};
 	while (m_window.pollEvent(e)) {
@@ -29,14 +29,14 @@ bool GameEngine::handleEventLoop() {
 	return shouldExit;
 }
 
-void GameEngine::draw() {
+void GameEngine2D::draw() {
 	m_window.clear();
 	m_planetarySystem.prepDraw();
 	m_window.draw(m_planetarySystem);
 	m_window.display();
 }
 
-void GameEngine::handleTemporaryViewMovement(const float dt) {
+void GameEngine2D::handleTemporaryViewMovement(const float dt) {
 	sf::Vector2f movement = sf::Vector2f(0, 0);
 	movement += sf::Vector2f(1, 0) * dt * (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D));
 	movement += sf::Vector2f(-1, 0) * dt * (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A));
@@ -46,7 +46,7 @@ void GameEngine::handleTemporaryViewMovement(const float dt) {
 	m_window.setView(m_view);
 }
 
-void GameEngine::updateFrame() {
+void GameEngine2D::updateFrame() {
 	if (handleEventLoop()) {
 		return;
 	}
@@ -59,27 +59,33 @@ void GameEngine::updateFrame() {
 	draw();
 }
 
-void GameEngine::initializeWindowAndView() {
+void GameEngine2D::initializeWindowAndView() {
 	m_window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
 	m_window.setVerticalSyncEnabled(true);
-	m_view.setSize(sf::Vector2f(2, -2));
-	m_view.setCenter(sf::Vector2f(1, 1));
+	m_view.setSize(sf::Vector2f(6, -6));
+	m_view.setCenter(sf::Vector2f(0, 0));
 	m_window.setView(m_view);
 }
 
-void GameEngine::initializePlanetarySystem() {
+void GameEngine2D::initializePlanetarySystem() {
 	m_planetarySystem.setName("Sistemul lu' Mihnea");
-	m_planetarySystem.addObject(new SpaceShip{ "Dune", sf::Vector2f(0.0f, 0.0f), sf::Vector2f(0.2f, 0.4f), 1.0f });
-	m_planetarySystem.addObject(new Planet{ "Dune", sf::Vector2f(0.5f, 0.5f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red });
-	m_planetarySystem.addObject(new Planet{ "Caladan", sf::Vector2f(0.2f, 0.1f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue });
+	m_planetarySystem.addObject(std::make_shared<SpaceShip>("Dune", sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(0.2f, 0.4f), 1.0f));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color::Red));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Caladan", sf::Vector2f(-2.5f, -2.5f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Arrakis", sf::Vector2f(1.5f, 2.0f), 0.08f, sf::Vector2f(0.05f, 0.02f), 3.0f, sf::Color::Yellow));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Giedi Prime", sf::Vector2f(2.5f, -1.0f), 0.12f, sf::Vector2f(-0.04f, 0.01f), 5.0f, sf::Color::Green));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Kaitain", sf::Vector2f(-2.0f, 2.5f), 0.09f, sf::Vector2f(0.06f, -0.03f), 2.5f, sf::Color::Cyan));
+
+	
+	//m_planetarySystem.addObject(std::make_shared<Planet>("Sun", sf::Vector2f(0.0f, 0.0f), 0.09f, sf::Vector2f(0.00f, -0.00f), 100.0f, sf::Color::Yellow));
 }
 
-void GameEngine::initialize() {
+void GameEngine2D::initialize() {
 	initializeWindowAndView();
 	initializePlanetarySystem();
 }
 
-void GameEngine::gameLoop() {
+void GameEngine2D::gameLoop() {
 	initialize();
 	while (m_window.isOpen()) {
 		updateFrame();

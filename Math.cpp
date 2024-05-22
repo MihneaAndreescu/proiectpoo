@@ -21,7 +21,11 @@ namespace Math {
 	}
 
 	sf::Vector2f normalize(sf::Vector2f a) {
-		return a / norm(a);
+		float n = norm(a);
+		if (n == 0.0f) {
+			return a;
+		}
+		return a / n;
 	}
 
 	sf::Vector2f perp(sf::Vector2f a) {

@@ -5,6 +5,7 @@
 #include <thread>
 #include <cmath>
 #include <concepts>
+#include <memory>
 
 #include "Planet.h"
 #include "SpaceShip.h"
@@ -15,12 +16,14 @@
 class PlanetSystem : public sf::Drawable {
 private:
     std::string m_name;
-    std::vector<GameObject*> m_gameObjects;
+    std::vector<std::shared_ptr<GameObject>> m_gameObjects;
 public:
-    template<typename DerivedType> requires std::derived_from<DerivedType, GameObject> std::vector<DerivedType*> getObjectsOfType() const {
-        std::vector<DerivedType*> objectsOfType;
-        for (auto& object : m_gameObjects) {
-            if (auto casted = dynamic_cast<DerivedType*>(object)) {
+    template<typename DerivedType>
+    requires std::derived_from<DerivedType, GameObject>
+        std::vector<std::shared_ptr<DerivedType>> getObjectsOfType() const {
+        std::vector<std::shared_ptr<DerivedType>> objectsOfType;
+        for (const auto& object : m_gameObjects) {
+            if (auto casted = std::dynamic_pointer_cast<DerivedType>(object)) {
                 objectsOfType.push_back(casted);
             }
         }
@@ -35,7 +38,7 @@ public:
     ~PlanetSystem();
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator << (std::ostream& os, const PlanetSystem& system);
-    void addObject(GameObject* object);
+    void addObject(std::shared_ptr<GameObject> object);
     void update(ObjectUpdateInfo m_drawInfo);
 };
 

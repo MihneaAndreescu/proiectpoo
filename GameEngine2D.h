@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "PlanetSystem.h"
 
-class GameEngine {
+class GameEngine2D {
 private:
 	struct FrameData {
 		sf::Clock fpsClock;
@@ -12,9 +12,9 @@ private:
 		FrameData() : fps(0) {
 		}
 	};
-	GameEngine() {}
-	GameEngine(const GameEngine&) = delete;
-	GameEngine& operator = (const GameEngine&) = delete;
+	GameEngine2D() {}
+	GameEngine2D(const GameEngine2D&) = delete;
+	GameEngine2D& operator = (const GameEngine2D&) = delete;
 	sf::RenderWindow m_window;
 	sf::View m_view;
 	PlanetSystem m_planetarySystem;	
@@ -28,7 +28,7 @@ private:
 	void initializePlanetarySystem();
 	void initializeWindowAndView();
 public:
-	static GameEngine& getInstance();
+	static GameEngine2D& getInstance();
 	void gameLoop();
 };
 

@@ -13,6 +13,7 @@ private:
         sf::VertexArray rightRocketVertexArray;
         std::vector<sf::CircleShape> gasCircleShapes;
     };
+    sf::RectangleShape m_innerRectangleShape;
     std::string m_name;
     sf::Vector2f m_center;
     sf::Vector2f m_size;
@@ -34,14 +35,15 @@ private:
     void prepDrawAddGasCircle(const sf::Vector2f& position, float length);
     void prepDrawApplyRotation();
     void resetMovementFlags();
-    sf::Vector2f calculateDirection(const sf::Vector2f& mousePosition, const sf::Vector2f& center);
+    sf::Vector2f computeDirection(const sf::Vector2f& mousePosition, const sf::Vector2f& center);
     void updateAngle(const sf::Vector2f& direction);
     void updateMovementFlags();
     sf::Vector2f calculateDelta(const sf::Vector2f& direction, const sf::Vector2f& perpDirection);
-    void applyMovement(sf::Vector2f& delta, float dt);
-    void updateRotationTimers(float directionCross, float dt);
+    void applyMovement(sf::Vector2f& delta, float deltaTime);
+    void updateRotationTimers(float directionCross, float deltaTime);
     void adjustSimultaneousRotation();
 public:
+    sf::RectangleShape getRigidBodyBoundingBox();
     void prepDraw() override;
     void update(struct ObjectUpdateInfo m_drawInfo) override;
     SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed);

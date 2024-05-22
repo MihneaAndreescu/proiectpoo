@@ -1,4 +1,4 @@
-#include "GameEngine.h"
+#include "GameEngine2D.h"
 #include <Helper.h>
 //////////////////////////////////////////////////////////////////////
 /// NOTE: this include is needed for environment-specific fixes     //
@@ -10,7 +10,7 @@ int main() {
     init_threads();
     Helper helper;
     helper.help();
-    GameEngine& engine = GameEngine::getInstance();
+    GameEngine2D& engine = GameEngine2D::getInstance();
     engine.gameLoop();
     return 0;
 }
