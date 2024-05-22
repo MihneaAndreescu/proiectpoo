@@ -36,10 +36,10 @@ void GameEngine2D::draw() {
 	m_planetarySystem.prepDraw();
 	m_window.draw(m_planetarySystem);
 	int hearts = m_planetarySystem.countHearts();
-	float x = -2.9, y = 2.9;
+	float x = -2.9f, y = 2.9f;
 	for (int i = 0; i < hearts; i++) {
-		Heart heart(x, y, 0.2);
-		x += 0.25;
+		Heart heart(x, y, 0.2f);
+		x += 0.25f;
 		m_window.draw(heart);
 	}
 	m_window.display();
