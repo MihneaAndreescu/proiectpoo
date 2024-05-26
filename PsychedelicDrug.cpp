@@ -50,8 +50,8 @@ void PsychedelicDrug::draw(sf::RenderTarget& renderTarget, sf::RenderStates rend
     renderTarget.draw(m_shroom, renderStates);
 }
 
-void PsychedelicDrug::update(ObjectUpdateInfo m_drawInfo) {
-
+void PsychedelicDrug::update(ObjectUpdateInfo m_updateInfo) {
+    m_shroom.update(m_updateInfo.deltaTime);
 }
 
 void PsychedelicDrug::prepDraw() {

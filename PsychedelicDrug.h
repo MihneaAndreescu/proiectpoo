@@ -17,7 +17,7 @@ public:
     sf::Vector2f getCenter() const;
     PsychedelicDrug operator = (const PsychedelicDrug& other);
     ~PsychedelicDrug();
-    void update(ObjectUpdateInfo m_drawInfo) override;
+    void update(ObjectUpdateInfo m_updateInfo) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const PsychedelicDrug& planet);
 };

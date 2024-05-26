@@ -11,6 +11,7 @@ int main() {
     Helper helper;
     helper.help();
     GameEngine2D& engine = GameEngine2D::getInstance();
+    std::cout << "good morning\n";
     engine.gameLoop();
     return 0;
 }

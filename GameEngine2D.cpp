@@ -76,7 +76,9 @@ void GameEngine2D::updateFrame() {
 }
 
 void GameEngine2D::initializeWindowAndView() {
+	std::cout << "w\n";
 	m_window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
+	std::cout << "h\n";
 	m_window.setVerticalSyncEnabled(true);
 	m_view.setSize(sf::Vector2f(6, -6));
 	m_view.setCenter(sf::Vector2f(0, 0));
@@ -95,7 +97,9 @@ void GameEngine2D::initializePlanetarySystem() {
 }
 
 void GameEngine2D::initialize() {
+	std::cout << "hi\n";
 	initializeWindowAndView();
+	std::cout << "dr\n";
 	initializePlanetarySystem();
 }
 
