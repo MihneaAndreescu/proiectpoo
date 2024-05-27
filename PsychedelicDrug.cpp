@@ -73,3 +73,7 @@ std::ostream& operator<<(std::ostream& os, const PsychedelicDrug& planet) {
 sf::CircleShape PsychedelicDrug::getCap() {
     return m_shroom.getCap();
 }
+
+float PsychedelicDrug::getTimeSinceNotOnDrugs() {
+    return m_timeSinceNotOnDrugs;
+}

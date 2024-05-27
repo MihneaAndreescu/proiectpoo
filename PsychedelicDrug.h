@@ -12,6 +12,7 @@ private:
     Shroom m_shroom;
     double m_timeSinceNotOnDrugs;
 public:
+    float getTimeSinceNotOnDrugs();
     void prepDraw() override;
     explicit PsychedelicDrug(const std::string& name);
     PsychedelicDrug(const PsychedelicDrug& other);

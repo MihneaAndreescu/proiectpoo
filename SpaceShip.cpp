@@ -288,3 +288,11 @@ std::ostream& operator << (std::ostream& os, const SpaceShip& spaceShip) {
 int SpaceShip::countHearts() {
     return m_hearts;
 }
+
+int SpaceShip::countShrooms() {
+    return m_shrooms;
+}
+
+void SpaceShip::increase() {
+    m_shrooms++;
+}

@@ -93,7 +93,7 @@ void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     for (auto& circle : shapes) {
         renderTarget.draw(circle, renderStates);
     }
-    if (m_timeS > 0.01f) {
+    if (m_timeS > 0.1f) {
         for (auto& shp : drawLoadingBar(cap.getPosition() + sf::Vector2f(0, 0.1f), m_timeS, sf::Vector2f(0.2f, 0.1f))) {
             renderTarget.draw(shp, renderStates);
         }

@@ -2,6 +2,8 @@
 #include "Math.h"
 #include "GravityObject.h"
 #include "PsychedelicDrug.h"
+#include "SpaceShip.h"
+#include <set>
 
 PlanetSystem::PlanetSystem() {
 }
@@ -11,7 +13,14 @@ PlanetSystem::~PlanetSystem() {
 
 void PlanetSystem::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     for (const auto& object : m_gameObjects) {
-        renderTarget.draw(*object, renderStates);
+        if (!std::dynamic_pointer_cast<SpaceShip>(object)||1) {
+            renderTarget.draw(*object, renderStates);
+        }
+    }
+    for (const auto& object : m_gameObjects) {
+        if (std::dynamic_pointer_cast<SpaceShip>(object)) {
+            renderTarget.draw(*object, renderStates);
+        }
     }
 }
 
@@ -87,6 +96,9 @@ bool intersects(const sf::RectangleShape& rectangle, const sf::CircleShape& circ
 }
 
 void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
+    if ((int)getObjectsOfType<PsychedelicDrug>().size() == 0) {
+        addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
+    }
     std::vector<std::shared_ptr<GravityObject>> gravityObjects = getObjectsOfType<GravityObject>();
     for (size_t i = 0; i < gravityObjects.size(); i++) {
         for (size_t j = 0; j < gravityObjects.size(); j++) {
@@ -121,6 +133,7 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     for (auto& object : m_gameObjects) {
         object->update(m_drawInfo);
     }
+    std::set<std::shared_ptr<GameObject>> dels;
     for (auto& drug : drugs) {
         sf::CircleShape circle = drug->getCap();
         bool is = 0;
@@ -128,6 +141,10 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
             sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(1);
             if (intersects(rectangle, circle)) {
                 is = 1;
+                if (drug->getTimeSinceNotOnDrugs() >= 1) {
+                    spaceShip->increase();
+                    dels.insert(drug);
+                }
             }
         }
         if (is == 0) {
@@ -137,6 +154,15 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     for (auto& object : gravityObjects) {
         object->clearForces();
     }
+    if (!dels.empty()) {
+        std::vector<std::shared_ptr<GameObject>> nw;
+        for (auto& object : m_gameObjects) {
+            if (!dels.count(object)) {
+                nw.push_back(object);
+            }
+        }
+        m_gameObjects = nw;
+    } 
 }
 
 PlanetSystem PlanetSystem::operator = (const PlanetSystem& other) {
@@ -157,6 +183,15 @@ int PlanetSystem::countHearts() {
     int sum = 0;
     for (auto& spaceShip : spaceShips) {
         sum += spaceShip->countHearts();
+    }
+    return sum;
+}
+
+int PlanetSystem::countShrooms() {
+    std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
+    int sum = 0;
+    for (auto& spaceShip : spaceShips) {
+        sum += spaceShip->countShrooms();
     }
     return sum;
 }

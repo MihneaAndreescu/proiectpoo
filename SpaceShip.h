@@ -46,7 +46,9 @@ private:
     void updateRotationTimers(float directionCross, float deltaTime);
     void adjustSimultaneousRotation();
 public:
+    int countShrooms();
     int countHearts();
+    void increase();
     void invincible(double tInvinc);
     sf::RectangleShape getRigidBodyBoundingBox(int tag);
     void prepDraw() override;

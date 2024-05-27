@@ -33,6 +33,7 @@ bool GameEngine2D::handleEventLoop() {
 }
 
 void GameEngine2D::draw() {
+	//std::cout << " : " << m_planetarySystem.countShrooms() << "\n";
 
 	m_window.clear();
 
@@ -52,7 +53,14 @@ void GameEngine2D::draw() {
 		m_window.draw(heart);
 	}
 
-
+	int shrooms = m_planetarySystem.countShrooms();
+	x = -2.9f, y = 2.6f;
+	for (int i = 0; i < shrooms; i++) {
+		Shroom shroom(0.1);
+		shroom.setPosition(sf::Vector2f(x, y));
+		x += 0.25f;
+		m_window.draw(shroom);
+	}
 	m_window.display();
 }
 
@@ -92,13 +100,13 @@ void GameEngine2D::initializeWindowAndView() {
 
 void GameEngine2D::initializePlanetarySystem() {
 	m_planetarySystem.setName("Sistemul lu' Mihnea");
-	m_planetarySystem.addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
+	m_planetarySystem.addObject(std::make_shared<SpaceShip>("Dune", sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(0.2f, 0.4f), 1.0f));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color(255, 0, 100)));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Caladan", sf::Vector2f(-2.5f, -2.5f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Arrakis", sf::Vector2f(1.5f, 2.0f), 0.08f, sf::Vector2f(0.05f, 0.02f), 3.0f, sf::Color::Yellow));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Giedi Prime", sf::Vector2f(2.5f, -1.0f), 0.12f, sf::Vector2f(-0.04f, 0.01f), 5.0f, sf::Color::Green));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Kaitain", sf::Vector2f(-2.0f, 2.5f), 0.09f, sf::Vector2f(0.06f, -0.03f), 2.5f, sf::Color::Cyan));
-	m_planetarySystem.addObject(std::make_shared<SpaceShip>("Dune", sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(0.2f, 0.4f), 1.0f));
+	//m_planetarySystem.addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
 }
 
 void GameEngine2D::initialize() {
