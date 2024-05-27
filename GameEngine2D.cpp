@@ -39,7 +39,7 @@ void GameEngine2D::draw() {
 	sf::RectangleShape shape;
 	shape.setSize(sf::Vector2f(100, 100));
 	shape.setPosition(sf::Vector2f(-50, -50));
-	shape.setFillColor(sf::Color(35, 100, 300));
+	shape.setFillColor(sf::Color(35, 100, 44));
 	m_window.draw(shape);
 	
 	m_planetarySystem.prepDraw();

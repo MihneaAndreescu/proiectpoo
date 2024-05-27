@@ -52,7 +52,7 @@ void Shroom::update(float dt,float timeS) {
         if (t >= 1) {
             t = 1;
         }
-        shp.setOutlineColor(sf::Color(35 * t + (1 - t) * 255, 100 * t + (1 - t) * 0, 300 * t + (1 - t) * 0));
+        shp.setOutlineColor(sf::Color(35 * t + (1 - t) * 255, 100 * t + (1 - t) * 0, 44 * t + (1 - t) * 0));
     }
     while (!shapes.empty() && shapes.back().getRadius() >= 1) {
         shapes.pop_back();
