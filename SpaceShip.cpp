@@ -124,6 +124,7 @@ void SpaceShip::prepDraw() {
 }
 
 SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed) :
+    GravityObject(true, false),
     m_name(name),
     m_center(center),
     m_size(size),
@@ -135,11 +136,11 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
     m_elapsedClockwise(0),
     m_elapsedCounterClockwise(0),
     m_invinc(0),
-    m_hearts(5),
-    GravityObject(true, false) {
+    m_hearts(5) {
 }
 
 SpaceShip::SpaceShip(const SpaceShip& other) :
+    GravityObject(true, false),
     m_name(other.m_name),
     m_center(other.m_center),
     m_size(other.m_size),
@@ -149,8 +150,7 @@ SpaceShip::SpaceShip(const SpaceShip& other) :
     m_elapsedCounterClockwise(other.m_elapsedCounterClockwise),
     m_drawInfo(other.m_drawInfo),
     m_invinc(other.m_invinc),
-    m_hearts(other.m_hearts),
-    GravityObject(true, false) {
+    m_hearts(other.m_hearts) {
 }
 
 /*
