@@ -6,7 +6,8 @@ Planet::Planet(const std::string& name, const sf::Vector2f& center, const float&
     m_circleShape(radius),
     m_velocity(velocity),
     m_mass(mass),
-    m_forces(sf::Vector2f(0, 0)) {
+    m_forces(sf::Vector2f(0, 0)),
+    GravityObject(true, true) {
     m_circleShape.setFillColor(color);
     m_circleShape.setOrigin(sf::Vector2f(1, 1) * radius);
     m_circleShape.setPosition(center);
@@ -17,7 +18,8 @@ Planet::Planet(const Planet& other) :
     m_circleShape(other.m_circleShape),
     m_velocity(other.m_velocity),
     m_mass(other.m_mass),
-    m_forces(other.m_forces) {
+    m_forces(other.m_forces),
+    GravityObject(true, true) {
 }
 
 sf::Vector2f Planet::getCenter() const {

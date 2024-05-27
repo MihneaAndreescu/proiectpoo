@@ -135,7 +135,8 @@ SpaceShip::SpaceShip(const std::string& name, const sf::Vector2f& center, const 
     m_elapsedClockwise(0),
     m_elapsedCounterClockwise(0),
     m_invinc(0),
-    m_hearts(5) {
+    m_hearts(5),
+    GravityObject(true, false) {
 }
 
 SpaceShip::SpaceShip(const SpaceShip& other) :
@@ -148,7 +149,8 @@ SpaceShip::SpaceShip(const SpaceShip& other) :
     m_elapsedCounterClockwise(other.m_elapsedCounterClockwise),
     m_drawInfo(other.m_drawInfo),
     m_invinc(other.m_invinc),
-    m_hearts(other.m_hearts) {
+    m_hearts(other.m_hearts),
+    GravityObject(true, false) {
 }
 
 /*
