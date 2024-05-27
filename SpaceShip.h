@@ -28,6 +28,7 @@ private:
     DrawInfo m_drawInfo;
     float m_invinc;
     int m_hearts;
+    int m_shrooms = 0;
     void prepDrawSpaceShipMainBodyVertexArray();
     void prepDrawLeftRocket();
     void prepDrawRightRocket();
