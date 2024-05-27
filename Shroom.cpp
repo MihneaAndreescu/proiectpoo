@@ -36,17 +36,17 @@ void Shroom::update(float dt,float timeS) {
     }
     if (total >= 0) {
         std::mt19937 rng((long long)(new char));
-        std::uniform_real_distribution<float> distribution(0.2, 0.4);
+        std::uniform_real_distribution<float> distribution(0.2f, 0.4f);
         total -= distribution(rng) * 2;
         sf::CircleShape shp;
         shp.setPosition(m_cap.getPosition() + m_position);
         shp.setFillColor(sf::Color::Transparent);
         shp.setOutlineColor(sf::Color::Red);
-        shp.setOutlineThickness(0.01);
+        shp.setOutlineThickness(0.01f);
         shapes.insert(shapes.begin(), shp);
     }
     for (auto& shp : shapes) {
-        shp.setRadius(shp.getRadius() + dt * 0.2);
+        shp.setRadius(shp.getRadius() + dt * 0.2f);
         shp.setOrigin(shp.getRadius() * sf::Vector2f(1, 1));
         float t = shp.getRadius();
         if (t >= 1) {
@@ -93,8 +93,8 @@ void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     for (auto& circle : shapes) {
         renderTarget.draw(circle, renderStates);
     }
-    if (m_timeS > 0.01) {
-        for (auto& shp : drawLoadingBar(cap.getPosition() + sf::Vector2f(0, 0.1), m_timeS, sf::Vector2f(0.2, 0.1))) {
+    if (m_timeS > 0.01f) {
+        for (auto& shp : drawLoadingBar(cap.getPosition() + sf::Vector2f(0, 0.1f), m_timeS, sf::Vector2f(0.2f, 0.1f))) {
             renderTarget.draw(shp, renderStates);
         }
     }
