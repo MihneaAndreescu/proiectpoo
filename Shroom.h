@@ -16,9 +16,10 @@ private:
     float btarget = 0;
     float elapsed = 2;
     float total = 0;
+    float m_timeS;
     std::vector<sf::CircleShape> shapes;
 public:
-    void update(float dt);
+    void update(float dt,float timeS);
     void setPosition(sf::Vector2f position);
     explicit Shroom(float size);
     Shroom(float capRadius, float stalkWidth, float stalkHeight);

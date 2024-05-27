@@ -19,7 +19,8 @@ Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
     m_stalk.setPosition(0, capRadius / 2);
 }
 
-void Shroom::update(float dt) {
+void Shroom::update(float dt,float timeS) {
+    m_timeS = timeS;
     elapsed += dt * 0.5;
     total += dt;
     if (elapsed >= 1) {
@@ -64,6 +65,23 @@ sf::CircleShape Shroom::getCap() {
     return cap;
 }
 
+std::vector<sf::RectangleShape> drawLoadingBar(sf::Vector2f position, float completed, sf::Vector2f size) {
+    if (completed < 0.0f) {
+        completed = 0.0f;
+    }
+    if (completed > 1.0f) {
+        completed = 1.0f;
+    }
+    sf::RectangleShape loadingBar(size);
+    loadingBar.setPosition(position);
+    loadingBar.setFillColor(sf::Color(50, 50, 50, 150));
+    float margin = 0.02f;
+    sf::RectangleShape filledPart(sf::Vector2f((size.x - 2 * margin) * completed, size.y - 2 * margin));
+    filledPart.setPosition(position.x + margin, position.y + margin);
+    filledPart.setFillColor(sf::Color(0, 255, 0)); 
+    return {loadingBar, filledPart};
+}
+
 void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     auto stalk = m_stalk;
     auto cap = m_cap;
@@ -74,5 +92,10 @@ void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     renderTarget.draw(cap, renderStates);
     for (auto& circle : shapes) {
         renderTarget.draw(circle, renderStates);
+    }
+    if (m_timeS > 0.01) {
+        for (auto& shp : drawLoadingBar(cap.getPosition() + sf::Vector2f(0, 0.1), m_timeS, sf::Vector2f(0.2, 0.1))) {
+            renderTarget.draw(shp, renderStates);
+        }
     }
 }

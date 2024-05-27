@@ -266,8 +266,8 @@ void SpaceShip::update(ObjectUpdateInfo drawInfo) {
     m_lastDirection = direction;
 }
 
-sf::RectangleShape SpaceShip::getRigidBodyBoundingBox() {
-    if (m_invinc >= 0) {
+sf::RectangleShape SpaceShip::getRigidBodyBoundingBox(int tag) {
+    if (m_invinc >= 0 && tag == 0) {
         sf::RectangleShape shape;
         shape.setPosition(sf::Vector2f(1, 1) * (float)(1e9));
         shape.setSize(sf::Vector2f(0, 0));

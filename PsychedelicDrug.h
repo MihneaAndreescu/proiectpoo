@@ -10,6 +10,7 @@ private:
     std::string m_name;
     sf::Vector2f m_center;
     Shroom m_shroom;
+    double timeSinceNotOnDrugs;
 public:
     void prepDraw() override;
     explicit PsychedelicDrug(const std::string& name);
@@ -21,4 +22,5 @@ public:
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const PsychedelicDrug& planet);
     sf::CircleShape getCap();
+    void resetTimeSinceNotOnDrugs();
 };

@@ -47,7 +47,7 @@ private:
 public:
     int countHearts();
     void invincible(double tInvinc);
-    sf::RectangleShape getRigidBodyBoundingBox();
+    sf::RectangleShape getRigidBodyBoundingBox(int tag);
     void prepDraw() override;
     void update(struct ObjectUpdateInfo m_drawInfo) override;
     SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed);

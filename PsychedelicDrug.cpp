@@ -42,7 +42,6 @@ PsychedelicDrug PsychedelicDrug::operator = (const PsychedelicDrug& other) {
     return *this;
 }
 
-
 PsychedelicDrug::~PsychedelicDrug() {
 }
 
@@ -51,7 +50,12 @@ void PsychedelicDrug::draw(sf::RenderTarget& renderTarget, sf::RenderStates rend
 }
 
 void PsychedelicDrug::update(ObjectUpdateInfo m_updateInfo) {
-    m_shroom.update(m_updateInfo.deltaTime);
+    timeSinceNotOnDrugs += m_updateInfo.deltaTime;
+    m_shroom.update(m_updateInfo.deltaTime, timeSinceNotOnDrugs);
+}
+
+void PsychedelicDrug::resetTimeSinceNotOnDrugs() {
+    timeSinceNotOnDrugs = 0;
 }
 
 void PsychedelicDrug::prepDraw() {

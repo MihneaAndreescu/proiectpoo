@@ -39,21 +39,21 @@ void PlanetSystem::addObject(std::shared_ptr<GameObject> object) {
 }
 
 float pointToLineDistance(const sf::Vector2f& A, const sf::Vector2f& B, const sf::Vector2f& P) {
-    sf::Vector2f AP = P - A; 
-    sf::Vector2f AB = B - A; 
-    float ab2 = AB.x * AB.x + AB.y * AB.y;  
-    float ap_ab = AP.x * AB.x + AP.y * AB.y; 
-    float t = ap_ab / ab2; 
+    sf::Vector2f AP = P - A;
+    sf::Vector2f AB = B - A;
+    float ab2 = AB.x * AB.x + AB.y * AB.y;
+    float ap_ab = AP.x * AB.x + AP.y * AB.y;
+    float t = ap_ab / ab2;
     if (t < 0.0f) {
         return std::sqrt(AP.x * AP.x + AP.y * AP.y);
     }
     else if (t > 1.0f) {
-        sf::Vector2f BP = P - B;  
+        sf::Vector2f BP = P - B;
         return std::sqrt(BP.x * BP.x + BP.y * BP.y);
     }
     else {
-        sf::Vector2f Closest = A + t * AB;  
-        sf::Vector2f ClosestP = P - Closest;  
+        sf::Vector2f Closest = A + t * AB;
+        sf::Vector2f ClosestP = P - Closest;
         return std::sqrt(ClosestP.x * ClosestP.x + ClosestP.y * ClosestP.y);
     }
 }
@@ -103,9 +103,9 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
     std::vector<std::shared_ptr<Planet>> planets = getObjectsOfType<Planet>();
     std::vector<std::shared_ptr<PsychedelicDrug>> drugs = getObjectsOfType<PsychedelicDrug>();
-    
+
     for (auto& spaceShip : spaceShips) {
-        sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox();
+        sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(0);
         for (auto& planet : planets) {
             sf::CircleShape circle = planet->getCircleShape();
             if (intersects(rectangle, circle)) {
@@ -114,24 +114,25 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
             }
         }
     }
-    std::cout << " = " << (int)drugs.size() << "\n";
-    for (auto& spaceShip : spaceShips) {
-        sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox();
-        for (auto& drug : drugs) {
-            sf::CircleShape circle = drug->getCap();
-            if (intersects(rectangle, circle)) {
-                std::cout << "space ship wants drugs!\n";
-                //spaceShip->invincible(5);
-            }
-        }
-    }
-
     for (auto& object : gravityObjects) {
         sf::Vector2f dir = object->getCenter();
         object->applyForce(-Math::normalize(dir) * 1.0f * Math::norm(dir) * Math::norm(dir));
     }
     for (auto& object : m_gameObjects) {
         object->update(m_drawInfo);
+    }
+    for (auto& drug : drugs) {
+        sf::CircleShape circle = drug->getCap();
+        bool is = 0;
+        for (auto& spaceShip : spaceShips) {
+            sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(1);
+            if (intersects(rectangle, circle)) {
+                is = 1;
+            }
+        }
+        if (is == 0) {
+            drug->resetTimeSinceNotOnDrugs();
+        }
     }
     for (auto& object : gravityObjects) {
         object->clearForces();
