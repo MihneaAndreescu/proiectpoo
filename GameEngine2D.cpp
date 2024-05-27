@@ -56,7 +56,7 @@ void GameEngine2D::draw() {
 	int shrooms = m_planetarySystem.countShrooms();
 	x = -2.9f, y = 2.6f;
 	for (int i = 0; i < shrooms; i++) {
-		Shroom shroom(0.1);
+		Shroom shroom(0.1f);
 		shroom.setPosition(sf::Vector2f(x, y));
 		x += 0.25f;
 		m_window.draw(shroom);

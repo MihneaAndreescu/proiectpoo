@@ -2,9 +2,10 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
+#include "GravityObject.h"
 #include "Math.h"
 
-class SpaceShip : public GameObject {
+class SpaceShip : public GravityObject {
 private:
     struct DrawInfo {
         sf::VertexArray spaceShipMainBodyVertexArray;
@@ -57,8 +58,18 @@ public:
     SpaceShip(const SpaceShip& other);
     SpaceShip operator = (const SpaceShip& other);
     ~SpaceShip();
-    sf::Vector2f getCenter() const;
-    float getMass() const;
+    sf::Vector2f getCenter() const override;
+    float getMass() const override {
+        return -100;
+    }
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const SpaceShip& SpaceShip);
+
+    void clearForces() override {
+
+    }
+
+    void applyForce(sf::Vector2f force) override {
+
+    }
 };
