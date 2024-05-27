@@ -1,5 +1,17 @@
 #include "Shroom.h"
 #include <random>
+#include <iostream>
+
+class ShroomException : public std::runtime_error {
+public:
+    explicit ShroomException(const std::string& message)
+        : std::runtime_error("Shroom Exception: " + message) {
+    }
+
+    ShroomException(const std::string& message, const std::string& detail)
+        : std::runtime_error("Shroom Exception: " + message + " [" + detail + "]") {
+    }
+};
 
 void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;
@@ -9,7 +21,11 @@ Shroom::Shroom(float size) : Shroom(size, size * 0.5, -size * 2) {
 
 }
 
+
 Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
+    if (capRadius <= 0 || stalkWidth <= 0) {
+        throw ShroomException("dimensiuni invalide " + std::to_string(capRadius) + ", StalkWidth: " + std::to_string(stalkWidth) + ", StalkHeight: " + std::to_string(stalkHeight));
+    }
     m_cap.setRadius(capRadius);
     m_cap.setFillColor(sf::Color::Red);
     m_cap.setOrigin(capRadius, capRadius);
@@ -20,6 +36,14 @@ Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
 }
 
 void Shroom::update(float dt,float timeS) {
+    try {
+        if (dt < 0) {
+            throw ShroomException("Negative dt ", "dt: " + std::to_string(dt));
+        }
+    }
+    catch (const ShroomException& e) {
+        std::cout << "Caught ShroomException: " << e.what() << std::endl;
+    }
     m_timeS = timeS;
     elapsed += dt * 0.5;
     total += dt;
