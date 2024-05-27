@@ -13,7 +13,7 @@ private:
 public:
     void update(float dt);
     void setPosition(sf::Vector2f position);
-    Shroom(float size);
+    explicit Shroom(float size);
     Shroom(float capRadius, float stalkWidth, float stalkHeight);
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
 };

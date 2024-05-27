@@ -12,7 +12,7 @@ private:
     Shroom m_shroom;
 public:
     void prepDraw() override;
-    PsychedelicDrug(const std::string& name);
+    explicit PsychedelicDrug(const std::string& name);
     PsychedelicDrug(const PsychedelicDrug& other);
     sf::Vector2f getCenter() const;
     PsychedelicDrug operator = (const PsychedelicDrug& other);
