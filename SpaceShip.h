@@ -59,16 +59,10 @@ public:
     SpaceShip operator = (const SpaceShip& other);
     ~SpaceShip();
     sf::Vector2f getCenter() const override;
-    float getMass() const override {
-        return -100;
-    }
+    float getMass() const override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const SpaceShip& SpaceShip);
-
-    void clearForces() override {
-
-    }
-
+    void clearForces() override;
     void applyForce(sf::Vector2f force) override {
 
     }

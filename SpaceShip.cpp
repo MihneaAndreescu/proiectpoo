@@ -296,3 +296,18 @@ int SpaceShip::countShrooms() {
 void SpaceShip::increase() {
     m_shrooms++;
 }
+
+float SpaceShip::getMass() const {
+    if (m_invinc >= 0) {
+        return -100;
+    }
+    return 0;
+}
+
+void SpaceShip::clearForces() {
+
+}
+
+void SpaceShip::applyForce(sf::Vector2f force) {
+
+}
