@@ -30,6 +30,7 @@ private:
     float m_invinc;
     int m_hearts;
     int m_shrooms = 0;
+    sf::Vector2f sumForces = sf::Vector2f(0.0f, 0.0f);
     void prepDrawSpaceShipMainBodyVertexArray();
     void prepDrawLeftRocket();
     void prepDrawRightRocket();
@@ -63,7 +64,5 @@ public:
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const SpaceShip& SpaceShip);
     void clearForces() override;
-    void applyForce(sf::Vector2f force) override {
-
-    }
+    void applyForce(sf::Vector2f force) override;
 };

@@ -308,6 +308,6 @@ void SpaceShip::clearForces() {
 
 }
 
-void SpaceShip::applyForce(sf::Vector2f force) {
-
+void SpaceShip::applyForce(sf::Vector2f force) override {
+    sumForces += force;
 }
