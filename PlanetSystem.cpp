@@ -5,6 +5,12 @@
 #include "SpaceShip.h"
 #include <set>
 
+class PlanetSystemInitializationException : public std::runtime_error {
+public:
+    explicit PlanetSystemInitializationException(const std::string& message) : std::runtime_error(message) {
+    }
+};
+
 PlanetSystem::PlanetSystem() {
 }
 
@@ -32,6 +38,15 @@ void PlanetSystem::prepDraw() {
 
 void PlanetSystem::setName(const std::string& name) {
     m_name = name;
+    try {
+        if (name.empty()) {
+            throw PlanetSystemInitializationException("nume gol");
+        }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "eroare de nume: " << e.what() << std::endl;
+        throw;
+    }
 }
 
 PlanetSystem::PlanetSystem(const std::string& name) :
