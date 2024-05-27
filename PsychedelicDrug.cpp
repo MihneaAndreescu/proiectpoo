@@ -4,7 +4,7 @@
 #include <random>
 #include "Math.h"
 
-std::mt19937 rng(777);
+std::mt19937 rng((long long)(new char));
 std::uniform_real_distribution<float> sizeDistribution(0.1f, 0.15f);
 std::uniform_real_distribution<float> distribution01(0, 1);
 std::uniform_real_distribution<float> distribution02pi(0, 2 * Math::PI);
@@ -61,4 +61,8 @@ void PsychedelicDrug::prepDraw() {
 std::ostream& operator<<(std::ostream& os, const PsychedelicDrug& planet) {
     os << "(name = " << planet.m_name << ")\n";
     return os;
+}
+
+sf::CircleShape PsychedelicDrug::getCap() {
+    return m_shroom.getCap();
 }

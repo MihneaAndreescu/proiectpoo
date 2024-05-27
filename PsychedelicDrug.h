@@ -20,4 +20,5 @@ public:
     void update(ObjectUpdateInfo m_updateInfo) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const PsychedelicDrug& planet);
+    sf::CircleShape getCap();
 };

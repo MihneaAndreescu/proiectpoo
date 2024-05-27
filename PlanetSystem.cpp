@@ -1,6 +1,7 @@
 #include "PlanetSystem.h"
 #include "Math.h"
 #include "GravityObject.h"
+#include "PsychedelicDrug.h"
 
 PlanetSystem::PlanetSystem() {
 }
@@ -56,6 +57,7 @@ float pointToLineDistance(const sf::Vector2f& A, const sf::Vector2f& B, const sf
         return std::sqrt(ClosestP.x * ClosestP.x + ClosestP.y * ClosestP.y);
     }
 }
+
 bool intersects(const sf::RectangleShape& rectangle, const sf::CircleShape& circle) {
     sf::Vector2f rectPos = rectangle.getPosition();
     sf::Vector2f circlePos = circle.getPosition();
@@ -100,6 +102,7 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     }
     std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
     std::vector<std::shared_ptr<Planet>> planets = getObjectsOfType<Planet>();
+    std::vector<std::shared_ptr<PsychedelicDrug>> drugs = getObjectsOfType<PsychedelicDrug>();
     
     for (auto& spaceShip : spaceShips) {
         sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox();
@@ -111,6 +114,18 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
             }
         }
     }
+    std::cout << " = " << (int)drugs.size() << "\n";
+    for (auto& spaceShip : spaceShips) {
+        sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox();
+        for (auto& drug : drugs) {
+            sf::CircleShape circle = drug->getCap();
+            if (intersects(rectangle, circle)) {
+                std::cout << "space ship wants drugs!\n";
+                //spaceShip->invincible(5);
+            }
+        }
+    }
+
     for (auto& object : gravityObjects) {
         sf::Vector2f dir = object->getCenter();
         object->applyForce(-Math::normalize(dir) * 1.0f * Math::norm(dir) * Math::norm(dir));

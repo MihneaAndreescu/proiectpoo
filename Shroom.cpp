@@ -5,7 +5,7 @@ void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;
 }
 
-Shroom::Shroom(float size) : Shroom(size, size * 0.5, -size * 5) {
+Shroom::Shroom(float size) : Shroom(size, size * 0.5, -size * 2) {
 
 }
 
@@ -19,26 +19,60 @@ Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
     m_stalk.setPosition(0, capRadius / 2);
 }
 
-
 void Shroom::update(float dt) {
-    std::mt19937 rng(228);
-    std::uniform_real_distribution<float> distributionNegative1010(-10, 10);
+    elapsed += dt * 0.5;
+    total += dt;
+    if (elapsed >= 1) {
+        elapsed -= 1;
+        r = rtarget;
+        g = gtarget;
+        b = btarget;
+        std::mt19937 rng((long long)(new char));
+        std::uniform_real_distribution<float> distribution256(0, 255);
+        rtarget = distribution256(rng);
+        gtarget = distribution256(rng);
+        btarget = distribution256(rng);
+    }
+    if (total >= 0) {
+        std::mt19937 rng((long long)(new char));
+        std::uniform_real_distribution<float> distribution(0.2, 0.4);
+        total -= distribution(rng) * 2;
+        sf::CircleShape shp;
+        shp.setPosition(m_cap.getPosition() + m_position);
+        shp.setFillColor(sf::Color::Transparent);
+        shp.setOutlineColor(sf::Color::Red);
+        shp.setOutlineThickness(0.01);
+        shapes.insert(shapes.begin(), shp);
+    }
+    for (auto& shp : shapes) {
+        shp.setRadius(shp.getRadius() + dt * 0.2);
+        shp.setOrigin(shp.getRadius() * sf::Vector2f(1, 1));
+        float t = shp.getRadius();
+        if (t >= 1) {
+            t = 1;
+        }
+        shp.setOutlineColor(sf::Color(35 * t + (1 - t) * 255, 100 * t + (1 - t) * 0, 300 * t + (1 - t) * 0));
+    }
+    while (!shapes.empty() && shapes.back().getRadius() >= 1) {
+        shapes.pop_back();
+    }
+}
 
-    r += distributionNegative1010(rng) * dt * 10;
-    g += distributionNegative1010(rng) * dt * 10;
-    b += distributionNegative1010(rng) * dt * 10;
-    r = std::min(200.0f, std::max(r, 50.0f));
-    g = std::min(200.0f, std::max(g, 50.0f));
-    b = std::min(200.0f, std::max(b, 50.0f));
-
+sf::CircleShape Shroom::getCap() {
+    auto cap = m_cap;
+    cap.setPosition(cap.getPosition() + m_position);
+    return cap;
 }
 
 void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     auto stalk = m_stalk;
     auto cap = m_cap;
-    cap.setFillColor(sf::Color(r, g, b));
-    stalk.setPosition(stalk.getPosition() + m_position);
+    cap.setFillColor(sf::Color(r * (1 - elapsed) + rtarget * elapsed, g * (1 - elapsed) + gtarget * elapsed, b * (1 - elapsed) + btarget * elapsed));
     cap.setPosition(cap.getPosition() + m_position);
+    stalk.setPosition(stalk.getPosition() + m_position);
     renderTarget.draw(stalk, renderStates);
     renderTarget.draw(cap, renderStates);
+    for (auto& circle : shapes) {
+        renderTarget.draw(circle, renderStates);
+    }
 }
