@@ -10,7 +10,7 @@ private:
     std::string m_name;
     sf::Vector2f m_center;
     Shroom m_shroom;
-    double timeSinceNotOnDrugs;
+    double m_timeSinceNotOnDrugs;
 public:
     void prepDraw() override;
     explicit PsychedelicDrug(const std::string& name);

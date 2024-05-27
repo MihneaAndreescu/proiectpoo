@@ -11,7 +11,8 @@ std::uniform_real_distribution<float> distribution02pi(0, 2 * Math::PI);
 
 PsychedelicDrug::PsychedelicDrug(const std::string& name) :
     m_name(name),
-    m_shroom(sizeDistribution(rng)) {
+    m_shroom(sizeDistribution(rng)),
+    m_timeSinceNotOnDrugs(0) {
     float radius = distribution01(rng);
     radius = radius * radius * radius;
     radius = radius * 100;
@@ -26,7 +27,8 @@ PsychedelicDrug::PsychedelicDrug(const std::string& name) :
 PsychedelicDrug::PsychedelicDrug(const PsychedelicDrug& other) :
     m_name(other.m_name),
     m_center(other.m_center),
-    m_shroom(other.m_shroom) {
+    m_shroom(other.m_shroom),
+    m_timeSinceNotOnDrugs(other.m_timeSinceNotOnDrugs) {
 }
 
 sf::Vector2f PsychedelicDrug::getCenter() const {
@@ -38,6 +40,7 @@ PsychedelicDrug PsychedelicDrug::operator = (const PsychedelicDrug& other) {
         this->m_name = other.m_name;
         this->m_center = other.m_center;
         this->m_shroom = other.m_shroom;
+        this->m_timeSinceNotOnDrugs = other.m_timeSinceNotOnDrugs;
     }
     return *this;
 }
@@ -50,12 +53,12 @@ void PsychedelicDrug::draw(sf::RenderTarget& renderTarget, sf::RenderStates rend
 }
 
 void PsychedelicDrug::update(ObjectUpdateInfo m_updateInfo) {
-    timeSinceNotOnDrugs += m_updateInfo.deltaTime;
-    m_shroom.update(m_updateInfo.deltaTime, timeSinceNotOnDrugs);
+    m_timeSinceNotOnDrugs += m_updateInfo.deltaTime;
+    m_shroom.update(m_updateInfo.deltaTime, m_timeSinceNotOnDrugs);
 }
 
 void PsychedelicDrug::resetTimeSinceNotOnDrugs() {
-    timeSinceNotOnDrugs = 0;
+    m_timeSinceNotOnDrugs = 0;
 }
 
 void PsychedelicDrug::prepDraw() {
