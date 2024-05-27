@@ -16,7 +16,7 @@ private:
     float btarget = 0;
     float elapsed = 2;
     float total = 0;
-    float m_timeS;
+    float m_timeS = 0;
     std::vector<sf::CircleShape> shapes;
 public:
     void update(float dt,float timeS);
