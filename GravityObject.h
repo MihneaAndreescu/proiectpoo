@@ -7,7 +7,7 @@ private:
     bool isAttracted;
     bool isAttracting;
 public:
-    GravityObject(bool isAttracted, bool isAttrracting) : isAttracted(isAttracted), isAttrracting(isAttrracting) {
+    GravityObject(bool isAttracted, bool isAttrracting) : isAttracted(isAttracted), isAttracting(isAttrracting) {
 
     }
     bool getIsAttracted() {
