@@ -1,28 +1,38 @@
-class PlanetSystemInitializationException : public std::runtime_error {
+#include <string>
+
+#include <string>
+#include <stdexcept>
+
+class MyException : public std::runtime_error {
 public:
-    explicit PlanetSystemInitializationException(const std::string& message) : std::runtime_error(message) {
+    explicit MyException(const std::string& message) : std::runtime_error(message) {}
+};
+
+class PlanetSystemInitializationException : public MyException {
+public:
+    explicit PlanetSystemInitializationException(const std::string& message)
+        : MyException(message) {
     }
 };
 
-class MathException : public std::runtime_error {
+class MathException : public MyException {
 public:
-	explicit MathException(const std::string& message)
-		: std::runtime_error(message) {
-	}
+    explicit MathException(const std::string& message)
+        : MyException(message) {
+    }
 
-	MathException(const std::string& message, float value)
-		: std::runtime_error(message + ": [" + std::to_string(value) + "]") {
-
-	}
+    MathException(const std::string& message, float value)
+        : MyException(message + ": [" + std::to_string(value) + "]") {
+    }
 };
 
-class ShroomException : public std::runtime_error {
+class ShroomException : public MyException {
 public:
     explicit ShroomException(const std::string& message)
-        : std::runtime_error("Shroom Exception: " + message) {
+        : MyException("Shroom Exception: " + message) {
     }
 
     ShroomException(const std::string& message, const std::string& detail)
-        : std::runtime_error("Shroom Exception: " + message + " [" + detail + "]") {
+        : MyException("Shroom Exception: " + message + " [" + detail + "]") {
     }
 };
