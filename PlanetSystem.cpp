@@ -14,7 +14,7 @@ PlanetSystem::~PlanetSystem() {
 
 void PlanetSystem::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     for (const auto& object : m_gameObjects) {
-        if (!std::dynamic_pointer_cast<SpaceShip>(object)||1) {
+        if (!std::dynamic_pointer_cast<SpaceShip>(object)) {
             renderTarget.draw(*object, renderStates);
         }
     }

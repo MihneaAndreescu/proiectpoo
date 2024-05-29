@@ -1,17 +1,7 @@
 #include "Shroom.h"
 #include <random>
 #include <iostream>
-
-class ShroomException : public std::runtime_error {
-public:
-    explicit ShroomException(const std::string& message)
-        : std::runtime_error("Shroom Exception: " + message) {
-    }
-
-    ShroomException(const std::string& message, const std::string& detail)
-        : std::runtime_error("Shroom Exception: " + message + " [" + detail + "]") {
-    }
-};
+#include "Exceptions.h"
 
 void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;

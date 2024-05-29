@@ -1,18 +1,7 @@
 #include "Math.h"
 #include <cmath>
 #include <iostream>
-
-class MathException : public std::runtime_error {
-public:
-	explicit MathException(const std::string& message)
-		: std::runtime_error(message) {
-	}
-
-	MathException(const std::string& message, float value)
-		: std::runtime_error(message + ": [" + std::to_string(value) + "]") {
-		
-	}
-};
+#include "Exceptions.h"
 
 namespace Math {
 	sf::Vector2f rotateAroundOrigin(sf::Vector2f point, float angle) {
