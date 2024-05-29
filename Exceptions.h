@@ -15,6 +15,13 @@ public:
     }
 };
 
+class HeartInitializationException : public MyException {
+public:
+    explicit HeartInitializationException(const std::string& message)
+        : MyException(message) {
+    }
+};
+
 class MathException : public MyException {
 public:
     explicit MathException(const std::string& message)

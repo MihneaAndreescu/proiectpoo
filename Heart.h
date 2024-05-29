@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Exceptions.h"
 
 class Heart : public sf::Drawable {
 private:

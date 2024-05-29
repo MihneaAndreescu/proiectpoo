@@ -1,6 +1,9 @@
 #include "Heart.h"
 
 Heart::Heart(float x, float y, float size) {
+    if (size < 0) {
+        throw HeartInitializationException("dimensiune negativa");
+    }
     float radius = size / 4;
     float adjustedRadius = radius;
     m_topLeftCircleShape.setRadius(adjustedRadius);
