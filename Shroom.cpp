@@ -36,13 +36,8 @@ Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
 }
 
 void Shroom::update(float dt,float timeS) {
-    try {
-        if (dt < 0) {
-            throw ShroomException("Negative dt ", "dt: " + std::to_string(dt));
-        }
-    }
-    catch (const ShroomException& e) {
-        std::cout << "Caught ShroomException: " << e.what() << std::endl;
+    if (dt < 0) {
+        throw ShroomException("Negative dt ", "dt: " + std::to_string(dt));
     }
     m_timeS = timeS;
     elapsed += dt * 0.5;
