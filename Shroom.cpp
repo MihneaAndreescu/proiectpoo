@@ -38,12 +38,12 @@ void Shroom::update(float dt,float timeS) {
         r = rtarget;
         g = gtarget;
         b = btarget;
-        rtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 255));
-        gtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 255));
-        btarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 255));
+        rtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f));
+        gtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f));
+        btarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f));
     }
     if (total >= 0) {
-        total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4, 0.8));
+        total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4f, 0.8f));
         sf::CircleShape shp;
         shp.setPosition(m_cap.getPosition() + m_position);
         shp.setFillColor(sf::Color::Transparent);

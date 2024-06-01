@@ -7,15 +7,15 @@
 
 PsychedelicDrug::PsychedelicDrug(const std::string& name) :
     m_name(name),
-    m_shroom(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.1, 0.15))),
+    m_shroom(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.1f, 0.15f))),
     m_timeSinceNotOnDrugs(0) {
-    float radius = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 1));
+    float radius = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 1.0f));
     radius = radius * radius * radius;
     radius = radius * 100;
-    while (abs(radius) > 3) {
+    while (abs(radius) > 2.5) {
         radius /= 2;
     }
-    float angle = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 2 * Math::PI));
+    float angle = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 2.0f * Math::PI));
     m_center = radius * sf::Vector2f(cos(angle), sin(angle));
     m_shroom.setPosition(m_center);
 }
