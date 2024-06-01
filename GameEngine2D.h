@@ -22,7 +22,6 @@ private:
 	void updateAndAnalyzeFrameData();
 	bool handleEventLoop();
 	void draw();
-	void handleTemporaryViewMovement(const float dt);
 	void updateFrame();
 	void initialize();
 	void initializePlanetarySystem();

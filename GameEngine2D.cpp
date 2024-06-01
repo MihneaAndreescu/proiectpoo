@@ -64,23 +64,11 @@ void GameEngine2D::draw() {
 	m_window.display();
 }
 
-void GameEngine2D::handleTemporaryViewMovement(const float dt) {
-	sf::Vector2f movement = sf::Vector2f(0, 0);
-	movement += sf::Vector2f(1, 0) * dt * (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D));
-	movement += sf::Vector2f(-1, 0) * dt * (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A));
-	movement += sf::Vector2f(0, 1) * dt * (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W));
-	movement += sf::Vector2f(0, -1) * dt * (float)(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S));
-	m_view.move(movement);
-	m_window.setView(m_view);
-}
-
-
 void GameEngine2D::updateFrame() {
 	if (handleEventLoop()) {
 		return;
 	}
 	const float dt = m_frameData.fpsClock.getElapsedTime().asSeconds();
-	handleTemporaryViewMovement(dt);
 	sf::Vector2f mousePosition = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
 	ObjectUpdateInfo m_drawInfo({ dt, mousePosition });
 	m_planetarySystem.update(m_drawInfo);
