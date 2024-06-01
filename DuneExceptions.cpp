@@ -1,29 +1,29 @@
-#include "Exceptions.h"
+#include "DuneExceptions.h"
 
-MyException::MyException(const std::string& message) : std::runtime_error(message) {
+DuneExceptions::DuneExceptions(const std::string& message) : std::runtime_error(message) {
 
 }
 
 PlanetSystemInitializationException::PlanetSystemInitializationException(const std::string& message)
-    : MyException(message) {
+    : DuneExceptions(message) {
 }
 
 HeartInitializationException::HeartInitializationException(const std::string& message)
-    : MyException(message) {
+    : DuneExceptions(message) {
 }
 
 MathException::MathException(const std::string& message)
-    : MyException(message) {
+    : DuneExceptions(message) {
 }
 
 MathException::MathException(const std::string& message, float value)
-    : MyException(message + ": [" + std::to_string(value) + "]") {
+    : DuneExceptions(message + ": [" + std::to_string(value) + "]") {
 }
 
 ShroomException::ShroomException(const std::string& message)
-    : MyException("Shroom Exception: " + message) {
+    : DuneExceptions("Shroom Exception: " + message) {
 }
 
 ShroomException::ShroomException(const std::string& message, const std::string& detail)
-    : MyException("Shroom Exception: " + message + " [" + detail + "]") {
+    : DuneExceptions("Shroom Exception: " + message + " [" + detail + "]") {
 }

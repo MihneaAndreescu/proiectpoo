@@ -1,7 +1,7 @@
 #include "Shroom.h"
 #include <random>
 #include <iostream>
-#include "Exceptions.h"
+#include "DuneExceptions.h"
 
 void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;

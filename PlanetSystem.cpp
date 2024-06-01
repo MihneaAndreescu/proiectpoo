@@ -4,7 +4,7 @@
 #include "PsychedelicDrug.h"
 #include "SpaceShip.h"
 #include <set>
-#include "Exceptions.h"
+#include "DuneExceptions.h"
 
 PlanetSystem::PlanetSystem() {
 }

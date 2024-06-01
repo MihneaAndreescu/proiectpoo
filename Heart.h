@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Exceptions.h"
+#include "DuneExceptions.h"
 
 class Heart : public sf::Drawable {
 private:
