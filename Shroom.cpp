@@ -2,6 +2,7 @@
 #include <random>
 #include <iostream>
 #include "DuneExceptions.h"
+#include "RandomNumber.h"
 
 void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;
@@ -37,16 +38,12 @@ void Shroom::update(float dt,float timeS) {
         r = rtarget;
         g = gtarget;
         b = btarget;
-        std::mt19937 rng((long long)(new char));
-        std::uniform_real_distribution<float> distribution256(0, 255);
-        rtarget = distribution256(rng);
-        gtarget = distribution256(rng);
-        btarget = distribution256(rng);
+        rtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 255));
+        gtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 255));
+        btarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 255));
     }
     if (total >= 0) {
-        std::mt19937 rng((long long)(new char));
-        std::uniform_real_distribution<float> distribution(0.2f, 0.4f);
-        total -= distribution(rng) * 2;
+        total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4, 0.8));
         sf::CircleShape shp;
         shp.setPosition(m_cap.getPosition() + m_position);
         shp.setFillColor(sf::Color::Transparent);

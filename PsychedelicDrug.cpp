@@ -3,23 +3,19 @@
 #include "Shroom.h"
 #include <random>
 #include "Math.h"
-
-std::mt19937 rng((long long)(new char));
-std::uniform_real_distribution<float> sizeDistribution(0.1f, 0.15f);
-std::uniform_real_distribution<float> distribution01(0, 1);
-std::uniform_real_distribution<float> distribution02pi(0, 2 * Math::PI);
+#include "RandomNumber.h"
 
 PsychedelicDrug::PsychedelicDrug(const std::string& name) :
     m_name(name),
-    m_shroom(sizeDistribution(rng)),
+    m_shroom(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.1, 0.15))),
     m_timeSinceNotOnDrugs(0) {
-    float radius = distribution01(rng);
+    float radius = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 1));
     radius = radius * radius * radius;
     radius = radius * 100;
     while (abs(radius) > 3) {
         radius /= 2;
     }
-    float angle = distribution02pi(rng);
+    float angle = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 2 * Math::PI));
     m_center = radius * sf::Vector2f(cos(angle), sin(angle));
     m_shroom.setPosition(m_center);
 }
