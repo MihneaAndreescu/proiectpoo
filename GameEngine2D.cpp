@@ -68,9 +68,9 @@ void GameEngine2D::draw() {
 	}
 	if (!points.empty()) {
 		float minx = points[0].x;
+		float miny = points[0].y;
 		float maxx = points[0].x;
-		float miny = points.back().y;
-		float maxy = points.back().y;
+		float maxy = points[0].y;
 		for (auto& it : points) {
 			minx = std::min(minx, it.x);
 			miny = std::min(miny, it.y);
