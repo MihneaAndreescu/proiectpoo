@@ -1,6 +1,7 @@
 #include "Star.h"
 #include "DuneException.h"
 #include "Math.h"
+#include <cmath>
 
 Star::Star(float x, float y, float size) {
     if (size <= 0) {
