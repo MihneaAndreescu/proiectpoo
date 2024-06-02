@@ -35,6 +35,7 @@ bool GameEngine2D::handleEventLoop() {
 void GameEngine2D::draw() {
 	m_window.clear();
 
+
 	sf::RectangleShape shape;
 	shape.setSize(sf::Vector2f(100, 100));
 	shape.setPosition(sf::Vector2f(-50, -50));
@@ -62,9 +63,9 @@ void GameEngine2D::draw() {
 	m_window.display();
 }
 
-void GameEngine2D::updateFrame() {
+int GameEngine2D::updateFrame() {
 	if (handleEventLoop()) {
-		return;
+		return 1;
 	}
 	const float dt = m_frameData.fpsClock.getElapsedTime().asSeconds();
 	sf::Vector2f mousePosition = m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
@@ -72,6 +73,7 @@ void GameEngine2D::updateFrame() {
 	m_planetarySystem.update(m_drawInfo);
 	updateAndAnalyzeFrameData();
 	draw();
+	return 0;
 }
 
 void GameEngine2D::initializeWindowAndView() {
@@ -100,6 +102,8 @@ void GameEngine2D::initialize() {
 void GameEngine2D::gameLoop() {
 	initialize();
 	while (m_window.isOpen()) {
-		updateFrame();
+		if (updateFrame()) {
+			return;
+		}
 	}
 }

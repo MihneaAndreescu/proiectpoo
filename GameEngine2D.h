@@ -22,7 +22,7 @@ private:
 	void updateAndAnalyzeFrameData();
 	bool handleEventLoop();
 	void draw();
-	void updateFrame();
+	int updateFrame();
 	void initialize();
 	void initializePlanetarySystem();
 	void initializeWindowAndView();
