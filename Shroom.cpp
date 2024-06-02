@@ -1,46 +1,61 @@
 #include "Shroom.h"
 #include <random>
 #include <iostream>
-#include "DuneExceptions.h"
-#include "RandomNumber.h"
+
+std::vector<sf::RectangleShape> drawLoadingBar(sf::Vector2f position, float completed, sf::Vector2f size) {
+    if (completed < 0.0f) {
+        completed = 0.0f;
+    }
+    if (completed > 1.0f) {
+        completed = 1.0f;
+    }
+    sf::RectangleShape loadingBar(size);
+    loadingBar.setPosition(position);
+    loadingBar.setFillColor(sf::Color(50, 50, 50, 150));
+    float margin = 0.02f;
+    sf::RectangleShape filledPart(sf::Vector2f((size.x - 2 * margin) * completed, size.y - 2 * margin));
+    filledPart.setPosition(position.x + margin, position.y + margin);
+    filledPart.setFillColor(sf::Color(0, 255, 0));
+    return { loadingBar, filledPart };
+}
 
 void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;
 }
 
-Shroom::Shroom(float size) : Shroom(size, size * 0.5, -size * 2) {
-
-}
-
+Shroom::Shroom(float size) : Shroom(size, size * 0.5, size * -2) {}
 
 Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
-    if (capRadius <= 0 || stalkWidth <= 0) {
-        throw ShroomException("dimensiuni invalide " + std::to_string(capRadius) + ", StalkWidth: " + std::to_string(stalkWidth) + ", StalkHeight: " + std::to_string(stalkHeight));
+    if (capRadius <= 0 || stalkWidth <= 0 || stalkHeight >= 0) {
+        throw ShroomException("Invalid dimensions - CapRadius: " + std::to_string(capRadius) +
+            ", StalkWidth: " + std::to_string(stalkWidth) +
+            ", StalkHeight: " + std::to_string(stalkHeight));
     }
     m_cap.setRadius(capRadius);
     m_cap.setFillColor(sf::Color::Red);
     m_cap.setOrigin(capRadius, capRadius);
     m_stalk.setSize(sf::Vector2f(stalkWidth, stalkHeight));
-    m_stalk.setFillColor(sf::Color(r, g, b));
+    m_stalk.setFillColor(m_color.toSFMLColor());
     m_stalk.setOrigin(stalkWidth / 2, 0);
     m_stalk.setPosition(0, capRadius / 2);
 }
 
-void Shroom::update(float dt,float timeS) {
+void Shroom::update(float dt, float timeS) {
     if (dt < 0) {
-        throw ShroomException("Negative dt ", "dt: " + std::to_string(dt));
+        throw ShroomException("Negative dt - dt: " + std::to_string(dt));
     }
     m_timeS = timeS;
     elapsed += dt * 0.5;
     total += dt;
     if (elapsed >= 1) {
         elapsed -= 1;
-        r = rtarget;
-        g = gtarget;
-        b = btarget;
-        rtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f));
-        gtarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f));
-        btarget = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f));
+        m_color = m_targetColor;
+        m_targetColor = {
+            RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f)),
+            RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f)),
+            RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f)),
+            255
+        };
     }
     if (total >= 0) {
         total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4f, 0.8f));
@@ -65,33 +80,11 @@ void Shroom::update(float dt,float timeS) {
     }
 }
 
-sf::CircleShape Shroom::getCap() {
-    auto cap = m_cap;
-    cap.setPosition(cap.getPosition() + m_position);
-    return cap;
-}
-
-std::vector<sf::RectangleShape> drawLoadingBar(sf::Vector2f position, float completed, sf::Vector2f size) {
-    if (completed < 0.0f) {
-        completed = 0.0f;
-    }
-    if (completed > 1.0f) {
-        completed = 1.0f;
-    }
-    sf::RectangleShape loadingBar(size);
-    loadingBar.setPosition(position);
-    loadingBar.setFillColor(sf::Color(50, 50, 50, 150));
-    float margin = 0.02f;
-    sf::RectangleShape filledPart(sf::Vector2f((size.x - 2 * margin) * completed, size.y - 2 * margin));
-    filledPart.setPosition(position.x + margin, position.y + margin);
-    filledPart.setFillColor(sf::Color(0, 255, 0)); 
-    return {loadingBar, filledPart};
-}
-
 void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     auto stalk = m_stalk;
     auto cap = m_cap;
-    cap.setFillColor(sf::Color(r * (1 - elapsed) + rtarget * elapsed, g * (1 - elapsed) + gtarget * elapsed, b * (1 - elapsed) + btarget * elapsed));
+    DuneColor<float> currentColor = (m_color * (1.0f - elapsed)) + (m_targetColor * elapsed);
+    cap.setFillColor(currentColor.toSFMLColor());
     cap.setPosition(cap.getPosition() + m_position);
     stalk.setPosition(stalk.getPosition() + m_position);
     renderTarget.draw(stalk, renderStates);
@@ -104,4 +97,10 @@ void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
             renderTarget.draw(shp, renderStates);
         }
     }
+}
+
+sf::CircleShape Shroom::getCap() {
+    auto cap = m_cap;
+    cap.setPosition(cap.getPosition() + m_position);
+    return cap;
 }

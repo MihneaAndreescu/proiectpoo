@@ -27,3 +27,7 @@ ShroomException::ShroomException(const std::string& message)
 ShroomException::ShroomException(const std::string& message, const std::string& detail)
     : DuneExceptions("Shroom Exception: " + message + " [" + detail + "]") {
 }
+
+DuneColorException::DuneColorException(const std::string& message) : 
+    DuneExceptions(message) {
+}

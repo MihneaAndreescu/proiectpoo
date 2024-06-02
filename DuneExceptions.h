@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <stdexcept>
 
@@ -26,4 +28,9 @@ class ShroomException : public DuneExceptions {
 public:
     explicit ShroomException(const std::string& message);
     ShroomException(const std::string& message, const std::string& detail);
+};
+
+class DuneColorException : public DuneExceptions {
+public:
+    explicit DuneColorException(const std::string& message);
 };
