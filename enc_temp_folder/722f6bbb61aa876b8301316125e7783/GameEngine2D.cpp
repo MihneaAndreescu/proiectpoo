@@ -33,6 +33,8 @@ bool GameEngine2D::handleEventLoop() {
 }
 
 void GameEngine2D::draw() {
+	//std::cout << " : " << m_planetarySystem.countShrooms() << "\n";
+
 	m_window.clear();
 
 	sf::RectangleShape shape;
@@ -75,7 +77,9 @@ void GameEngine2D::updateFrame() {
 }
 
 void GameEngine2D::initializeWindowAndView() {
+	std::cout << "w\n";
 	m_window.create(sf::VideoMode({ 900, 900 }), "Muad'dib", sf::Style::Default);
+	std::cout << "h\n";
 	m_window.setVerticalSyncEnabled(true);
 	m_view.setSize(sf::Vector2f(6, -6));
 	m_view.setCenter(sf::Vector2f(0, 0));
@@ -90,10 +94,13 @@ void GameEngine2D::initializePlanetarySystem() {
 	m_planetarySystem.addObject(std::make_shared<Planet>("Arrakis", sf::Vector2f(1.5f, 2.0f), 0.08f, sf::Vector2f(0.05f, 0.02f), 3.0f, sf::Color::Yellow));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Giedi Prime", sf::Vector2f(2.5f, -1.0f), 0.12f, sf::Vector2f(-0.04f, 0.01f), 5.0f, sf::Color::Green));
 	m_planetarySystem.addObject(std::make_shared<Planet>("Kaitain", sf::Vector2f(-2.0f, 2.5f), 0.09f, sf::Vector2f(0.06f, -0.03f), 2.5f, sf::Color::Cyan));
+	//m_planetarySystem.addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
 }
 
 void GameEngine2D::initialize() {
+	std::cout << "hi\n";
 	initializeWindowAndView();
+	std::cout << "dr\n";
 	initializePlanetarySystem();
 }
 

@@ -13,10 +13,11 @@ private:
     sf::Vector2f m_position;
     DuneColor<float> m_color = { 200, 100, 30, 255 };
     DuneColor<float> m_targetColor = { 0, 0, 0, 255 };
-    float m_elapsed = 2;
-    float m_total = 0;
+    float elapsed = 2;
+    float total = 0;
     float m_timeS = 0;
-    std::vector<sf::CircleShape> m_shapes;
+    std::vector<sf::CircleShape> shapes;
+
 public:
     void update(float dt, float timeS);
     void setPosition(sf::Vector2f position);
