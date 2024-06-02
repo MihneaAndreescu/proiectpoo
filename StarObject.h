@@ -22,4 +22,5 @@ public:
     void prepDraw() override;
     StarObject& operator=(const StarObject& other);
     friend std::ostream& operator<<(std::ostream& os, const StarObject& planet);
+    sf::Color getColor() const;
 };

@@ -43,7 +43,11 @@ void StarObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderSta
 }
 
 void StarObject::prepDraw() {
-    //m_star.setPosition(m_center);
+    m_star.setColor(sf::Color(255, 255, std::min(1 - m_t, m_t) * 2 * 255));
+}
+
+sf::Color StarObject::getColor() const {
+    return m_star.getColor();
 }
 
 StarObject& StarObject::operator=(const StarObject& other) {
@@ -59,7 +63,7 @@ StarObject& StarObject::operator=(const StarObject& other) {
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const StarObject& planet) {
-    os << "(name = " << planet.m_name << ")\n";
+std::ostream& operator<<(std::ostream& os, const StarObject& star) {
+    os << "(name = " << star.m_name<<", "<<star.getColor().r<<" "<<star.getColor().g<<" "<<star.getColor().b << ")\n";
     return os;
 }
