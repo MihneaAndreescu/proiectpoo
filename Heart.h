@@ -1,5 +1,7 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
-#include "DuneExceptions.h"
+#include "DuneException.h"
 
 class Heart : public sf::Drawable {
 private:

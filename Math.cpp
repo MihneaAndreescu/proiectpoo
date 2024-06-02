@@ -1,7 +1,7 @@
 #include "Math.h"
 #include <cmath>
 #include <iostream>
-#include "DuneExceptions.h"
+#include "DuneException.h"
 
 namespace Math {
 	sf::Vector2f rotateAroundOrigin(sf::Vector2f point, float angle) {

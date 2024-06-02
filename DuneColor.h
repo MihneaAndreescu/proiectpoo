@@ -1,6 +1,8 @@
+#pragma once
+
 #include <SFML/Graphics/Color.hpp>
 #include <algorithm>  
-#include "DuneExceptions.h"
+#include "DuneException.h"
 
 template <typename T>
 class DuneColor {

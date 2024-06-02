@@ -45,10 +45,10 @@ void Shroom::update(float dt, float timeS) {
         throw ShroomException("Negative dt - dt: " + std::to_string(dt));
     }
     m_timeS = timeS;
-    elapsed += dt * 0.5;
-    total += dt;
-    if (elapsed >= 1) {
-        elapsed -= 1;
+    m_elapsed += dt * 0.5;
+    m_total += dt;
+    if (m_elapsed >= 1) {
+        m_elapsed -= 1;
         m_color = m_targetColor;
         m_targetColor = {
             RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f)),
@@ -56,16 +56,16 @@ void Shroom::update(float dt, float timeS) {
             RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 255.0f))
         };
     }
-    if (total >= 0) {
-        total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4f, 0.8f));
+    if (m_total >= 0) {
+        m_total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4f, 0.8f));
         sf::CircleShape shp;
         shp.setPosition(m_cap.getPosition() + m_position);
         shp.setFillColor(sf::Color::Transparent);
         shp.setOutlineColor(sf::Color::Red);
         shp.setOutlineThickness(0.01f);
-        shapes.insert(shapes.begin(), shp);
+        m_shapes.insert(m_shapes.begin(), shp);
     }
-    for (auto& shp : shapes) {
+    for (auto& shp : m_shapes) {
         shp.setRadius(shp.getRadius() + dt * 0.2f);
         shp.setOrigin(shp.getRadius() * sf::Vector2f(1, 1));
         float t = shp.getRadius();
@@ -74,21 +74,21 @@ void Shroom::update(float dt, float timeS) {
         }
         shp.setOutlineColor(sf::Color(35 * t + (1 - t) * 255, 100 * t + (1 - t) * 0, 44 * t + (1 - t) * 0));
     }
-    while (!shapes.empty() && shapes.back().getRadius() >= 1) {
-        shapes.pop_back();
+    while (!m_shapes.empty() && m_shapes.back().getRadius() >= 1) {
+        m_shapes.pop_back();
     }
 }
 
 void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     auto stalk = m_stalk;
     auto cap = m_cap;
-    DuneColor<float> currentColor = (m_color * (1.0f - elapsed)) + (m_targetColor * elapsed);
+    DuneColor<float> currentColor = (m_color * (1.0f - m_elapsed)) + (m_targetColor * m_elapsed);
     cap.setFillColor(currentColor.toSFMLColor());
     cap.setPosition(cap.getPosition() + m_position);
     stalk.setPosition(stalk.getPosition() + m_position);
     renderTarget.draw(stalk, renderStates);
     renderTarget.draw(cap, renderStates);
-    for (auto& circle : shapes) {
+    for (auto& circle : m_shapes) {
         renderTarget.draw(circle, renderStates);
     }
     if (m_timeS > 0.1f) {

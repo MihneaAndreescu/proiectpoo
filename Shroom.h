@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "DuneColor.h"
-#include "DuneExceptions.h"
+#include "DuneException.h"
 #include "RandomNumber.h"
 
 class Shroom : public sf::Drawable, public sf::Transformable {
