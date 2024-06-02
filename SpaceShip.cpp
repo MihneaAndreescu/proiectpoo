@@ -266,6 +266,10 @@ void SpaceShip::update(ObjectUpdateInfo drawInfo) {
     updateRotationTimers(directionCross, drawInfo.deltaTime);
     adjustSimultaneousRotation();
     m_lastDirection = direction;
+    m_center.x = std::max(m_center.x, -3.0f);
+    m_center.y = std::max(m_center.y, -3.0f);
+    m_center.x = std::min(m_center.x, 3.0f);
+    m_center.y = std::min(m_center.y, 3.0f);
 }
 
 sf::RectangleShape SpaceShip::getRigidBodyBoundingBox(int tag) {

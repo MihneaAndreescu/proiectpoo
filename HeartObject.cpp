@@ -38,7 +38,6 @@ bool HeartObject::isDead() const {
 
 void HeartObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     renderTarget.draw(m_heart, renderStates);
-    renderTarget.draw(getCircle(), renderStates);
 }
 
 void HeartObject::prepDraw() {

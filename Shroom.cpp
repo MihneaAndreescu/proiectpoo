@@ -23,9 +23,9 @@ void Shroom::setPosition(sf::Vector2f position) {
     m_position = position;
 }
 
-Shroom::Shroom(float size) : Shroom(size, size * 0.5, size * -2) {}
+Shroom::Shroom(float size, bool fx) : Shroom(size, size * 0.5, size * -2, fx) {}
 
-Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight) {
+Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight, bool fx) : m_fx(fx) {
     if (capRadius <= 0 || stalkWidth <= 0 || stalkHeight >= 0) {
         throw ShroomException("Invalid dimensions - CapRadius: " + std::to_string(capRadius) +
             ", StalkWidth: " + std::to_string(stalkWidth) +
@@ -82,7 +82,13 @@ void Shroom::update(float dt, float timeS) {
 void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     auto stalk = m_stalk;
     auto cap = m_cap;
-    DuneColor<float> currentColor = (m_color * (1.0f - m_elapsed)) + (m_targetColor * m_elapsed);
+    DuneColor<float> currentColor; 
+    if (m_fx == 0) {
+        currentColor = (m_color * (1.0f - m_elapsed)) + (m_targetColor * m_elapsed);
+    }
+    else {
+        currentColor = m_color;
+    }
     cap.setFillColor(currentColor.toSFMLColor());
     cap.setPosition(cap.getPosition() + m_position);
     stalk.setPosition(stalk.getPosition() + m_position);

@@ -56,19 +56,13 @@ void GameEngine2D::draw() {
 	int shrooms = m_planetarySystem.countShrooms();
 	x = -2.9f, y = 2.6f;
 	for (int i = 0; i < shrooms; i++) {
-		Shroom shroom(0.1f);
+		Shroom shroom(0.1f, true);
+	
 		shroom.setPosition(sf::Vector2f(x, y));
 		x += 0.25f;
 		m_window.draw(shroom);
 	}
 
-	int stars = 1;
-	x = -2.9f, y = 2.3f;
-	for (int i = 0; i < stars; i++) {
-		Star star(sf::Vector2f(x, y), 0.1f);
-		x += 0.25;
-		m_window.draw(star);
-	}
 	m_window.display();
 }
 
