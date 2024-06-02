@@ -38,8 +38,19 @@ void StarObject::update(ObjectUpdateInfo m_updateInfo) {
     m_star.setPosition(newPos);
 }
 
+sf::CircleShape StarObject::getCircle() const {
+    sf::CircleShape shp;
+    shp.setRadius(0.1f);
+    shp.setOrigin(shp.getRadius() * sf::Vector2f(1, 1));
+    shp.setPosition(m_star.getPosition());
+    return shp;
+}
+
 void StarObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     renderTarget.draw(m_star, renderStates);
+    //auto cir = getCircle();
+    //cir.setFillColor(sf::Color(255, 0, 0, 100));
+    //renderTarget.draw(cir, renderStates);
 }
 
 void StarObject::prepDraw() {

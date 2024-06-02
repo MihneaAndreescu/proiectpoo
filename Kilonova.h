@@ -5,23 +5,22 @@
 #include "GravityObject.h"
 #include "Star.h"
 
-class StarObject : public GameObject {
+class Kilonova : public GameObject {
 private:
     std::string m_name;
     sf::Vector2f m_center;
     Star m_star;
-    sf::Vector2f m_controlPoint1, m_controlPoint2;
-    float m_t;  
-    float m_speed;
+    float m_t;
 public:
-    explicit StarObject(const std::string& name);
-    StarObject(const StarObject& other);
+    explicit Kilonova(sf::Vector2f center,const std::string& name);
+    Kilonova(const Kilonova& other);
     sf::Vector2f getCenter() const;
     void update(ObjectUpdateInfo m_updateInfo) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     void prepDraw() override;
-    StarObject& operator=(const StarObject& other);
-    friend std::ostream& operator<<(std::ostream& os, const StarObject& planet);
+    Kilonova& operator=(const Kilonova& other);
+    friend std::ostream& operator<<(std::ostream& os, const Kilonova& planet);
     sf::Color getColor() const;
     sf::CircleShape getCircle() const;
+    bool isDead() const;
 };

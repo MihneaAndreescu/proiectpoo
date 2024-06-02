@@ -5,6 +5,9 @@
 #include "SpaceShip.h"
 #include <set>
 #include "DuneException.h"
+#include "StarObject.h"
+#include "HeartObject.h"
+#include "Kilonova.h"
 
 PlanetSystem::PlanetSystem() {
 }
@@ -99,10 +102,22 @@ bool intersects(const sf::RectangleShape& rectangle, const sf::CircleShape& circ
     return false;
 }
 
+bool intersects(const sf::CircleShape& a, const sf::CircleShape& b) {
+    sf::Vector2f positionA = a.getPosition();
+    sf::Vector2f positionB = b.getPosition();
+    float deltaX = positionA.x - positionB.x;
+    float deltaY = positionA.y - positionB.y;
+    float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+    float radiusA = a.getRadius();
+    float radiusB = b.getRadius();
+    return distance <= (radiusA + radiusB);
+}
+
 void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     if ((int)getObjectsOfType<PsychedelicDrug>().size() == 0) {
         addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
     }
+    
     std::vector<std::shared_ptr<GravityObject>> gravityObjects = getObjectsOfType<GravityObject>();
     for (size_t i = 0; i < gravityObjects.size(); i++) {
         for (size_t j = 0; j < gravityObjects.size(); j++) {
@@ -119,7 +134,6 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
     std::vector<std::shared_ptr<Planet>> planets = getObjectsOfType<Planet>();
     std::vector<std::shared_ptr<PsychedelicDrug>> drugs = getObjectsOfType<PsychedelicDrug>();
-
     for (auto& spaceShip : spaceShips) {
         sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(0);
         for (auto& planet : planets) {
@@ -137,6 +151,25 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
         object->update(m_drawInfo);
     }
     std::set<std::shared_ptr<GameObject>> dels;
+    std::vector<std::shared_ptr<StarObject>> starObjects = getObjectsOfType<StarObject>();
+    for (int i = 0; i < (int)starObjects.size() && dels.empty(); i++) {
+        for (int j = i + 1; j < (int)starObjects.size() && dels.empty(); j++) {
+            if (intersects(starObjects[i]->getCircle(), starObjects[j]->getCircle())) {
+                sf::Vector2f half = (starObjects[i]->getCircle().getPosition() + starObjects[j]->getCircle().getPosition()) * 0.5f;
+                addObject(std::make_shared<HeartObject>(half, "heart"));
+                addObject(std::make_shared<Kilonova>(half, "kilonova"));
+                std::cout << "Kilonova!\n";
+                dels.insert(starObjects[i]);
+                dels.insert(starObjects[j]);
+            }
+        }
+    }
+    std::vector<std::shared_ptr<Kilonova>> kilonovaObjects = getObjectsOfType<Kilonova>();
+    for (auto& kilonova : kilonovaObjects) {
+        if (kilonova->isDead()) {
+            dels.insert(kilonova);
+        }
+    }
     for (auto& drug : drugs) {
         sf::CircleShape circle = drug->getCap();
         bool is = 0;
@@ -146,7 +179,10 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
                 is = 1;
                 if (drug->getTimeSinceNotOnDrugs() >= 1) {
                     spaceShip->increase();
-                    dels.insert(drug);
+                    if (!dels.count(drug)) {
+                        dels.insert(drug);
+                        addObject(std::make_shared<StarObject>("Star 5"));
+                    }
                 }
             }
         }
