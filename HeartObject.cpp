@@ -4,10 +4,11 @@
 #include <random>
 #include <cmath>
 
+
 HeartObject::HeartObject(sf::Vector2f center, const std::string& name) :
     m_name(name),
-    m_heart(center.x, center.y, 0.1f),
     m_center(center),
+    m_heart(center.x, center.y, 0.1f),
     m_time(0) {
 }
 
