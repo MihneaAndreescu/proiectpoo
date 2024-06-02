@@ -1,7 +1,7 @@
 #include "Star.h"
 #include <cmath>
 
-Star::Star(sf::Vector2f position, float size) : m_position(position), m_size(size) {
+Star::Star(sf::Vector2f position, float size) : m_size(size), m_position(position) {
     if (size <= 0) {
         throw StarInitializationException("Invalid size");
     }
