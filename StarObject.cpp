@@ -7,8 +7,8 @@
 StarObject::StarObject(const std::string& name) :
     m_name(name),
     m_star(sf::Vector2f(0, 0), 0.1f),
-    m_t(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0, 1))),
-    m_speed(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.5, 0.7)))  {
+    m_t(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 1.0f))),
+    m_speed(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.5f, 0.7f)))  {
     std::uniform_real_distribution<float> dist(-3.0f, 3.0f);
     m_center = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
     m_controlPoint1 = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
@@ -20,7 +20,7 @@ void StarObject::update(ObjectUpdateInfo m_updateInfo) {
     m_star.setAngle(m_star.getAngle() + m_updateInfo.deltaTime);
     if (m_t > 1.0f) {
         m_t = 0.0f;
-        m_speed = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.5, 0.7));
+        m_speed = RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.5f, 0.7f));
         std::uniform_real_distribution<float> dist(-3.0f, 3.0f);
         m_controlPoint1 = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
         m_controlPoint2 = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
