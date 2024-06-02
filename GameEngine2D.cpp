@@ -2,6 +2,7 @@
 #include "Heart.h"
 #include "Shroom.h"
 #include "PsychedelicDrug.h"
+#include "Star.h"
 
 GameEngine2D& GameEngine2D::getInstance() {
 	static GameEngine2D instance;
@@ -59,6 +60,14 @@ void GameEngine2D::draw() {
 		shroom.setPosition(sf::Vector2f(x, y));
 		x += 0.25f;
 		m_window.draw(shroom);
+	}
+
+	int stars = 1;
+	x = -2.9f, y = 2.3f;
+	for (int i = 0; i < stars; i++) {
+		Star star(x, y, 0.1f);
+		x += 0.25;
+		m_window.draw(star);
 	}
 	m_window.display();
 }

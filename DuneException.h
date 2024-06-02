@@ -34,3 +34,8 @@ class DuneColorException : public DuneException {
 public:
     explicit DuneColorException(const std::string& message);
 };
+
+class StarInitializationException : public std::runtime_error {
+public:
+    explicit StarInitializationException(const std::string& message);
+};

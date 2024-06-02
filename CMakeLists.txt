@@ -109,7 +109,7 @@ add_executable(${PROJECT_NAME}
     main.cpp
     generated/src/Helper.cpp
     env_fixes.h
- "Planet.h" "Planet.cpp" "PlanetSystem.h" "PlanetSystem.cpp" "SpaceShip.cpp" "SpaceShip.h" "Math.h" "Math.cpp" "GameObject.h" "GravityObject.h" "ObjectUpdateInfo.cpp" "ObjectUpdateInfo.h" "GameEngine2D.h" "GameEngine2D.cpp" "Heart.h" "Heart.cpp" "Shroom.h" "Shroom.cpp" "PsychedelicDrug.h" "PsychedelicDrug.cpp" "DuneException.h" "DuneException.cpp" "RandomNumber.h" "DuneColor.h")
+ "Planet.h" "Planet.cpp" "PlanetSystem.h" "PlanetSystem.cpp" "SpaceShip.cpp" "SpaceShip.h" "Math.h" "Math.cpp" "GameObject.h" "GravityObject.h" "ObjectUpdateInfo.cpp" "ObjectUpdateInfo.h" "GameEngine2D.h" "GameEngine2D.cpp" "Heart.h" "Heart.cpp" "Shroom.h" "Shroom.cpp" "PsychedelicDrug.h" "PsychedelicDrug.cpp" "DuneException.h" "DuneException.cpp" "RandomNumber.h" "DuneColor.h" "Star.h" "Star.cpp")
 
 ###############################################################################
 
