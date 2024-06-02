@@ -6,9 +6,9 @@
 
 Kilonova::Kilonova(sf::Vector2f center, const std::string& name) :
     m_name(name),
+    m_center(center),
     m_star(center, 0.1f),
-    m_t(0),
-    m_center(center) {
+    m_t(0) {
 }
 
 void Kilonova::update(ObjectUpdateInfo m_updateInfo) {
