@@ -169,7 +169,6 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
             if (intersects(starObjects[i]->getCircle(), starObjects[j]->getCircle())) {
                 sf::Vector2f half = (starObjects[i]->getCircle().getPosition() + starObjects[j]->getCircle().getPosition()) * 0.5f;
                 addObject(std::make_shared<Kilonova>(half, "kilonova"));
-                //std::cout << "Kilonova!\n";
                 dels.insert(starObjects[i]);
                 dels.insert(starObjects[j]);
             }

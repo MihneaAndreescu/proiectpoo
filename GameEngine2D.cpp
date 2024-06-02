@@ -47,8 +47,11 @@ void GameEngine2D::draw() {
 	m_window.draw(m_planetarySystem);
 	int hearts = m_planetarySystem.countHearts();
 	float x = -2.9f, y = 2.9f;
+	std::vector<sf::Vector2f> points;
 	for (int i = 0; i < hearts; i++) {
 		Heart heart(x, y, 0.2f);
+		points.push_back({ x - 0.05f, y - 0.15f });
+		points.push_back({ x + 0.05f, y + 0.15f });
 		x += 0.25f;
 		m_window.draw(heart);
 	}
@@ -57,12 +60,34 @@ void GameEngine2D::draw() {
 	x = -2.9f, y = 2.6f;
 	for (int i = 0; i < shrooms; i++) {
 		Shroom shroom(0.1f, true);
-	
 		shroom.setPosition(sf::Vector2f(x, y));
+		points.push_back({ x - 0.05f, y - 0.15f });
+		points.push_back({ x + 0.05f, y + 0.15f });
 		x += 0.25f;
 		m_window.draw(shroom);
 	}
+	if (!points.empty()) {
+		float minx = points[0].x, maxx = points[0].x;
+		float miny = points[0].y, maxy = points[0].y;
+		for (auto& it : points) {
+			minx = std::min(minx, it.x);
+			miny = std::min(miny, it.y);
 
+			maxx = std::max(maxx, it.x);
+			maxy = std::max(maxy, it.y);
+		}
+		sf::RectangleShape shp;
+		float midx = (minx + maxx) * 0.5f;
+		float midy = (miny + maxy) * 0.5f;
+		float dimx = (maxx - minx) * 1.2f;
+		float dimy = (maxy - miny) * 1.2f;
+		sf::Vector2f dim = sf::Vector2f(dimx, dimy);
+		sf::Vector2f mid = sf::Vector2f(midx, midy);
+		shp.setPosition(mid - dim * 0.5f);
+		shp.setSize(dim);
+		shp.setFillColor(sf::Color(0, 0, 230, 100));
+		m_window.draw(shp);
+	}
 	m_window.display();
 }
 
