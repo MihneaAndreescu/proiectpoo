@@ -67,8 +67,10 @@ void GameEngine2D::draw() {
 		m_window.draw(shroom);
 	}
 	if (!points.empty()) {
-		float minx = points[0].x, maxx = points[0].x;
-		float miny = points[0].y, maxy = points[0].y;
+		float minx = points[0].x;
+		float maxx = points[0].x;
+		float miny = points[0].y;
+		float maxy = points[0].y;
 		for (auto& it : points) {
 			minx = std::min(minx, it.x);
 			miny = std::min(miny, it.y);
