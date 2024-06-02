@@ -295,8 +295,12 @@ int SpaceShip::countShrooms() {
     return m_shrooms;
 }
 
-void SpaceShip::increase() {
-    m_shrooms++;
+void SpaceShip::increaseHearts(int by) {
+    m_hearts += by;
+}
+
+void SpaceShip::increase(int by) {
+    m_shrooms += by;
 }
 
 float SpaceShip::getMass() const {

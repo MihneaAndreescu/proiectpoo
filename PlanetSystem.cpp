@@ -143,6 +143,19 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
             }
         }
     }
+    std::vector<std::shared_ptr<HeartObject>> heartObjects = getObjectsOfType<HeartObject>();
+    std::set<std::shared_ptr<GameObject>> dels;
+    for (auto& spaceShip : spaceShips) {
+        sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(1);
+        for (auto& heart : heartObjects) {
+            sf::CircleShape circle = heart->getCircle();
+            if (intersects(rectangle, circle)) {
+                dels.insert(heart);
+                spaceShip->increaseHearts();
+                spaceShip->increase(-(spaceShip->countShrooms() / 2));
+            }
+        }
+    }
     for (auto& object : gravityObjects) {
         sf::Vector2f dir = object->getCenter();
         object->applyForce(-Math::normalize(dir) * 1.0f * Math::norm(dir) * Math::norm(dir));
@@ -150,15 +163,13 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     for (auto& object : m_gameObjects) {
         object->update(m_drawInfo);
     }
-    std::set<std::shared_ptr<GameObject>> dels;
     std::vector<std::shared_ptr<StarObject>> starObjects = getObjectsOfType<StarObject>();
     for (int i = 0; i < (int)starObjects.size() && dels.empty(); i++) {
         for (int j = i + 1; j < (int)starObjects.size() && dels.empty(); j++) {
             if (intersects(starObjects[i]->getCircle(), starObjects[j]->getCircle())) {
                 sf::Vector2f half = (starObjects[i]->getCircle().getPosition() + starObjects[j]->getCircle().getPosition()) * 0.5f;
-                addObject(std::make_shared<HeartObject>(half, "heart"));
                 addObject(std::make_shared<Kilonova>(half, "kilonova"));
-                std::cout << "Kilonova!\n";
+                //std::cout << "Kilonova!\n";
                 dels.insert(starObjects[i]);
                 dels.insert(starObjects[j]);
             }
@@ -168,6 +179,12 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
     for (auto& kilonova : kilonovaObjects) {
         if (kilonova->isDead()) {
             dels.insert(kilonova);
+            addObject(std::make_shared<HeartObject>(kilonova->getCenter(), "heart"));
+        }
+    }
+    for (auto& heart : heartObjects) {
+        if (heart->isDead()) {
+            dels.insert(heart);
         }
     }
     for (auto& drug : drugs) {

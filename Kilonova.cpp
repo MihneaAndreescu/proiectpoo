@@ -16,26 +16,21 @@ void Kilonova::update(ObjectUpdateInfo m_updateInfo) {
     m_star.setAngle(m_star.getAngle() + m_updateInfo.deltaTime * 10);
 }
 
-sf::CircleShape Kilonova::getCircle() const {
-    sf::CircleShape shp;
-    shp.setRadius(0.1f);
-    shp.setOrigin(shp.getRadius() * sf::Vector2f(1, 1));
-    shp.setPosition(m_star.getPosition());
-    return shp;
+sf::Vector2f Kilonova::getCenter() const {
+    return m_center;
 }
 
 bool Kilonova::isDead() const {
-    return m_t > 5;
+    return m_t > 1;
 }
 
 void Kilonova::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     renderTarget.draw(m_star, renderStates);
- 
 }
 
 void Kilonova::prepDraw() {
-    m_star.setColor(sf::Color(255, 255, std::min(1 - m_t, m_t) * 2 * 255));
-    m_star.setSize(m_t * 0.2f);
+    m_star.setColor(sf::Color(255, 255, std::min(1 - m_t, m_t) * 2 * 255, 100));
+    m_star.setSize(m_t * 1.0f);
 }
 
 sf::Color Kilonova::getColor() const {

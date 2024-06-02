@@ -21,6 +21,5 @@ public:
     Kilonova& operator=(const Kilonova& other);
     friend std::ostream& operator<<(std::ostream& os, const Kilonova& planet);
     sf::Color getColor() const;
-    sf::CircleShape getCircle() const;
     bool isDead() const;
 };

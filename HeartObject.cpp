@@ -11,19 +11,38 @@ HeartObject::HeartObject(sf::Vector2f center, const std::string& name) :
     m_time(0) {
 }
 
+sf::CircleShape HeartObject::getCircle() const{
+    sf::CircleShape s;
+    float t = (cos(m_time) + 1) * 0.5f;
+    float sz = 0.2f * t + 0.4f * (1 - t);
+    sz *= 0.4f;
+    s.setRadius(sz);
+    s.setOrigin(sf::Vector2f(1, 1) * sz);
+    s.setPosition(m_center);
+    s.setFillColor(sf::Color(0, 255, 0, 100));
+    return s;
+}
+
+sf::Vector2f HeartObject::getCenter() const {
+    return m_center;
+}
+
 void HeartObject::update(ObjectUpdateInfo m_updateInfo) {
     m_time += m_updateInfo.deltaTime * 5;
 }
 
-void HeartObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
-    renderTarget.draw(m_heart, renderStates);
+bool HeartObject::isDead() const {
+    return m_time >= 25.0f;
 }
 
-#include <iostream>
+void HeartObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
+    renderTarget.draw(m_heart, renderStates);
+    renderTarget.draw(getCircle(), renderStates);
+}
 
 void HeartObject::prepDraw() {
     float t = (cos(m_time) + 1) * 0.5f;
-    float sz = 0.2 * t + 0.4 * (1 - t);
+    float sz = 0.2f * t + 0.4f * (1 - t);
     m_heart.reConstruct(m_center.x, m_center.y, sz);
 }
 

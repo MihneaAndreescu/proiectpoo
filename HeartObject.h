@@ -14,6 +14,8 @@ private:
 public:
     explicit HeartObject(sf::Vector2f center, const std::string& name);
     HeartObject(const HeartObject& other);
+    sf::CircleShape getCircle() const;
+    bool isDead() const;
     sf::Vector2f getCenter() const;
     void update(ObjectUpdateInfo m_updateInfo) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;

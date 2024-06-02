@@ -50,7 +50,8 @@ private:
 public:
     int countShrooms();
     int countHearts();
-    void increase();
+    void increaseHearts(int by = 1);
+    void increase(int by = 1);
     void invincible(double tInvinc);
     sf::RectangleShape getRigidBodyBoundingBox(int tag);
     void prepDraw() override;
