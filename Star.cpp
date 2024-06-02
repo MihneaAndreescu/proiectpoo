@@ -1,26 +1,64 @@
 #include "Star.h"
-#include "DuneException.h"
-#include "Math.h"
 #include <cmath>
 
-Star::Star(float x, float y, float size) {
+Star::Star(sf::Vector2f position, float size) : m_position(position), m_size(size) {
     if (size <= 0) {
         throw StarInitializationException("Invalid size");
     }
-    const int points = 10;
-    m_shape.setPointCount(points * 2);
-    m_shape.setFillColor(sf::Color::Yellow);
-    for (int i = 0; i < points * 2; ++i) {
-        float angle = i * Math::PI / points;
-        float radius = size; 
-        if (i % 2 == 0) {
+    setSize(size);  
+    setPosition(position);  
+}
+
+void Star::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
+    renderTarget.draw(m_shape, renderStates);
+}
+
+void Star::setPosition(sf::Vector2f position) {
+    m_position = position;
+    setShape();
+}
+
+sf::Vector2f Star::getPosition() const {
+    return m_position;
+}
+
+void Star::setShape() {
+    m_shape.setPointCount(POINTS * 2);
+    m_shape.setFillColor(m_color);
+    for (int i = 0; i < POINTS * 2; ++i) {
+        float angle = i * Math::PI / POINTS;
+        float radius = m_size;
+        if (i % 2) {
             radius *= 0.5f;
         }
-        sf::Vector2f point(std::cos(angle) * radius, std::sin(angle) * radius);
-        m_shape.setPoint(i, point + sf::Vector2f(x, y));
+        sf::Vector2f point(std::cos(m_angle + angle) * radius, std::sin(m_angle + angle) * radius);
+        m_shape.setPoint(i, m_position + point);
     }
 }
 
-void Star::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(m_shape, states);
+void Star::setSize(float size) {
+    m_size = size;
+    setShape();
+}
+
+float Star::getSize() const {
+    return m_size;
+}
+
+void Star::setAngle(float angle) {
+    m_angle = angle;
+    setShape();
+}
+
+float Star::getAngle() const {
+    return m_angle;
+}
+
+void Star::setColor(const sf::Color& color) {
+    m_color = color;
+    m_shape.setFillColor(m_color);
+}
+
+sf::Color Star::getColor() const {
+    return m_color;
 }

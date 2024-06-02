@@ -125,7 +125,6 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
         for (auto& planet : planets) {
             sf::CircleShape circle = planet->getCircleShape();
             if (intersects(rectangle, circle)) {
-                std::cout << "space ship hit!\n";
                 spaceShip->invincible(5);
             }
         }
