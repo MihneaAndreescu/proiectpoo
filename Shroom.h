@@ -11,8 +11,8 @@ private:
     sf::CircleShape m_cap;
     sf::RectangleShape m_stalk;
     sf::Vector2f m_position;
-    DuneColor<float> m_color = { 200, 100, 30, 255 };
-    DuneColor<float> m_targetColor = { 0, 0, 0, 255 };
+    DuneColor<float> m_color = { 200, 100, 30 };
+    DuneColor<float> m_targetColor = { 0, 0, 0 };
     bool m_fx;
     float m_elapsed = 2;
     float m_total = 0;

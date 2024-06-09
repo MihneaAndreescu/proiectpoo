@@ -3,6 +3,7 @@
 #include "RandomNumber.h"
 #include <random>
 #include <cmath>
+#include "DuneColor.h"
 
 Kilonova::Kilonova(sf::Vector2f center, const std::string& name) :
     m_name(name),
@@ -29,11 +30,11 @@ void Kilonova::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderState
 }
 
 void Kilonova::prepDraw() {
-    m_star.setColor(sf::Color(255, 255, std::min(1 - m_t, m_t) * 2 * 255, 100));
+    m_star.setColor(DuneColor<unsigned char>(255, 255, std::min(1 - m_t, m_t) * 2 * 255, 100));
     m_star.setSize(m_t * 1.0f);
 }
 
-sf::Color Kilonova::getColor() const {
+DuneColor<unsigned char> Kilonova::getColor() const {
     return m_star.getColor();
 }
 
@@ -48,6 +49,6 @@ Kilonova& Kilonova::operator=(const Kilonova& other) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Kilonova& star) {
-    os << "(name = " << star.m_name << ", " << star.getColor().r << " " << star.getColor().g << " " << star.getColor().b << ")\n";
+    os << "(name = " << star.m_name << ", " << star.getColor().r() << " " << star.getColor().g() << " " << star.getColor().b() << ")\n";
     return os;
 }

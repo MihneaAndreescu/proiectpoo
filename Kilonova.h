@@ -4,6 +4,7 @@
 #include <string>
 #include "GravityObject.h"
 #include "Star.h"
+#include "DuneColor.h"
 
 class Kilonova : public GameObject {
 private:
@@ -20,6 +21,6 @@ public:
     void prepDraw() override;
     Kilonova& operator=(const Kilonova& other);
     friend std::ostream& operator<<(std::ostream& os, const Kilonova& planet);
-    sf::Color getColor() const;
+    DuneColor<unsigned char> getColor() const;
     bool isDead() const;
 };

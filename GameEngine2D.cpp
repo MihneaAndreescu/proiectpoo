@@ -4,6 +4,7 @@
 #include "PsychedelicDrug.h"
 #include "Star.h"
 #include "StarObject.h"
+#include "DuneColor.h"
 
 GameEngine2D& GameEngine2D::getInstance() {
 	static GameEngine2D instance;
@@ -40,7 +41,7 @@ void GameEngine2D::draw() {
 	sf::RectangleShape shape;
 	shape.setSize(sf::Vector2f(100, 100));
 	shape.setPosition(sf::Vector2f(-50, -50));
-	shape.setFillColor(sf::Color(35, 100, 44));
+	shape.setFillColor(DuneColor<unsigned char>(35, 100, 44));
 	m_window.draw(shape);
 	
 	m_planetarySystem.prepDraw();
@@ -87,7 +88,7 @@ void GameEngine2D::draw() {
 		sf::Vector2f mid = sf::Vector2f(midx, midy);
 		shp.setPosition(mid - dim * 0.5f);
 		shp.setSize(dim);
-		shp.setFillColor(sf::Color(0, 0, 230, 100));
+		shp.setFillColor(DuneColor<unsigned char>(0, 0, 230, 100));
 		m_window.draw(shp);
 	}
 	m_window.display();
@@ -122,11 +123,11 @@ void GameEngine2D::initializePlanetarySystem() {
 	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 3"));
 	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 4"));
 	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 5"));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, sf::Color(255, 0, 100)));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Caladan", sf::Vector2f(-2.5f, -2.5f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, sf::Color::Blue));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Arrakis", sf::Vector2f(1.5f, 2.0f), 0.08f, sf::Vector2f(0.05f, 0.02f), 3.0f, sf::Color::Yellow));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Giedi Prime", sf::Vector2f(2.5f, -1.0f), 0.12f, sf::Vector2f(-0.04f, 0.01f), 5.0f, sf::Color::Green));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Kaitain", sf::Vector2f(-2.0f, 2.5f), 0.09f, sf::Vector2f(0.06f, -0.03f), 2.5f, sf::Color::Cyan));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, DuneColor<unsigned char>(255, 0, 100)));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Caladan", sf::Vector2f(-2.5f, -2.5f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, DuneColor<unsigned char>(0, 0, 255))); 
+	m_planetarySystem.addObject(std::make_shared<Planet>("Arrakis", sf::Vector2f(1.5f, 2.0f), 0.08f, sf::Vector2f(0.05f, 0.02f), 3.0f, DuneColor<unsigned char>(255, 255, 0))); 
+	m_planetarySystem.addObject(std::make_shared<Planet>("Giedi Prime", sf::Vector2f(2.5f, -1.0f), 0.12f, sf::Vector2f(-0.04f, 0.01f), 5.0f, DuneColor<unsigned char>(0, 128, 0)));
+	m_planetarySystem.addObject(std::make_shared<Planet>("Kaitain", sf::Vector2f(-2.0f, 2.5f), 0.09f, sf::Vector2f(0.06f, -0.03f), 2.5f, DuneColor<unsigned char>(0, 255, 255))); 
 }
 
 void GameEngine2D::initialize() {

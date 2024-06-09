@@ -3,12 +3,13 @@
 #include "RandomNumber.h"
 #include <random>
 #include <cmath>
+#include "DuneColor.h"
 
 StarObject::StarObject(const std::string& name) :
     m_name(name),
     m_star(sf::Vector2f(0, 0), 0.1f),
     m_t(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.0f, 1.0f))),
-    m_speed(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.5f, 0.7f)))  {
+    m_speed(RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.5f, 0.7f))) {
     std::uniform_real_distribution<float> dist(-3.0f, 3.0f);
     m_center = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
     m_controlPoint1 = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
@@ -49,15 +50,14 @@ sf::CircleShape StarObject::getCircle() const {
 void StarObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     renderTarget.draw(m_star, renderStates);
     //auto cir = getCircle();
-    //cir.setFillColor(sf::Color(255, 0, 0, 100));
     //renderTarget.draw(cir, renderStates);
 }
 
 void StarObject::prepDraw() {
-    m_star.setColor(sf::Color(255, 255, std::min(1 - m_t, m_t) * 2 * 255));
+    m_star.setColor(DuneColor<unsigned char>(255, 255, std::min(1 - m_t, m_t) * 2 * 255));
 }
 
-sf::Color StarObject::getColor() const {
+DuneColor<unsigned char> StarObject::getColor() const {
     return m_star.getColor();
 }
 
@@ -75,6 +75,6 @@ StarObject& StarObject::operator=(const StarObject& other) {
 }
 
 std::ostream& operator<<(std::ostream& os, const StarObject& star) {
-    os << "(name = " << star.m_name<<", "<<star.getColor().r<<" "<<star.getColor().g<<" "<<star.getColor().b << ")\n";
+    os << "(name = " << star.m_name << ", " << star.getColor().r() << " " << star.getColor().g() << " " << star.getColor().b() << ")\n";
     return os;
 }

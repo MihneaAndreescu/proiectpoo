@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "GravityObject.h"
+#include "DuneColor.h"
 
 class Planet : public GravityObject {
 private:
@@ -14,7 +15,7 @@ private:
 public:
     sf::CircleShape getCircleShape();
     void prepDraw() override;
-    Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Color color);
+    Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, DuneColor<unsigned char> color);
     Planet(const Planet& other);
     Planet operator = (const Planet& other);
     ~Planet();

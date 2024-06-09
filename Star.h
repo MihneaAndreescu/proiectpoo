@@ -3,12 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include "DuneException.h"
 #include "Math.h"  
+#include "DuneColor.h"
 
 class Star : public sf::Drawable {
 private:
     sf::ConvexShape m_shape;
     float m_angle = 0.0f;
-    sf::Color m_color = sf::Color::Yellow;
+    DuneColor<unsigned char> m_color = DuneColor<unsigned char>(255, 255, 0);
     float m_size;
     sf::Vector2f m_position;
     static const int POINTS = 10;
@@ -22,6 +23,6 @@ public:
     float getSize() const;
     void setAngle(float angle);
     float getAngle() const;
-    void setColor(const sf::Color& color);
-    sf::Color getColor() const;
+    void setColor(const DuneColor<unsigned char>& color);
+    DuneColor<unsigned char> getColor() const;
 };

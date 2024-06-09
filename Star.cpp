@@ -54,11 +54,11 @@ float Star::getAngle() const {
     return m_angle;
 }
 
-void Star::setColor(const sf::Color& color) {
+void Star::setColor(const DuneColor<unsigned char>& color) {
     m_color = color;
     m_shape.setFillColor(m_color);
 }
 
-sf::Color Star::getColor() const {
+DuneColor<unsigned char> Star::getColor() const {
     return m_color;
 }

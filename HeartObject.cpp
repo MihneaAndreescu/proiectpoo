@@ -3,7 +3,7 @@
 #include "RandomNumber.h"
 #include <random>
 #include <cmath>
-
+#include "DuneColor.h"
 
 HeartObject::HeartObject(sf::Vector2f center, const std::string& name) :
     m_name(name),
@@ -20,7 +20,7 @@ sf::CircleShape HeartObject::getCircle() const{
     s.setRadius(sz);
     s.setOrigin(sf::Vector2f(1, 1) * sz);
     s.setPosition(m_center);
-    s.setFillColor(sf::Color(0, 255, 0, 100));
+    s.setFillColor(DuneColor<unsigned char>(0, 255, 0, 100));
     return s;
 }
 

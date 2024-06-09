@@ -9,6 +9,18 @@ class DuneColor {
 private:
     T m_r, m_g, m_b, m_a;
 public:
+    T r() const {
+        return m_r;
+    }
+    T g() const {
+        return m_g;
+    }
+    T b() const {
+        return m_b;
+    }
+    T a() const {
+        return a;
+    }
     DuneColor() : m_r(0), m_g(0), m_b(0), m_a(255) {
     }
     DuneColor(T red, T green, T blue, T alpha = 255)
@@ -17,7 +29,7 @@ public:
     static sf::Uint8 clamp(T value) {
         return static_cast<sf::Uint8>(std::max<T>(0, std::min<T>(255, value)));
     }
-    sf::Color toSFMLColor() const {
+    operator sf::Color() const {
         return sf::Color(clamp(m_r), clamp(m_g), clamp(m_b), clamp(m_a));
     }
     DuneColor operator+(const DuneColor& other) const {

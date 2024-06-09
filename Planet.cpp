@@ -1,7 +1,7 @@
 #include "Planet.h"
 #include "Math.h"
 
-Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, sf::Color color) :
+Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, DuneColor<unsigned char> color) :
     GravityObject(true, true),
     m_name(name),
     m_circleShape(radius),

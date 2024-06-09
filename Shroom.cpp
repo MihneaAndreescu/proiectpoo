@@ -1,6 +1,7 @@
 #include "Shroom.h"
 #include <random>
 #include <iostream>
+#include "DuneColor.h"
 
 std::vector<sf::RectangleShape> drawLoadingBar(sf::Vector2f position, float completed, sf::Vector2f size) {
     if (completed < 0.0f) {
@@ -11,11 +12,11 @@ std::vector<sf::RectangleShape> drawLoadingBar(sf::Vector2f position, float comp
     }
     sf::RectangleShape loadingBar(size);
     loadingBar.setPosition(position);
-    loadingBar.setFillColor(sf::Color(50, 50, 50, 150));
+    loadingBar.setFillColor(DuneColor<unsigned char>(50, 50, 50, 150));
     float margin = 0.02f;
     sf::RectangleShape filledPart(sf::Vector2f((size.x - 2 * margin) * completed, size.y - 2 * margin));
     filledPart.setPosition(position.x + margin, position.y + margin);
-    filledPart.setFillColor(sf::Color(0, 255, 0));
+    filledPart.setFillColor(DuneColor<unsigned char>(0, 255, 0));
     return { loadingBar, filledPart };
 }
 
@@ -32,10 +33,10 @@ Shroom::Shroom(float capRadius, float stalkWidth, float stalkHeight, bool fx) : 
             ", StalkHeight: " + std::to_string(stalkHeight));
     }
     m_cap.setRadius(capRadius);
-    m_cap.setFillColor(sf::Color::Red);
+    m_cap.setFillColor(DuneColor<unsigned char>(255, 0, 0));
     m_cap.setOrigin(capRadius, capRadius);
     m_stalk.setSize(sf::Vector2f(stalkWidth, stalkHeight));
-    m_stalk.setFillColor(m_color.toSFMLColor());
+    m_stalk.setFillColor(m_color);
     m_stalk.setOrigin(stalkWidth / 2, 0);
     m_stalk.setPosition(0, capRadius / 2);
 }
@@ -60,8 +61,8 @@ void Shroom::update(float dt, float timeS) {
         m_total -= RandomNumber::getInstance().getRandom(std::uniform_real_distribution<float>(0.4f, 0.8f));
         sf::CircleShape shp;
         shp.setPosition(m_cap.getPosition() + m_position);
-        shp.setFillColor(sf::Color::Transparent);
-        shp.setOutlineColor(sf::Color::Red);
+        shp.setFillColor(DuneColor<unsigned char>(0, 0, 0, 0));
+        shp.setOutlineColor(DuneColor<unsigned char>(255, 0, 0));
         shp.setOutlineThickness(0.01f);
         m_shapes.insert(m_shapes.begin(), shp);
     }
@@ -72,7 +73,10 @@ void Shroom::update(float dt, float timeS) {
         if (t >= 1) {
             t = 1;
         }
-        shp.setOutlineColor(sf::Color(35 * t + (1 - t) * 255, 100 * t + (1 - t) * 0, 44 * t + (1 - t) * 0));
+        DuneColor<float> startColor(255, 0, 0); 
+        DuneColor<float> endColor(35, 100, 44); 
+        DuneColor<float> transitionColor = startColor * (1 - t) + endColor * t;
+        shp.setOutlineColor(transitionColor);
     }
     while (!m_shapes.empty() && m_shapes.back().getRadius() >= 1) {
         m_shapes.pop_back();
@@ -89,7 +93,7 @@ void Shroom::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     else {
         currentColor = m_color;
     }
-    cap.setFillColor(currentColor.toSFMLColor());
+    cap.setFillColor(currentColor);
     cap.setPosition(cap.getPosition() + m_position);
     stalk.setPosition(stalk.getPosition() + m_position);
     renderTarget.draw(stalk, renderStates);
