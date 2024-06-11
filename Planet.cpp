@@ -1,5 +1,6 @@
 #include "Planet.h"
 #include "Math.h"
+#include <memory>
 
 Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, DuneColor<unsigned char> color) :
     GravityObject(true, true),
@@ -79,6 +80,15 @@ std::ostream& operator<<(std::ostream& os, const Planet& planet) {
 
 sf::CircleShape Planet::getCircleShape() {
     return m_circleShape;
+}
+
+PlanetBuilder::PlanetBuilder() :
+    name(""),
+    center(sf::Vector2f(0.0f, 0.0f)),
+    radius(0.0f),
+    velocity(sf::Vector2f(0.0f, 0.0f)),
+    mass(1.0f),
+    color(DuneColor<unsigned char>(255, 255, 255)) {
 }
 
 PlanetBuilder& PlanetBuilder::setName(const std::string& name) {

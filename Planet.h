@@ -37,8 +37,9 @@ private:
     sf::Vector2f velocity;
     float mass;
     DuneColor<unsigned char> color;
-
 public:
+
+    PlanetBuilder();
     PlanetBuilder& setName(const std::string& name);
     PlanetBuilder& setCenter(const sf::Vector2f& center);
     PlanetBuilder& setRadius(float radius);
