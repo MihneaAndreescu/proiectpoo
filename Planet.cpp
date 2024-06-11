@@ -1,6 +1,5 @@
 #include "Planet.h"
 #include "Math.h"
-#include <memory>
 
 Planet::Planet(const std::string& name, const sf::Vector2f& center, const float& radius, sf::Vector2f velocity, float mass, DuneColor<unsigned char> color) :
     GravityObject(true, true),
@@ -91,33 +90,33 @@ PlanetBuilder::PlanetBuilder() :
     color(DuneColor<unsigned char>(255, 255, 255)) {
 }
 
-PlanetBuilder& PlanetBuilder::setName(const std::string& name) {
-    this->name = name;
+PlanetBuilder& PlanetBuilder::setName(const std::string& _name) {
+    this->name = _name;
     return *this;
 }
 
-PlanetBuilder& PlanetBuilder::setCenter(const sf::Vector2f& center) {
-    this->center = center;
+PlanetBuilder& PlanetBuilder::setCenter(const sf::Vector2f& _center) {
+    this->center = _center;
     return *this;
 }
 
-PlanetBuilder& PlanetBuilder::setRadius(float radius) {
-    this->radius = radius;
+PlanetBuilder& PlanetBuilder::setRadius(float _radius) {
+    this->radius = _radius;
     return *this;
 }
 
-PlanetBuilder& PlanetBuilder::setVelocity(const sf::Vector2f& velocity) {
-    this->velocity = velocity;
+PlanetBuilder& PlanetBuilder::setVelocity(const sf::Vector2f& _velocity) {
+    this->velocity = _velocity;
     return *this;
 }
 
-PlanetBuilder& PlanetBuilder::setMass(float mass) {
-    this->mass = mass;
+PlanetBuilder& PlanetBuilder::setMass(float _mass) {
+    this->mass = _mass;
     return *this;
 }
 
-PlanetBuilder& PlanetBuilder::setColor(const DuneColor<unsigned char>& color) {
-    this->color = color;
+PlanetBuilder& PlanetBuilder::setColor(const DuneColor<unsigned char>& _color) {
+    this->color = _color;
     return *this;
 }
 
