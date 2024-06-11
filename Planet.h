@@ -4,6 +4,8 @@
 #include <string>
 #include "GravityObject.h"
 #include "DuneColor.h"
+#include <memory>
+
 
 class Planet : public GravityObject {
 private:
