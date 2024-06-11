@@ -118,16 +118,52 @@ void GameEngine2D::initializeWindowAndView() {
 void GameEngine2D::initializePlanetarySystem() {
 	m_planetarySystem.setName("Sistemul lu' Mihnea");
 	m_planetarySystem.addObject(std::make_shared<SpaceShip>("Player", sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(0.2f, 0.4f), 1.0f));
-	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 1"));
-	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 2"));
-	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 3"));
-	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 4"));
-	//m_planetarySystem.addObject(std::make_shared<StarObject>("Star 5"));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Dune", sf::Vector2f(0.0f, 0.0f), 0.1f, sf::Vector2f(0.0f, 0.3f), 2.0f, DuneColor<unsigned char>(255, 0, 100)));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Caladan", sf::Vector2f(-2.5f, -2.5f), 0.05f, sf::Vector2f(0.0f, 0.1f), 4.0f, DuneColor<unsigned char>(0, 0, 255))); 
-	m_planetarySystem.addObject(std::make_shared<Planet>("Arrakis", sf::Vector2f(1.5f, 2.0f), 0.08f, sf::Vector2f(0.05f, 0.02f), 3.0f, DuneColor<unsigned char>(255, 255, 0))); 
-	m_planetarySystem.addObject(std::make_shared<Planet>("Giedi Prime", sf::Vector2f(2.5f, -1.0f), 0.12f, sf::Vector2f(-0.04f, 0.01f), 5.0f, DuneColor<unsigned char>(0, 128, 0)));
-	m_planetarySystem.addObject(std::make_shared<Planet>("Kaitain", sf::Vector2f(-2.0f, 2.5f), 0.09f, sf::Vector2f(0.06f, -0.03f), 2.5f, DuneColor<unsigned char>(0, 255, 255))); 
+
+
+	m_planetarySystem.addObject(PlanetBuilder()
+		.setName("Dune")
+		.setCenter(sf::Vector2f(0.0f, 0.0f))
+		.setRadius(0.1f)
+		.setVelocity(sf::Vector2f(0.0f, 0.3f))
+		.setMass(2.0f)
+		.setColor(DuneColor<unsigned char>(255, 0, 100))
+		.build());
+
+	m_planetarySystem.addObject(PlanetBuilder()
+		.setName("Caladan")
+		.setCenter(sf::Vector2f(-2.5f, -2.5f))
+		.setRadius(0.05f)
+		.setVelocity(sf::Vector2f(0.0f, 0.1f))
+		.setMass(4.0f)
+		.setColor(DuneColor<unsigned char>(0, 0, 255))
+		.build());
+
+	m_planetarySystem.addObject(PlanetBuilder()
+		.setName("Arrakis")
+		.setCenter(sf::Vector2f(1.5f, 2.0f))
+		.setRadius(0.08f)
+		.setVelocity(sf::Vector2f(0.05f, 0.02f))
+		.setMass(3.0f)
+		.setColor(DuneColor<unsigned char>(255, 255, 0))
+		.build());
+
+	m_planetarySystem.addObject(PlanetBuilder()
+		.setName("Giedi Prime")
+		.setCenter(sf::Vector2f(2.5f, -1.0f))
+		.setRadius(0.12f)
+		.setVelocity(sf::Vector2f(-0.04f, 0.01f))
+		.setMass(5.0f)
+		.setColor(DuneColor<unsigned char>(0, 128, 0))
+		.build());
+
+	m_planetarySystem.addObject(PlanetBuilder()
+		.setName("Kaitain")
+		.setCenter(sf::Vector2f(-2.0f, 2.5f))
+		.setRadius(0.09f)
+		.setVelocity(sf::Vector2f(0.06f, -0.03f))
+		.setMass(2.5f)
+		.setColor(DuneColor<unsigned char>(0, 255, 255))
+		.build());
 }
 
 void GameEngine2D::initialize() {

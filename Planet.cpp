@@ -80,3 +80,37 @@ std::ostream& operator<<(std::ostream& os, const Planet& planet) {
 sf::CircleShape Planet::getCircleShape() {
     return m_circleShape;
 }
+
+PlanetBuilder& PlanetBuilder::setName(const std::string& name) {
+    this->name = name;
+    return *this;
+}
+
+PlanetBuilder& PlanetBuilder::setCenter(const sf::Vector2f& center) {
+    this->center = center;
+    return *this;
+}
+
+PlanetBuilder& PlanetBuilder::setRadius(float radius) {
+    this->radius = radius;
+    return *this;
+}
+
+PlanetBuilder& PlanetBuilder::setVelocity(const sf::Vector2f& velocity) {
+    this->velocity = velocity;
+    return *this;
+}
+
+PlanetBuilder& PlanetBuilder::setMass(float mass) {
+    this->mass = mass;
+    return *this;
+}
+
+PlanetBuilder& PlanetBuilder::setColor(const DuneColor<unsigned char>& color) {
+    this->color = color;
+    return *this;
+}
+
+std::shared_ptr<Planet> PlanetBuilder::build() const {
+    return std::make_shared<Planet>(name, center, radius, velocity, mass, color);
+}

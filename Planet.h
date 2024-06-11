@@ -28,3 +28,22 @@ public:
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     friend std::ostream& operator<<(std::ostream& os, const Planet& planet);
 };
+
+class PlanetBuilder {
+private:
+    std::string name;
+    sf::Vector2f center;
+    float radius;
+    sf::Vector2f velocity;
+    float mass;
+    DuneColor<unsigned char> color;
+
+public:
+    PlanetBuilder& setName(const std::string& name);
+    PlanetBuilder& setCenter(const sf::Vector2f& center);
+    PlanetBuilder& setRadius(float radius);
+    PlanetBuilder& setVelocity(const sf::Vector2f& velocity);
+    PlanetBuilder& setMass(float mass);
+    PlanetBuilder& setColor(const DuneColor<unsigned char>& color);
+    std::shared_ptr<Planet> build() const;
+};
