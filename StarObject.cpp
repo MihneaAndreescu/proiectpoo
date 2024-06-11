@@ -53,6 +53,8 @@ void StarObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderSta
     //renderTarget.draw(cir, renderStates);
 }
 
+DuneColor<unsigned char>(255, 255, std::min(1 - m_t, m_t) * 2 * 255)
+
 void StarObject::prepDraw() {
     m_star.setColor(DuneColor<unsigned char>(255, 255, std::min(1 - m_t, m_t) * 2 * 255));
 }

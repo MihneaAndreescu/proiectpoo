@@ -1,6 +1,7 @@
 #include "SpaceShip.h"
 #include "Math.h"
 #include <cmath>
+#include "DuneColor.h"
 
 void SpaceShip::prepDrawSpaceShipMainBodyVertexArray() {
     m_drawInfo.spaceShipMainBodyVertexArray.clear();
@@ -9,8 +10,8 @@ void SpaceShip::prepDrawSpaceShipMainBodyVertexArray() {
     m_drawInfo.spaceShipMainBodyVertexArray.append(sf::Vertex{ {m_center.x - m_size.x * 0.5f, m_center.y + m_size.y * 0.5f} });
     m_drawInfo.spaceShipMainBodyVertexArray.append(sf::Vertex{ {m_center.x + m_size.x * 0.5f, m_center.y + m_size.y * 0.5f} });
     m_drawInfo.spaceShipMainBodyVertexArray.append(sf::Vertex{ {m_center.x + m_size.x * 0.5f, m_center.y - m_size.y * 0.5f} });
-    m_drawInfo.spaceShipMainBodyVertexArray[0].color = m_drawInfo.spaceShipMainBodyVertexArray[3].color = sf::Color::Red;
-    m_drawInfo.spaceShipMainBodyVertexArray[1].color = m_drawInfo.spaceShipMainBodyVertexArray[2].color = sf::Color::Green;
+    m_drawInfo.spaceShipMainBodyVertexArray[0].color = m_drawInfo.spaceShipMainBodyVertexArray[3].color = DuneColor<unsigned char>(255, 0, 0);
+    m_drawInfo.spaceShipMainBodyVertexArray[1].color = m_drawInfo.spaceShipMainBodyVertexArray[2].color = DuneColor<unsigned char>(0,255,0);
 
     m_innerRectangleShape.setSize(m_size);
 
@@ -25,7 +26,7 @@ void SpaceShip::prepDrawLeftRocket() {
     m_drawInfo.leftRocketVertexArray.append(sf::Vertex{ m_drawInfo.spaceShipMainBodyVertexArray[1].position });
     m_drawInfo.leftRocketVertexArray.append(sf::Vertex{ {m_drawInfo.spaceShipMainBodyVertexArray[1].position.x + length * 0.25f, m_drawInfo.spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
     m_drawInfo.leftRocketVertexArray.append(sf::Vertex{ backMidPoint });
-    m_drawInfo.leftRocketVertexArray[0].color = m_drawInfo.leftRocketVertexArray[1].color = m_drawInfo.leftRocketVertexArray[2].color = sf::Color::Green;
+    m_drawInfo.leftRocketVertexArray[0].color = m_drawInfo.leftRocketVertexArray[1].color = m_drawInfo.leftRocketVertexArray[2].color = DuneColor<unsigned char>(0, 255, 0);
 }
 
 void SpaceShip::prepDrawRightRocket() {
@@ -36,7 +37,7 @@ void SpaceShip::prepDrawRightRocket() {
     m_drawInfo.rightRocketVertexArray.append(sf::Vertex{ m_drawInfo.spaceShipMainBodyVertexArray[2].position });
     m_drawInfo.rightRocketVertexArray.append(sf::Vertex{ {m_drawInfo.spaceShipMainBodyVertexArray[2].position.x - length * 0.25f, m_drawInfo.spaceShipMainBodyVertexArray[1].position.y + length * 0.5f} });
     m_drawInfo.rightRocketVertexArray.append(sf::Vertex{ backMidPoint });
-    m_drawInfo.rightRocketVertexArray[0].color = m_drawInfo.rightRocketVertexArray[1].color = m_drawInfo.rightRocketVertexArray[2].color = sf::Color::Green;
+    m_drawInfo.rightRocketVertexArray[0].color = m_drawInfo.rightRocketVertexArray[1].color = m_drawInfo.rightRocketVertexArray[2].color = DuneColor<unsigned char>(0,255,0);
 }
 
 void SpaceShip::prepDrawRockets() {
@@ -50,7 +51,7 @@ void SpaceShip::prepDrawCockpit() {
     m_drawInfo.cockPitCircleShape.setPosition(frontMidPoint);
     m_drawInfo.cockPitCircleShape.setRadius(length * 0.5f);
     m_drawInfo.cockPitCircleShape.setOrigin(m_drawInfo.cockPitCircleShape.getRadius() * sf::Vector2f(1, 1));
-    m_drawInfo.cockPitCircleShape.setFillColor(sf::Color::Red);
+    m_drawInfo.cockPitCircleShape.setFillColor(DuneColor<unsigned char>(255,0,0));
 }
 
 void SpaceShip::prepDrawGasCircles() {
@@ -73,7 +74,7 @@ void SpaceShip::prepDrawAddGasCircle(const sf::Vector2f& position, float length)
     circle.setPosition(position);
     circle.setRadius(length * 0.1f);
     circle.setOrigin(circle.getRadius() * sf::Vector2f(1, 1));
-    circle.setFillColor(sf::Color::Yellow);
+    circle.setFillColor(DuneColor<unsigned char>(255,255,0));
     m_drawInfo.gasCircleShapes.push_back(circle);
 }
 
@@ -106,7 +107,7 @@ void SpaceShip::prepDraw() {
     prepDrawGasCircles();
     prepDrawApplyRotation();
     if (m_invinc >= 0) {
-        sf::Color color = sf::Color(0, 0, 255, (cos(m_invinc * 10) + 1) / 2 * 255);
+        DuneColor<unsigned char> color = DuneColor<unsigned char>(0, 0, 255, (cos(m_invinc * 10) + 1) / 2 * 255);
         m_drawInfo.cockPitCircleShape.setFillColor(color);
         for (auto& circleShape : m_drawInfo.gasCircleShapes) {
             circleShape.setFillColor(color);
