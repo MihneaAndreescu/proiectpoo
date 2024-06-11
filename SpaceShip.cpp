@@ -51,7 +51,7 @@ void SpaceShip::prepDrawCockpit() {
     m_drawInfo.cockPitCircleShape.setPosition(frontMidPoint);
     m_drawInfo.cockPitCircleShape.setRadius(length * 0.5f);
     m_drawInfo.cockPitCircleShape.setOrigin(m_drawInfo.cockPitCircleShape.getRadius() * sf::Vector2f(1, 1));
-    m_drawInfo.cockPitCircleShape.setFillColor(DuneColor<unsigned char>(255,0,0));
+    m_drawInfo.cockPitCircleShape.setFillColor(DuneColor<unsigned char>(255, 0, 0));
 }
 
 void SpaceShip::prepDrawGasCircles() {
