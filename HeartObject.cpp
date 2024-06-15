@@ -29,6 +29,9 @@ sf::Vector2f HeartObject::getCenter() const {
 }
 
 void HeartObject::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+    for (auto& obj : allObjects) {
+        obj->dummy();
+    }
     m_time += m_updateInfo.deltaTime * 5;
 }
 

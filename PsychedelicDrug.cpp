@@ -49,6 +49,9 @@ void PsychedelicDrug::draw(sf::RenderTarget& renderTarget, sf::RenderStates rend
 }
 
 void PsychedelicDrug::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+    for (auto& obj : allObjects) {
+        obj->dummy();
+    }
     m_timeSinceNotOnDrugs += m_updateInfo.deltaTime;
     m_shroom.update(m_updateInfo.deltaTime, m_timeSinceNotOnDrugs);
 }

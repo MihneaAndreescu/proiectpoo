@@ -17,6 +17,9 @@ StarObject::StarObject(const std::string& name) :
 }
 
 void StarObject::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+    for (auto& obj : allObjects) {
+        obj->dummy();
+    }
     m_t += m_updateInfo.deltaTime * m_speed;
     m_star.setAngle(m_star.getAngle() + m_updateInfo.deltaTime);
     if (m_t > 1.0f) {
