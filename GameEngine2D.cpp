@@ -120,32 +120,32 @@ void GameEngine2D::initializePlanetarySystem() {
 	m_planetarySystem.addObject(std::make_shared<SpaceShip>("Player", sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(0.2f, 0.4f), 1.0f));
 
 
-	m_planetarySystem.addObject(PlanetBuilder()
-		.setName("Dune")
-		.setCenter(sf::Vector2f(0.0f, 0.0f))
-		.setRadius(0.1f)
-		.setVelocity(sf::Vector2f(0.0f, 0.3f))
-		.setMass(2.0f)
-		.setColor(DuneColor<unsigned char>(255, 0, 100))
-		.build());
+	PlanetBuilder duneBuilder;
+	duneBuilder.setName("Dune");
+	duneBuilder.setCenter(sf::Vector2f(0.0f, 0.0f));
+	duneBuilder.setRadius(0.1f);
+	duneBuilder.setVelocity(sf::Vector2f(0.0f, 0.3f));
+	duneBuilder.setMass(2.0f);
+	duneBuilder.setColor(DuneColor<unsigned char>(255, 0, 100));
+	m_planetarySystem.addObject(duneBuilder.build());
+
+	PlanetBuilder arrakisBuilder;
+	arrakisBuilder.setName("Arrakis").setCenter(sf::Vector2f(1.5f, 2.0f));
+	arrakisBuilder.setRadius(0.08f);
+	arrakisBuilder.setVelocity(sf::Vector2f(0.05f, 0.02f)).setMass(3.0f);
+	arrakisBuilder.setColor(DuneColor<unsigned char>(255, 255, 0));
+	arrakisBuilder.setRadius(0.1f);
+	m_planetarySystem.addObject(arrakisBuilder.build());
 
 	m_planetarySystem.addObject(PlanetBuilder()
 		.setName("Caladan")
 		.setCenter(sf::Vector2f(-2.5f, -2.5f))
-		.setRadius(0.05f)
+		.setRadius(0.1f)
 		.setVelocity(sf::Vector2f(0.0f, 0.1f))
 		.setMass(4.0f)
 		.setColor(DuneColor<unsigned char>(0, 0, 255))
 		.build());
 
-	m_planetarySystem.addObject(PlanetBuilder()
-		.setName("Arrakis")
-		.setCenter(sf::Vector2f(1.5f, 2.0f))
-		.setRadius(0.08f)
-		.setVelocity(sf::Vector2f(0.05f, 0.02f))
-		.setMass(3.0f)
-		.setColor(DuneColor<unsigned char>(255, 255, 0))
-		.build());
 
 	m_planetarySystem.addObject(PlanetBuilder()
 		.setName("Giedi Prime")

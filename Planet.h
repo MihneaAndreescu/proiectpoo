@@ -31,7 +31,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Planet& planet);
 };
 
-class PlanetBuilder {
+class PlanetBuilder
+{
 private:
     std::string name;
     sf::Vector2f center;
