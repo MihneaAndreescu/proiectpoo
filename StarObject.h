@@ -17,7 +17,7 @@ public:
     explicit StarObject(const std::string& name);
     StarObject(const StarObject& other);
     sf::Vector2f getCenter() const;
-    void update(ObjectUpdateInfo m_updateInfo) override;
+    void update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     void prepDraw() override;
     StarObject& operator=(const StarObject& other);

@@ -16,7 +16,7 @@ public:
     explicit Kilonova(sf::Vector2f center,const std::string& name);
     Kilonova(const Kilonova& other);
     sf::Vector2f getCenter() const;
-    void update(ObjectUpdateInfo m_updateInfo) override;
+    void update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     void prepDraw() override;
     Kilonova& operator=(const Kilonova& other);

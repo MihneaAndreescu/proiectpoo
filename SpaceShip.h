@@ -55,7 +55,7 @@ public:
     void invincible(double tInvinc);
     sf::RectangleShape getRigidBodyBoundingBox(int tag);
     void prepDraw() override;
-    void update(struct ObjectUpdateInfo m_drawInfo) override;
+    void updateGravityObject(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
     SpaceShip(const std::string& name, const sf::Vector2f& center, const sf::Vector2f size, float speed);
     SpaceShip(const SpaceShip& other);
     SpaceShip operator = (const SpaceShip& other);

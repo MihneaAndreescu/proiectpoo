@@ -23,7 +23,7 @@ public:
     ~Planet();
     sf::Vector2f getCenter() const override;
     float getMass() const override;
-    void update(ObjectUpdateInfo m_drawInfo) override;
+    void updateGravityObject(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
     void applyForce(sf::Vector2f force) override;
     void clearForces() override;
     void setTexture(sf::Texture* texture);
@@ -31,8 +31,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Planet& planet);
 };
 
-class PlanetBuilder
-{
+class PlanetBuilder {
 private:
     std::string name;
     sf::Vector2f center;

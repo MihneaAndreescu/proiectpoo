@@ -12,7 +12,7 @@ Kilonova::Kilonova(sf::Vector2f center, const std::string& name) :
     m_t(0) {
 }
 
-void Kilonova::update(ObjectUpdateInfo m_updateInfo) {
+void Kilonova::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
     m_t += m_updateInfo.deltaTime;
     m_star.setAngle(m_star.getAngle() + m_updateInfo.deltaTime * 10);
 }

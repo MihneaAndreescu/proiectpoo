@@ -60,7 +60,7 @@ void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
     renderTarget.draw(m_circleShape, renderStates);
 }
 
-void Planet::update(ObjectUpdateInfo m_drawInfo) {
+void Planet::updateGravityObject(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
     if (Math::norm(m_velocity) > 3) {
         m_velocity = Math::normalize(m_velocity) * 3.0f;
     }

@@ -113,23 +113,9 @@ bool intersects(const sf::CircleShape& a, const sf::CircleShape& b) {
     return distance <= (radiusA + radiusB);
 }
 
-void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
+void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
     if ((int)getObjectsOfType<PsychedelicDrug>().size() == 0) {
         addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
-    }
-    
-    std::vector<std::shared_ptr<GravityObject>> gravityObjects = getObjectsOfType<GravityObject>();
-    for (size_t i = 0; i < gravityObjects.size(); i++) {
-        for (size_t j = 0; j < gravityObjects.size(); j++) {
-            if (i != j) {
-                std::shared_ptr<GravityObject> a = gravityObjects[i];
-                std::shared_ptr<GravityObject> b = gravityObjects[j];
-                sf::Vector2f dir = Math::normalize(b->getCenter() - a->getCenter());
-                float mag = a->getMass() * b->getMass() / Math::dot(a->getCenter() - b->getCenter(), a->getCenter() - b->getCenter());
-                mag *= 0.01f;
-                a->applyForce(dir * mag);
-            }
-        }
     }
     std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
     std::vector<std::shared_ptr<Planet>> planets = getObjectsOfType<Planet>();
@@ -156,12 +142,8 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
             }
         }
     }
-    for (auto& object : gravityObjects) {
-        sf::Vector2f dir = object->getCenter();
-        object->applyForce(-Math::normalize(dir) * 1.0f * Math::norm(dir) * Math::norm(dir));
-    }
     for (auto& object : m_gameObjects) {
-        object->update(m_drawInfo);
+        object->update(m_updateInfo, m_gameObjects);
     }
     std::vector<std::shared_ptr<StarObject>> starObjects = getObjectsOfType<StarObject>();
     for (int i = 0; i < (int)starObjects.size() && dels.empty(); i++) {
@@ -205,9 +187,6 @@ void PlanetSystem::update(ObjectUpdateInfo m_drawInfo) {
         if (is == 0) {
             drug->resetTimeSinceNotOnDrugs();
         }
-    }
-    for (auto& object : gravityObjects) {
-        object->clearForces();
     }
     if (!dels.empty()) {
         std::vector<std::shared_ptr<GameObject>> nw;
