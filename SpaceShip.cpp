@@ -255,6 +255,9 @@ void SpaceShip::adjustSimultaneousRotation() {
 }
 
 void SpaceShip::updateGravityObject(ObjectUpdateInfo drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+    for (auto& obj : allObjects) {
+        obj->dummy();
+    }
     m_invinc -= drawInfo.deltaTime;
     resetMovementFlags();
     sf::Vector2f direction = computeDirection(drawInfo.mousePosition, m_center);

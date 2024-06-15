@@ -25,6 +25,9 @@ public:
     virtual void applyForce(sf::Vector2f force) = 0;
     virtual void updateGravityObject(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects = {}) = 0;
     void update(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects = {}) override {
+        for (auto& obj : allObjects) {
+            obj->dummy();
+        }
         {
             for (auto& other : allObjects) {
                 auto otherGravityObject = std::dynamic_pointer_cast<GravityObject>(other);

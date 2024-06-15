@@ -8,6 +8,9 @@ private:
 	static int idNow;
 	int m_id;
 public:
+	void dummy() {
+
+	}
 	GameObject();
 	int getId();
 	virtual void update(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects = {}) = 0;

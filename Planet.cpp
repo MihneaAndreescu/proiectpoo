@@ -61,6 +61,9 @@ void Planet::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates)
 }
 
 void Planet::updateGravityObject(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+    for (auto& obj : allObjects) {
+        obj->dummy();
+    }
     if (Math::norm(m_velocity) > 3) {
         m_velocity = Math::normalize(m_velocity) * 3.0f;
     }
