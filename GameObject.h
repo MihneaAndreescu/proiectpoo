@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ObjectUpdateInfo.h"
-#include <memory.h>
+#include <memory>
 
 class GameObject : public sf::Drawable {
 private:
