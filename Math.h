@@ -11,4 +11,5 @@ namespace Math {
 	float norm(sf::Vector2f a);
 	sf::Vector2f normalize(sf::Vector2f a);
 	sf::Vector2f perp(sf::Vector2f a);
+	bool intersects(const sf::CircleShape& a, const sf::CircleShape& b);
 }

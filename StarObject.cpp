@@ -4,6 +4,7 @@
 #include <random>
 #include <cmath>
 #include "DuneColor.h"
+#include "Kilonova.h"
 
 StarObject::StarObject(const std::string& name) :
     m_name(name),
@@ -15,17 +16,6 @@ StarObject::StarObject(const std::string& name) :
     m_controlPoint1 = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
     m_controlPoint2 = sf::Vector2f(RandomNumber::getInstance().getRandom(dist), RandomNumber::getInstance().getRandom(dist));
 }
-
-//bool intersects(const sf::CircleShape& a, const sf::CircleShape& b) {
-//    sf::Vector2f positionA = a.getPosition();
-//    sf::Vector2f positionB = b.getPosition();
-//    float deltaX = positionA.x - positionB.x;
-//    float deltaY = positionA.y - positionB.y;
-//    float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-//    float radiusA = a.getRadius();
-//    float radiusB = b.getRadius();
-//    return distance <= (radiusA + radiusB);
-//}
 
 std::vector<std::shared_ptr<GameObject>> StarObject::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
     m_t += m_updateInfo.deltaTime * m_speed;
@@ -49,17 +39,21 @@ std::vector<std::shared_ptr<GameObject>> StarObject::update(ObjectUpdateInfo m_u
     sf::Vector2f newPos = uuu * p0 + 3 * uu * m_t * p1 + 3 * u * tt * p2 + ttt * p3;
     m_star.setPosition(newPos);
 
-    //for (auto& obj : allObjects) {
-    //        if (intersects(this->getCircle(), starObjects[j]->getCircle())) {
-    //            sf::Vector2f half = (starObjects[i]->getCircle().getPosition() + starObjects[j]->getCircle().getPosition()) * 0.5f;
-    //            addObject(std::make_shared<Kilonova>(half, "kilonova"));
-    //            dels.insert(starObjects[i]);
-    //            dels.insert(starObjects[j]);
-    //        }
-    //    
-    //}
+    std::vector<std::shared_ptr<GameObject>> nw;
 
-    return {};
+    for (auto& other : allObjects) {
+        if (this->requestsDelete()) {
+            break;
+        }
+        auto otherStarObject = std::dynamic_pointer_cast<StarObject>(other);
+        if (otherStarObject && otherStarObject->getId() != this->getId() && Math::intersects(this->getCircle(), otherStarObject->getCircle()) && !otherStarObject->requestsDelete()) {
+            sf::Vector2f half = (this->getCircle().getPosition() + otherStarObject->getCircle().getPosition()) * 0.5f;
+            nw.push_back(std::make_shared<Kilonova>(half, "kilonova"));
+            this->reqdl = otherStarObject->reqdl = true;
+        }
+    }
+
+    return nw;
 }
 
 sf::CircleShape StarObject::getCircle() const {

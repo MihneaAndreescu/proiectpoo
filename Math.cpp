@@ -29,13 +29,13 @@ namespace Math {
 	float norm(sf::Vector2f a) {
 		float sol;
 		try {
-			sol = normUnsafe(a); 
+			sol = normUnsafe(a);
 		}
 		catch (const MathException& e) {
 			std::cout << "Exception caught in normSafe: " << e.what() << std::endl;
-			sol = 0.0f; 
+			sol = 0.0f;
 		}
-		return sol; 
+		return sol;
 	}
 	sf::Vector2f normalize(sf::Vector2f a) {
 		float n = norm(a);
@@ -51,5 +51,16 @@ namespace Math {
 
 	float cross(sf::Vector2f a, sf::Vector2f b) {
 		return a.x * b.y - b.x * a.y;
+	}
+
+	bool intersects(const sf::CircleShape& a, const sf::CircleShape& b) {
+		sf::Vector2f positionA = a.getPosition();
+		sf::Vector2f positionB = b.getPosition();
+		float deltaX = positionA.x - positionB.x;
+		float deltaY = positionA.y - positionB.y;
+		float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
+		float radiusA = a.getRadius();
+		float radiusB = b.getRadius();
+		return distance <= (radiusA + radiusB);
 	}
 }

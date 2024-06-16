@@ -102,17 +102,6 @@ bool intersects(const sf::RectangleShape& rectangle, const sf::CircleShape& circ
     return false;
 }
 
-bool intersects(const sf::CircleShape& a, const sf::CircleShape& b) {
-    sf::Vector2f positionA = a.getPosition();
-    sf::Vector2f positionB = b.getPosition();
-    float deltaX = positionA.x - positionB.x;
-    float deltaY = positionA.y - positionB.y;
-    float distance = std::sqrt(deltaX * deltaX + deltaY * deltaY);
-    float radiusA = a.getRadius();
-    float radiusB = b.getRadius();
-    return distance <= (radiusA + radiusB);
-}
-
 void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
     if ((int)getObjectsOfType<PsychedelicDrug>().size() == 0) {
         addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
@@ -142,18 +131,30 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
             }
         }
     }
+    std::vector<std::shared_ptr<GameObject>> nw;
     for (auto& object : m_gameObjects) {
-        object->update(m_updateInfo, m_gameObjects);
-    }
+        auto now = object->update(m_updateInfo, m_gameObjects);
+        for (auto& nwFrom : now) {
+            nw.push_back(nwFrom);
+        }
+    }/*
     std::vector<std::shared_ptr<StarObject>> starObjects = getObjectsOfType<StarObject>();
     for (int i = 0; i < (int)starObjects.size() && dels.empty(); i++) {
         for (int j = i + 1; j < (int)starObjects.size() && dels.empty(); j++) {
-            if (intersects(starObjects[i]->getCircle(), starObjects[j]->getCircle())) {
+            if (Math::intersects(starObjects[i]->getCircle(), starObjects[j]->getCircle())) {
                 sf::Vector2f half = (starObjects[i]->getCircle().getPosition() + starObjects[j]->getCircle().getPosition()) * 0.5f;
                 addObject(std::make_shared<Kilonova>(half, "kilonova"));
                 dels.insert(starObjects[i]);
                 dels.insert(starObjects[j]);
             }
+        }
+    }*/
+    for (auto& obj : nw) {
+        addObject(obj);
+    }
+    for (auto& object : m_gameObjects) {
+        if (object->requestsDelete()) {
+            dels.insert(object);
         }
     }
     std::vector<std::shared_ptr<Kilonova>> kilonovaObjects = getObjectsOfType<Kilonova>();
