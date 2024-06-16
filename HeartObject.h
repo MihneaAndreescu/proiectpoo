@@ -14,6 +14,7 @@ private:
 public:
     explicit HeartObject(sf::Vector2f center, const std::string& name);
     HeartObject(const HeartObject& other);
+    bool requestsDelete() override { return isDead(); }
     sf::CircleShape getCircle() const;
     bool isDead() const;
     sf::Vector2f getCenter() const;

@@ -146,11 +146,11 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
             dels.insert(object);
         }
     }
-    for (auto& heart : heartObjects) {
-        if (heart->isDead()) {
-            dels.insert(heart);
-        }
-    }
+    //for (auto& heart : heartObjects) {
+    //    if (heart->isDead()) {
+    //        dels.insert(heart);
+    //    }
+    //}
     for (auto& drug : drugs) {
         sf::CircleShape circle = drug->getCap();
         bool is = 0;
