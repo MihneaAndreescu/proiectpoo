@@ -137,18 +137,7 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
         for (auto& nwFrom : now) {
             nw.push_back(nwFrom);
         }
-    }/*
-    std::vector<std::shared_ptr<StarObject>> starObjects = getObjectsOfType<StarObject>();
-    for (int i = 0; i < (int)starObjects.size() && dels.empty(); i++) {
-        for (int j = i + 1; j < (int)starObjects.size() && dels.empty(); j++) {
-            if (Math::intersects(starObjects[i]->getCircle(), starObjects[j]->getCircle())) {
-                sf::Vector2f half = (starObjects[i]->getCircle().getPosition() + starObjects[j]->getCircle().getPosition()) * 0.5f;
-                addObject(std::make_shared<Kilonova>(half, "kilonova"));
-                dels.insert(starObjects[i]);
-                dels.insert(starObjects[j]);
-            }
-        }
-    }*/
+    }
     for (auto& obj : nw) {
         addObject(obj);
     }
@@ -190,13 +179,13 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
         }
     }
     if (!dels.empty()) {
-        std::vector<std::shared_ptr<GameObject>> nw;
+        std::vector<std::shared_ptr<GameObject>> nwVec;
         for (auto& object : m_gameObjects) {
             if (!dels.count(object)) {
-                nw.push_back(object);
+                nwVec.push_back(object);
             }
         }
-        m_gameObjects = nw;
+        m_gameObjects = nwVec;
     } 
 }
 

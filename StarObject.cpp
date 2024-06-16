@@ -66,8 +66,6 @@ sf::CircleShape StarObject::getCircle() const {
 
 void StarObject::draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const {
     renderTarget.draw(m_star, renderStates);
-    //auto cir = getCircle();
-    //renderTarget.draw(cir, renderStates);
 }
 
 void StarObject::prepDraw() {
