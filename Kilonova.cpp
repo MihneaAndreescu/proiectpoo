@@ -15,6 +15,7 @@ Kilonova::Kilonova(sf::Vector2f center, const std::string& name) :
 }
 
 std::vector<std::shared_ptr<GameObject>> Kilonova::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+    int dim = (int)allObjects.size();
     m_t += m_updateInfo.deltaTime;
     m_star.setAngle(m_star.getAngle() + m_updateInfo.deltaTime * 10);
     if (isDead()) {
