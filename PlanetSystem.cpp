@@ -146,13 +146,6 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
             dels.insert(object);
         }
     }
-    std::vector<std::shared_ptr<Kilonova>> kilonovaObjects = getObjectsOfType<Kilonova>();
-    for (auto& kilonova : kilonovaObjects) {
-        if (kilonova->isDead()) {
-            dels.insert(kilonova);
-            addObject(std::make_shared<HeartObject>(kilonova->getCenter(), "heart"));
-        }
-    }
     for (auto& heart : heartObjects) {
         if (heart->isDead()) {
             dels.insert(heart);

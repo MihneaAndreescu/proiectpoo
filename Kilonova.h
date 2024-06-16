@@ -14,6 +14,9 @@ private:
     float m_t;
 public:
     explicit Kilonova(sf::Vector2f center,const std::string& name);
+    bool requestsDelete() override {
+        return isDead();
+    }
     Kilonova(const Kilonova& other);
     sf::Vector2f getCenter() const;
     std::vector<std::shared_ptr<GameObject>> update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;

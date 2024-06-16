@@ -4,6 +4,8 @@
 #include <random>
 #include <cmath>
 #include "DuneColor.h"
+#include "HeartObject.h"
+#include <memory>
 
 Kilonova::Kilonova(sf::Vector2f center, const std::string& name) :
     m_name(name),
@@ -13,11 +15,11 @@ Kilonova::Kilonova(sf::Vector2f center, const std::string& name) :
 }
 
 std::vector<std::shared_ptr<GameObject>> Kilonova::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
-    for (auto& obj : allObjects) {
-        obj->dummy();
-    }
     m_t += m_updateInfo.deltaTime;
     m_star.setAngle(m_star.getAngle() + m_updateInfo.deltaTime * 10);
+    if (isDead()) {
+        return { std::make_shared<HeartObject>(this->getCenter(), "heart") };
+    }
     return {};
 }
 
