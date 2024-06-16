@@ -28,11 +28,12 @@ sf::Vector2f HeartObject::getCenter() const {
     return m_center;
 }
 
-void HeartObject::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
+std::vector<std::shared_ptr<GameObject>> HeartObject::update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) {
     for (auto& obj : allObjects) {
         obj->dummy();
     }
     m_time += m_updateInfo.deltaTime * 5;
+    return {};
 }
 
 bool HeartObject::isDead() const {

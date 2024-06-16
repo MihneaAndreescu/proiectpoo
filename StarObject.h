@@ -13,11 +13,15 @@ private:
     sf::Vector2f m_controlPoint1, m_controlPoint2;
     float m_t;  
     float m_speed;
+    bool reqdl = false;
 public:
+    bool requestsDelete() override {
+        return reqdl;
+    }
     explicit StarObject(const std::string& name);
     StarObject(const StarObject& other);
     sf::Vector2f getCenter() const;
-    void update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
+    std::vector<std::shared_ptr<GameObject>> update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     void prepDraw() override;
     StarObject& operator=(const StarObject& other);

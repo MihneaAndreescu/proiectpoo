@@ -17,7 +17,7 @@ public:
     sf::CircleShape getCircle() const;
     bool isDead() const;
     sf::Vector2f getCenter() const;
-    void update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
+    std::vector<std::shared_ptr<GameObject>> update(ObjectUpdateInfo m_updateInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects) override;
     void draw(sf::RenderTarget& renderTarget, sf::RenderStates renderStates) const override;
     void prepDraw() override;
     HeartObject& operator=(const HeartObject& other);

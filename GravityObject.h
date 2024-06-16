@@ -24,7 +24,7 @@ public:
     virtual float getMass() const = 0;
     virtual void applyForce(sf::Vector2f force) = 0;
     virtual void updateGravityObject(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects = {}) = 0;
-    void update(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects = {}) override {
+    std::vector<std::shared_ptr<GameObject>> update(ObjectUpdateInfo m_drawInfo, const std::vector<std::shared_ptr<GameObject>>& allObjects = {}) override {
         for (auto& obj : allObjects) {
             obj->dummy();
         }
@@ -45,6 +45,6 @@ public:
         }
         updateGravityObject(m_drawInfo, allObjects);
         this->clearForces();
-        return;
+        return {};
     }
 };
