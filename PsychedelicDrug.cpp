@@ -4,6 +4,8 @@
 #include <random>
 #include "Math.h"
 #include "RandomNumber.h"
+#include "SpaceShip.h"
+#include "StarObject.h"
 
 PsychedelicDrug::PsychedelicDrug(const std::string& name) :
     m_name(name),
@@ -54,7 +56,34 @@ std::vector<std::shared_ptr<GameObject>> PsychedelicDrug::update(ObjectUpdateInf
     }
     m_timeSinceNotOnDrugs += m_updateInfo.deltaTime;
     m_shroom.update(m_updateInfo.deltaTime, m_timeSinceNotOnDrugs);
-    return {};
+
+    std::vector<std::shared_ptr<GameObject>> nw;
+    {
+        sf::CircleShape circle = this->getCap();
+        bool is = 0;
+
+        for (auto& other : allObjects) {
+            if (requestsDelete()) {
+                continue;
+            }
+            auto spaceShip = std::dynamic_pointer_cast<SpaceShip>(other);
+            if (spaceShip) {
+                sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(1);
+                if (Math::intersects(rectangle, circle)) {
+                    is = 1;
+                    if (this->getTimeSinceNotOnDrugs() >= 1) {
+                        spaceShip->increase();
+                        this->rqdl = true;
+                        nw.push_back(std::make_shared<StarObject>("Star 5"));
+                    }
+                }
+            }
+        }
+        if (is == 0) {
+            this->resetTimeSinceNotOnDrugs();
+        }
+    }
+    return nw;
 }
 
 void PsychedelicDrug::resetTimeSinceNotOnDrugs() {

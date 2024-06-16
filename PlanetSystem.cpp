@@ -54,66 +54,17 @@ void PlanetSystem::addObject(std::shared_ptr<GameObject> object) {
     m_gameObjects.push_back(object);
 }
 
-float pointToLineDistance(const sf::Vector2f& A, const sf::Vector2f& B, const sf::Vector2f& P) {
-    sf::Vector2f AP = P - A;
-    sf::Vector2f AB = B - A;
-    float ab2 = AB.x * AB.x + AB.y * AB.y;
-    float ap_ab = AP.x * AB.x + AP.y * AB.y;
-    float t = ap_ab / ab2;
-    if (t < 0.0f) {
-        return std::sqrt(AP.x * AP.x + AP.y * AP.y);
-    }
-    else if (t > 1.0f) {
-        sf::Vector2f BP = P - B;
-        return std::sqrt(BP.x * BP.x + BP.y * BP.y);
-    }
-    else {
-        sf::Vector2f Closest = A + t * AB;
-        sf::Vector2f ClosestP = P - Closest;
-        return std::sqrt(ClosestP.x * ClosestP.x + ClosestP.y * ClosestP.y);
-    }
-}
-
-bool intersects(const sf::RectangleShape& rectangle, const sf::CircleShape& circle) {
-    sf::Vector2f rectPos = rectangle.getPosition();
-    sf::Vector2f circlePos = circle.getPosition();
-    float radius = circle.getRadius();
-    float rectWidth = rectangle.getSize().x;
-    float rectHeight = rectangle.getSize().y;
-    float rotation = rectangle.getRotation() * (Math::PI / 180.0);
-    sf::Vector2f vertices[4];
-    vertices[0] = rectPos;
-    vertices[1] = sf::Vector2f(rectPos.x + rectWidth * cos(rotation), rectPos.y + rectWidth * sin(rotation));
-    vertices[2] = sf::Vector2f(vertices[1].x - rectHeight * sin(rotation), vertices[1].y + rectHeight * cos(rotation));
-    vertices[3] = sf::Vector2f(rectPos.x - rectHeight * sin(rotation), rectPos.y + rectHeight * cos(rotation));
-    for (int i = 0; i < 4; i++) {
-        int next = (i + 1) % 4;
-        if (pointToLineDistance(vertices[i], vertices[next], circlePos) <= radius) {
-            return true;
-        }
-    }
-    for (int i = 0; i < 4; i++) {
-        float dx = vertices[i].x - circlePos.x;
-        float dy = vertices[i].y - circlePos.y;
-        if (dx * dx + dy * dy <= radius * radius) {
-            return true;
-        }
-    }
-    return false;
-}
-
 void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
     if ((int)getObjectsOfType<PsychedelicDrug>().size() == 0) {
         addObject(std::make_shared<PsychedelicDrug>("PsychedelicDrugDrug"));
     }
     std::vector<std::shared_ptr<SpaceShip>> spaceShips = getObjectsOfType<SpaceShip>();
     std::vector<std::shared_ptr<Planet>> planets = getObjectsOfType<Planet>();
-    std::vector<std::shared_ptr<PsychedelicDrug>> drugs = getObjectsOfType<PsychedelicDrug>();
     for (auto& spaceShip : spaceShips) {
         sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(0);
         for (auto& planet : planets) {
             sf::CircleShape circle = planet->getCircleShape();
-            if (intersects(rectangle, circle)) {
+            if (Math::intersects(rectangle, circle)) {
                 spaceShip->invincible(5);
             }
         }
@@ -124,7 +75,7 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
         sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(1);
         for (auto& heart : heartObjects) {
             sf::CircleShape circle = heart->getCircle();
-            if (intersects(rectangle, circle)) {
+            if (Math::intersects(rectangle, circle)) {
                 dels.insert(heart);
                 spaceShip->increaseHearts();
                 spaceShip->increase(-(spaceShip->countShrooms() / 2));
@@ -144,31 +95,6 @@ void PlanetSystem::update(ObjectUpdateInfo m_updateInfo) {
     for (auto& object : m_gameObjects) {
         if (object->requestsDelete()) {
             dels.insert(object);
-        }
-    }
-    //for (auto& heart : heartObjects) {
-    //    if (heart->isDead()) {
-    //        dels.insert(heart);
-    //    }
-    //}
-    for (auto& drug : drugs) {
-        sf::CircleShape circle = drug->getCap();
-        bool is = 0;
-        for (auto& spaceShip : spaceShips) {
-            sf::RectangleShape rectangle = spaceShip->getRigidBodyBoundingBox(1);
-            if (intersects(rectangle, circle)) {
-                is = 1;
-                if (drug->getTimeSinceNotOnDrugs() >= 1) {
-                    spaceShip->increase();
-                    if (!dels.count(drug)) {
-                        dels.insert(drug);
-                        addObject(std::make_shared<StarObject>("Star 5"));
-                    }
-                }
-            }
-        }
-        if (is == 0) {
-            drug->resetTimeSinceNotOnDrugs();
         }
     }
     if (!dels.empty()) {

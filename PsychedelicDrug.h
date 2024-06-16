@@ -11,9 +11,11 @@ private:
     sf::Vector2f m_center;
     Shroom m_shroom;
     double m_timeSinceNotOnDrugs;
+    bool rqdl = false;
 public:
     float getTimeSinceNotOnDrugs();
     void prepDraw() override;
+    bool requestsDelete() override { return rqdl; }
     explicit PsychedelicDrug(const std::string& name);
     PsychedelicDrug(const PsychedelicDrug& other);
     sf::Vector2f getCenter() const;

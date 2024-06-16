@@ -12,4 +12,7 @@ namespace Math {
 	sf::Vector2f normalize(sf::Vector2f a);
 	sf::Vector2f perp(sf::Vector2f a);
 	bool intersects(const sf::CircleShape& a, const sf::CircleShape& b);
+	bool intersects(const sf::RectangleShape& rectangle, const sf::CircleShape& circle);
+
+	float pointToLineDistance(const sf::Vector2f& A, const sf::Vector2f& B, const sf::Vector2f& P);
 }

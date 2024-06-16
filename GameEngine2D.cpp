@@ -119,7 +119,6 @@ void GameEngine2D::initializePlanetarySystem() {
 	m_planetarySystem.setName("Sistemul lu' Mihnea");
 	m_planetarySystem.addObject(std::make_shared<SpaceShip>("Player", sf::Vector2f(-0.5f, -0.5f), sf::Vector2f(0.2f, 0.4f), 1.0f));
 
-
 	PlanetBuilder duneBuilder;
 	duneBuilder.setName("Dune");
 	duneBuilder.setCenter(sf::Vector2f(0.0f, 0.0f));
