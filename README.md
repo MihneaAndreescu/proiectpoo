@@ -12,7 +12,7 @@ Feeling overwhelmed? Hit `ESC` to exit the game at any time—no strings attache
 - **Lives**: You start the game with five lives. Use them wisely to achieve a high score.
 
 ![Gameplay Description](https://github.com/MihneaAndreescu/proiectpoo/blob/sfml/A099CCD6-14E0-4940-BB49-583A5E0AA9BD.png)
-
+![Gameplay Description](https://github.com/MihneaAndreescu/proiectpoo/blob/sfml/472DDE02-476F-49B2-8725-82324CF01065.png)
 
 ## Beware the Cosmic Spectacle!
 - **Radioactive Aftermath**: Every spice collection process leaves behind radioactive waste. This cosmic junk morphs into wild, twinkling stars designed to distract you. Their flickering brilliance may obscure looming planets, so stay sharp!
