@@ -11,6 +11,9 @@ Feeling overwhelmed? Hit `ESC` to exit the game at any time—no strings attache
 - **Avoid Planets**: The cosmos is cluttered with planets that accelerate towards you. Avoid them to save your lives.
 - **Lives**: You start the game with five lives. Use them wisely to achieve a high score.
 
+![Gameplay Description](https://github.com/MihneaAndreescu/proiectpoo/blob/sfml/A099CCD6-14E0-4940-BB49-583A5E0AA9BD.png)
+
+
 ## Beware the Cosmic Spectacle!
 - **Radioactive Aftermath**: Every spice collection process leaves behind radioactive waste. This cosmic junk morphs into wild, twinkling stars designed to distract you. Their flickering brilliance may obscure looming planets, so stay sharp!
 - **Stellar Collisions**: When two of these stars collide, the universe shivers, and a kilonova explosion ensues. Watch this astronomical event unfold before your eyes!
